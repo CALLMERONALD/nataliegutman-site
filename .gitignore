@@ -1,0 +1,13 @@
+node_modules/
+.DS_Store
+.playwright-mcp/
+.claude/
+
+# Local working files — not part of the published site
+mydatabase.db
+docs/
+
+# Internal reference / proof / page screenshots (design-process artifacts)
+/*.jpeg
+/*-check.jpeg
+/proof-*.png

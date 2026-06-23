@@ -1,0 +1,33 @@
+# robots.txt — Natalie Gutman, Real Estate in Portugal
+
+# Default: allow all standard search + AI crawlers
+User-agent: *
+Allow: /
+# Keep the gated funnel pages out of the index
+Disallow: /hub.html
+Disallow: /guide.html
+
+# --- AI search crawlers (explicitly welcomed for citation) ---
+# Blocking any of these means that platform can't cite the site.
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+Sitemap: https://nataliegutman.com/sitemap.xml

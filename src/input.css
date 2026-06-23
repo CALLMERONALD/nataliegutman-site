@@ -1,0 +1,121 @@
+/* Self-hosted fonts (no third-party requests — GDPR/ePrivacy friendly) */
+@font-face {
+  font-family: 'Hanken Grotesk Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('fonts/hanken-grotesk-latin-wght-normal.woff2') format('woff2-variations');
+}
+@font-face {
+  font-family: 'Cormorant Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 300 700;
+  src: url('fonts/cormorant-latin-wght-normal.woff2') format('woff2-variations');
+}
+@font-face {
+  font-family: 'Cormorant Variable';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 300 700;
+  src: url('fonts/cormorant-latin-wght-italic.woff2') format('woff2-variations');
+}
+@font-face {
+  font-family: 'Pinyon Script';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url('fonts/pinyon-script-latin-400-normal.woff2') format('woff2');
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Base ─────────────────────────────────────────────────────────────── */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    font-family: 'Hanken Grotesk Variable', ui-sans-serif, system-ui, sans-serif;
+    color: #1A1A1A;
+    background: #ffffff;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  /* Serif display — the luxury register */
+  h1, h2, h3 {
+    font-family: 'Cormorant Variable', ui-serif, Georgia, serif;
+    font-weight: 400;
+    letter-spacing: 0.005em;
+  }
+}
+
+/* ── Components ───────────────────────────────────────────────────────── */
+@layer components {
+  /* Script accent — used sparingly, like the reference's cursive moments */
+  .script {
+    font-family: 'Pinyon Script', 'Cormorant Variable', cursive;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    line-height: 1.15;
+  }
+
+  /* Tracked uppercase label */
+  .label {
+    font-family: 'Hanken Grotesk Variable', ui-sans-serif, system-ui, sans-serif;
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: #6E6A63;
+  }
+
+  /* Animated underline for inline links */
+  .link-underline { position: relative; }
+  .link-underline::after {
+    content: ''; position: absolute; left: 0; right: 0; bottom: -2px; height: 1px;
+    background: currentColor; transform: scaleX(0); transform-origin: left;
+    transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .link-underline:hover::after,
+  .link-underline:focus-visible::after { transform: scaleX(1); }
+
+  /* Small caps "discover" link with arrow, like the reference's CTAs */
+  .more-link {
+    font-family: 'Hanken Grotesk Variable', ui-sans-serif, system-ui, sans-serif;
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: #1A1A1A;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+}
+
+/* ── Scroll-reveal (calm; collapses under reduced motion / no-JS) ─────── */
+@layer utilities {
+  .reveal-on .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+    will-change: opacity, transform;
+  }
+  .reveal-on .reveal.is-in {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}

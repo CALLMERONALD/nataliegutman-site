@@ -1,0 +1,815 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Property Calculators · Natalie Gutman</title>
+  <meta name="description" content="Estimate purchase costs, mortgage payments, rental yield, ROI and your net proceeds from a sale, for buying and selling property in Portugal." />
+  <meta name="robots" content="noindex, follow" />
+
+  <!-- Favicons -->
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+
+  <!-- Self-hosted styles + fonts (no third-party requests) -->
+  <link rel="stylesheet" href="assets/tailwind.css">
+
+  <style>
+    html { scroll-behavior: smooth; }
+    .link-underline { position: relative; }
+    .link-underline::after {
+      content: ''; position: absolute; left: 0; right: 0; bottom: -2px; height: 1px;
+      background: currentColor; transform: scaleX(0); transform-origin: left;
+      transition: transform 200ms ease;
+    }
+    .link-underline:hover::after, .link-underline:focus-visible::after { transform: scaleX(1); }
+    /* Strip number-input spinners for a cleaner look */
+    input[type=number]::-webkit-outer-spin-button,
+    input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    input[type=number] { -moz-appearance: textfield; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition-duration: 0.001ms !important; }
+    }
+  </style>
+</head>
+
+<body class="bg-white text-ink">
+
+  <!-- NAV -->
+    <!-- ============== HEADER ============== -->
+  <header class="sticky top-0 z-30 bg-white/85 backdrop-blur-md border-b border-hairline">
+    <nav class="max-w-7xl mx-auto px-6 lg:px-10 h-16 flex items-center justify-between" aria-label="Primary">
+      <a href="index.html" class="font-serif text-2xl tracking-tight leading-none">Natalie Gutman</a>
+
+      <ul class="hidden lg:flex items-center gap-9 label text-faint">
+        <li><a href="buy.html" class="hover:text-ink transition-colors">Buy</a></li>
+        <li><a href="sell.html" class="hover:text-ink transition-colors">Sell</a></li>
+        <li><a href="calculators.html" class="text-ink" aria-current="page">Calculators</a></li>
+        <li><a href="guide.html" class="hover:text-ink transition-colors">Guide</a></li>
+        <li><a href="about.html" class="hover:text-ink transition-colors">About</a></li>
+        <li><a href="contact.html" class="hover:text-ink transition-colors">Contact</a></li>
+      </ul>
+
+      <button id="menu-btn" type="button" class="lg:hidden -mr-1 p-2 text-ink" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+        <svg viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path stroke-linecap="round" d="M4 8h16M4 16h16"/></svg>
+      </button>
+    </nav>
+
+    <div id="mobile-menu" class="lg:hidden hidden bg-white border-t border-hairline">
+      <ul class="max-w-7xl mx-auto px-6 py-3 flex flex-col label text-ink divide-y divide-hairline">
+        <li><a href="buy.html" class="block py-4">Buy</a></li>
+        <li><a href="sell.html" class="block py-4">Sell</a></li>
+        <li><a href="calculators.html" class="block py-4" aria-current="page">Calculators</a></li>
+        <li><a href="guide.html" class="block py-4">Guide</a></li>
+        <li><a href="about.html" class="block py-4">About</a></li>
+        <li><a href="contact.html" class="block py-4">Contact</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- HEADER -->
+    <section class="border-b border-hairline bg-surface">
+      <div class="max-w-3xl mx-auto px-6 lg:px-8 py-14 lg:py-20">
+        <p class="text-xs uppercase tracking-[0.18em] text-accent mb-4">Tools · Portugal · 2026</p>
+        <h1 class="font-serif text-4xl sm:text-5xl leading-[1.08] mb-4">
+          Property <span class="italic text-accent">calculators.</span>
+        </h1>
+        <p class="text-lg text-muted max-w-xl leading-relaxed">
+          Run the numbers before you commit, or before you sell. Estimate your full purchase
+          costs, monthly mortgage, rental yield, return on investment, and your net proceeds from a
+          sale, built around Portugal's 2026 rules.
+        </p>
+        <p class="text-sm text-muted mt-6">
+          Jump to:
+          <a href="#purchase" class="link-underline text-ink">Purchase costs</a> ·
+          <a href="#mortgage" class="link-underline text-ink">Mortgage</a> ·
+          <a href="#yield" class="link-underline text-ink">Rental yield</a> ·
+          <a href="#roi" class="link-underline text-ink">ROI</a> ·
+          <a href="#net-proceeds" class="link-underline text-ink">Seller's net</a>
+        </p>
+      </div>
+    </section>
+
+    <div class="max-w-3xl mx-auto px-6 lg:px-8 divide-y divide-hairline">
+
+      <!-- ============== 1. PURCHASE COSTS ============== -->
+      <section id="purchase" class="py-14 lg:py-20 scroll-mt-20">
+        <p class="label mb-3">01 · Purchase costs</p>
+        <h2 class="font-serif text-3xl text-ink mb-3">What buying really costs</h2>
+        <p class="text-muted leading-relaxed mb-8 max-w-xl">
+          IMT (transfer tax), Stamp Duty and the usual notary and legal fees on top of the
+          asking price. Choose the option that matches your situation, the IMT rules differ.
+        </p>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <!-- inputs -->
+          <div class="space-y-5">
+            <div>
+              <label for="p-price" class="block text-sm font-medium text-ink mb-1.5">Property price</label>
+              <div class="relative">
+                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-muted">€</span>
+                <input id="p-price" type="number" min="0" step="1000" value="500000"
+                       class="w-full rounded-md border border-hairline bg-white pl-7 pr-3 py-2.5 text-ink focus:border-ink focus:outline-none focus:ring-1 focus:ring-accent" />
+              </div>
+            </div>
+
+            <fieldset>
+              <legend class="block text-sm font-medium text-ink mb-1.5">Buyer situation</legend>
+              <div class="space-y-2">
+                <label class="flex items-start gap-2.5 text-sm text-muted cursor-pointer">
+                  <input type="radio" name="p-mode" value="primary" class="mt-0.5 accent-accent" />
+                  <span><span class="text-ink">Resident, primary home.</span> Your own permanent residence in Portugal.</span>
+                </label>
+                <label class="flex items-start gap-2.5 text-sm text-muted cursor-pointer">
+                  <input type="radio" name="p-mode" value="young" class="mt-0.5 accent-accent" />
+                  <span><span class="text-ink">First home, buyer aged 35 or under (IMT Jovem).</span> Your first permanent home, IMT &amp; Stamp Duty exempt up to €330,539.</span>
+                </label>
+                <label class="flex items-start gap-2.5 text-sm text-muted cursor-pointer">
+                  <input type="radio" name="p-mode" value="secondary" class="mt-0.5 accent-accent" />
+                  <span><span class="text-ink">Resident, secondary / holiday home.</span> A second home or buy-to-let.</span>
+                </label>
+                <label class="flex items-start gap-2.5 text-sm text-muted cursor-pointer">
+                  <input type="radio" name="p-mode" value="nonresident" class="mt-0.5 accent-accent" checked />
+                  <span><span class="text-ink">Non-resident buyer.</span> You're not (yet) a Portuguese tax resident.</span>
+                </label>
+              </div>
+            </fieldset>
+
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label for="p-legal" class="block text-sm font-medium text-ink mb-1.5">Legal fee</label>
+                <div class="relative">
+                  <input id="p-legal" type="number" min="0" step="0.1" value="1"
+                         class="w-full rounded-md border border-hairline bg-white pl-3 pr-7 py-2.5 text-ink focus:border-ink focus:outline-none focus:ring-1 focus:ring-accent" />
+                  <span class="absolute right-3 top-1/2 -translate-y-1/2 text-muted">%</span>
+                </div>
+              </div>
+              <div>
+                <label for="p-notary" class="block text-sm font-medium text-ink mb-1.5">Notary &amp; registry</label>
+                <div class="relative">
+                  <span class="absolute left-3 top-1/2 -translate-y-1/2 text-muted">€</span>
+                  <input id="p-notary" type="number" min="0" step="100" value="1200"
+                         class="w-full rounded-md border border-hairline bg-white pl-7 pr-3 py-2.5 text-ink focus:border-ink focus:outline-none focus:ring-1 focus:ring-accent" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- results -->
+          <div class="rounded-lg bg-surface border border-hairline p-6">
+            <dl class="space-y-3 text-sm">
+              <div class="flex items-baseline justify-between gap-4">
+                <dt class="text-muted">IMT (transfer tax)</dt>
+                <dd id="r-imt" class="text-ink font-medium tabular-nums">—</dd>
+              </div>
+              <div class="flex items-baseline justify-between gap-4">
+                <dt class="text-muted">Stamp Duty</dt>
+                <dd id="r-stamp" class="text-ink font-medium tabular-nums">—</dd>
+              </div>
+              <div class="flex items-baseline justify-between gap-4">
+                <dt class="text-muted">Notary &amp; registry</dt>
+                <dd id="r-notary" class="text-ink font-medium tabular-nums">—</dd>
+              </div>
+              <div class="flex items-baseline justify-between gap-4">
+                <dt class="text-muted">Legal fees</dt>
+                <dd id="r-legal" class="text-ink font-medium tabular-nums">—</dd>
+              </div>
+              <div class="flex items-baseline justify-between gap-4 pt-3 border-t border-hairline">
+                <dt class="text-ink">Total taxes &amp; fees</dt>
+                <dd id="r-costs" class="text-accent font-serif text-xl tabular-nums">—</dd>
+              </div>
+              <div class="flex items-baseline justify-between gap-4 pt-3 border-t border-hairline">
+                <dt class="text-ink font-medium">Total budget needed</dt>
+                <dd id="r-total" class="text-ink font-serif text-2xl tabular-nums">—</dd>
+              </div>
+            </dl>
+            <p id="r-eff" class="text-xs text-muted mt-4"></p>
+          </div>
+        </div>
+
+        <p id="p-note" class="text-xs text-muted mt-6 leading-relaxed max-w-2xl"></p>
+        <p class="text-xs text-muted mt-3 leading-relaxed max-w-2xl">
+          Mainland Portugal, 2026 rates (AT Ofício Circulado 40129/2026). IMT is legally charged on
+          the higher of the price or the property's tax value (VPT); this uses the price you enter.
+          An estimate, not tax advice.
+        </p>
+      </section>
+
+      <!-- ============== 2. MORTGAGE ============== -->
+      <section id="mortgage" class="py-14 lg:py-20 scroll-mt-20">
+        <p class="label mb-3">02 · Mortgage</p>
+        <h2 class="font-serif text-3xl text-ink mb-3">Your monthly repayment</h2>
+        <p class="text-muted leading-relaxed mb-8 max-w-xl">
+          A standard repayment estimate. Enter the price, your deposit, the rate and the term.
+        </p>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="space-y-5">
+            <div>
+              <label for="m-price" class="block text-sm font-medium text-ink mb-1.5">Property price</label>
+              <div class="relative">
+                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-muted">€</span>
+                <input id="m-price" type="number" min="0" step="1000" value="500000"
+                       class="w-full rounded-md border border-hairline bg-white pl-7 pr-3 py-2.5 text-ink focus:border-ink focus:outline-none focus:ring-1 focus:ring-accent" />
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label for="m-deposit" class="block text-sm font-medium text-ink mb-1.5">Deposit</label>
+                <div class="relative">
+                  <input id="m-deposit" type="number" min="0" max="100" step="1" value="30"
+                         class="w-full rounded-md border border-hairline bg-white pl-3 pr-7 py-2.5 text-ink focus:border-ink focus:outline-none focus:ring-1 focus:ring-accent" />
+                  <span class="absolute right-3 top-1/2 -translate-y-1/2 text-muted">%</span>
+                </div>
+              </div>
+              <div>
+                <label for="m-rate" class="block text-sm font-medium text-ink mb-1.5">Interest rate</label>
+                <div class="relative">
+                  <input id="m-rate" type="number" min="0" step="0.05" value="3.5"
+                         class="w-full rounded-md border border-hairline bg-white pl-3 pr-7 py-2.5 text-ink focus:border-ink focus:outline-none focus:ring-1 focus:ring-accent" />
+                  <span class="absolute right-3 top-1/2 -translate-y-1/2 text-muted">%</span>
+                </div>
+              </div>
+            </div>
+            <div>
+              <label for="m-term" class="block text-sm font-medium text-ink mb-1.5">Term (years)</label>
+              <input id="m-term" type="number" min="1" max="40" step="1" value="25"
+                     class="w-full rounded-md border border-hairline bg-white px-3 py-2.5 text-ink focus:border-ink focus:outline-none focus:ring-1 focus:ring-accent" />
+            </div>
+          </div>
+
+          <div class="rounded-lg bg-surface border border-hairline p-6">
+            <dl class="space-y-3 text-sm">
+              <div class="flex items-baseline justify-between gap-4">
+                <dt class="text-muted">Loan amount</dt>
+                <dd id="r-loan" class="text-ink font-medium tabular-nums">—</dd>
+              </div>
+              <div class="flex items-baseline justify-between gap-4 pt-3 border-t border-hairline">
+                <dt class="text-ink font-medium">Monthly payment</dt>
+                <dd id="r-monthly" class="text-accent font-serif text-2xl tabular-nums">—</dd>
+              </div>
+              <div class="flex items-baseline justify-between gap-4 pt-3 border-t border-hairline">
+                <dt class="text-muted">Total interest</dt>
+                <dd id="r-interest" class="text-ink font-medium tabular-nums">—</dd>
+              </div>
+              <div class="flex items-baseline justify-between gap-4">
+                <dt class="text-muted">Total repaid</dt>
+                <dd id="r-repaid" class="text-ink font-medium tabular-nums">—</dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+        <p class="text-xs text-muted mt-6 leading-relaxed max-w-2xl">
+          A repayment-mortgage estimate excluding life/home insurance, bank fees and the Stamp Duty
+          on the loan itself (0.6% for terms over 5 years). Portuguese banks typically lend up to
+          80-90% to residents and less to non-residents. An estimate, not a mortgage offer.
+        </p>
+      </section>
+
+      <!-- ============== 3. RENTAL YIELD ============== -->
+      <section id="yield" class="py-14 lg:py-20 scroll-mt-20">
+        <p class="label mb-3">03 · Rental yield</p>
+        <h2 class="font-serif text-3xl text-ink mb-3">What it could earn</h2>
+        <p class="text-muted leading-relaxed mb-8 max-w-xl">
+          Gross yield is the headline number; net yield takes your running costs off it.
+        </p>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="space-y-5">
+            <div>
+              <label for="y-price" class="block text-sm font-medium text-ink mb-1.5">Property price</label>
+              <div class="relative">
+                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-muted">€</span>
+                <input id="y-price" type="number" min="0" step="1000" value="500000"
+                       class="w-full rounded-md border border-hairline bg-white pl-7 pr-3 py-2.5 text-ink focus:border-ink focus:outline-none focus:ring-1 focus:ring-accent" />
+              </div>
+            </div>
+            <div>
+              <label for="y-rent" class="block text-sm font-medium text-ink mb-1.5">Monthly rent</label>
+              <div class="relative">
+                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-muted">€</span>
+                <input id="y-rent" type="number" min="0" step="50" value="2000"
+                       class="w-full rounded-md border border-hairline bg-white pl-7 pr-3 py-2.5 text-ink focus:border-ink focus:outline-none focus:ring-1 focus:ring-accent" />
+              </div>
+            </div>
+            <div>
+              <label for="y-costs" class="block text-sm font-medium text-ink mb-1.5">Annual running costs</label>
+              <div class="relative">
+                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-muted">€</span>
+                <input id="y-costs" type="number" min="0" step="100" value="3000"
+                       class="w-full rounded-md border border-hairline bg-white pl-7 pr-3 py-2.5 text-ink focus:border-ink focus:outline-none focus:ring-1 focus:ring-accent" />
+              </div>
+              <p class="text-xs text-muted mt-1.5">IMI, condominium, insurance, management, maintenance.</p>
+            </div>
+          </div>
+
+          <div class="rounded-lg bg-surface border border-hairline p-6">
+            <dl class="space-y-3 text-sm">
+              <div class="flex items-baseline justify-between gap-4">
+                <dt class="text-muted">Annual gross income</dt>
+                <dd id="r-gross" class="text-ink font-medium tabular-nums">—</dd>
+              </div>
+              <div class="flex items-baseline justify-between gap-4 pt-3 border-t border-hairline">
+                <dt class="text-ink font-medium">Gross yield</dt>
+                <dd id="r-gyield" class="text-accent font-serif text-2xl tabular-nums">—</dd>
+              </div>
+              <div class="flex items-baseline justify-between gap-4 pt-3 border-t border-hairline">
+                <dt class="text-ink font-medium">Net yield</dt>
+                <dd id="r-nyield" class="text-ink font-serif text-2xl tabular-nums">—</dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+        <p class="text-xs text-muted mt-6 leading-relaxed max-w-2xl">
+          Yields are on the purchase price only (before purchase costs and financing). An estimate, not investment advice.
+        </p>
+      </section>
+
+      <!-- ============== 4. ROI ============== -->
+      <section id="roi" class="py-14 lg:py-20 scroll-mt-20">
+        <p class="label mb-3">04 · Return on investment</p>
+        <h2 class="font-serif text-3xl text-ink mb-3">Your cash-on-cash return</h2>
+        <p class="text-muted leading-relaxed mb-8 max-w-xl">
+          How hard your invested cash works each year, after all costs including any mortgage.
+        </p>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="space-y-5">
+            <div>
+              <label for="o-invested" class="block text-sm font-medium text-ink mb-1.5">Total cash invested</label>
+              <div class="relative">
+                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-muted">€</span>
+                <input id="o-invested" type="number" min="0" step="1000" value="200000"
+                       class="w-full rounded-md border border-hairline bg-white pl-7 pr-3 py-2.5 text-ink focus:border-ink focus:outline-none focus:ring-1 focus:ring-accent" />
+              </div>
+              <p class="text-xs text-muted mt-1.5">Deposit + purchase costs + any renovation.</p>
+            </div>
+            <div>
+              <label for="o-income" class="block text-sm font-medium text-ink mb-1.5">Annual rental income</label>
+              <div class="relative">
+                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-muted">€</span>
+                <input id="o-income" type="number" min="0" step="500" value="24000"
+                       class="w-full rounded-md border border-hairline bg-white pl-7 pr-3 py-2.5 text-ink focus:border-ink focus:outline-none focus:ring-1 focus:ring-accent" />
+              </div>
+            </div>
+            <div>
+              <label for="o-costs" class="block text-sm font-medium text-ink mb-1.5">Annual costs</label>
+              <div class="relative">
+                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-muted">€</span>
+                <input id="o-costs" type="number" min="0" step="500" value="15000"
+                       class="w-full rounded-md border border-hairline bg-white pl-7 pr-3 py-2.5 text-ink focus:border-ink focus:outline-none focus:ring-1 focus:ring-accent" />
+              </div>
+              <p class="text-xs text-muted mt-1.5">Running costs + mortgage payments + taxes.</p>
+            </div>
+          </div>
+
+          <div class="rounded-lg bg-surface border border-hairline p-6">
+            <dl class="space-y-3 text-sm">
+              <div class="flex items-baseline justify-between gap-4">
+                <dt class="text-muted">Annual net cash flow</dt>
+                <dd id="r-cashflow" class="text-ink font-medium tabular-nums">—</dd>
+              </div>
+              <div class="flex items-baseline justify-between gap-4 pt-3 border-t border-hairline">
+                <dt class="text-ink font-medium">Cash-on-cash ROI</dt>
+                <dd id="r-roi" class="text-accent font-serif text-3xl tabular-nums">—</dd>
+              </div>
+            </dl>
+            <p id="r-payback" class="text-xs text-muted mt-4"></p>
+          </div>
+        </div>
+        <p class="text-xs text-muted mt-6 leading-relaxed max-w-2xl">
+          Cash-on-cash return for a single year; it doesn't include capital growth or tax on
+          rental income. An estimate, not investment advice.
+        </p>
+      </section>
+
+      <!-- ============== 5. SELLER'S NET PROCEEDS ============== -->
+      <section id="net-proceeds" class="py-14 lg:py-20 scroll-mt-20">
+        <p class="label mb-3">05 · Selling a home</p>
+        <h2 class="font-serif text-3xl text-ink mb-3">What you'll actually walk away with</h2>
+        <p class="text-muted leading-relaxed mb-8 max-w-xl">
+          Your sale price minus agency commission, selling costs, any mortgage to repay, and an
+          optional capital-gains estimate. The capital-gains part is rough, leave the purchase
+          price at 0 to skip it.
+        </p>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="space-y-5">
+            <div>
+              <label for="s-price" class="block text-sm font-medium text-ink mb-1.5">Expected sale price</label>
+              <div class="relative">
+                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-muted">€</span>
+                <input id="s-price" type="number" min="0" step="1000" value="600000"
+                       class="w-full rounded-md border border-hairline bg-white pl-7 pr-3 py-2.5 text-ink focus:border-ink focus:outline-none focus:ring-1 focus:ring-accent" />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label for="s-comm" class="block text-sm font-medium text-ink mb-1.5">Agency commission</label>
+                <div class="relative">
+                  <input id="s-comm" type="number" min="0" step="0.1" value="5"
+                         class="w-full rounded-md border border-hairline bg-white pl-3 pr-7 py-2.5 text-ink focus:border-ink focus:outline-none focus:ring-1 focus:ring-accent" />
+                  <span class="absolute right-3 top-1/2 -translate-y-1/2 text-muted">%</span>
+                </div>
+              </div>
+              <div>
+                <label for="s-costs" class="block text-sm font-medium text-ink mb-1.5">Other selling costs</label>
+                <div class="relative">
+                  <span class="absolute left-3 top-1/2 -translate-y-1/2 text-muted">€</span>
+                  <input id="s-costs" type="number" min="0" step="50" value="250"
+                         class="w-full rounded-md border border-hairline bg-white pl-7 pr-3 py-2.5 text-ink focus:border-ink focus:outline-none focus:ring-1 focus:ring-accent" />
+                </div>
+                <p class="text-xs text-muted mt-1.5">Energy certificate, admin, etc.</p>
+              </div>
+            </div>
+
+            <label class="flex items-center gap-2.5 text-sm text-muted cursor-pointer">
+              <input id="s-vat" type="checkbox" class="accent-accent" checked />
+              <span>Add 23% VAT (IVA) to the commission</span>
+            </label>
+
+            <div>
+              <label for="s-mortgage" class="block text-sm font-medium text-ink mb-1.5">Mortgage to repay</label>
+              <div class="relative">
+                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-muted">€</span>
+                <input id="s-mortgage" type="number" min="0" step="1000" value="0"
+                       class="w-full rounded-md border border-hairline bg-white pl-7 pr-3 py-2.5 text-ink focus:border-ink focus:outline-none focus:ring-1 focus:ring-accent" />
+              </div>
+            </div>
+
+            <div class="pt-4 border-t border-hairline space-y-5">
+              <p class="text-sm font-medium text-ink">Capital gains <span class="text-muted font-normal">(optional)</span></p>
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label for="s-buyprice" class="block text-sm font-medium text-ink mb-1.5">You bought it for</label>
+                  <div class="relative">
+                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-muted">€</span>
+                    <input id="s-buyprice" type="number" min="0" step="1000" value="0"
+                           class="w-full rounded-md border border-hairline bg-white pl-7 pr-3 py-2.5 text-ink focus:border-ink focus:outline-none focus:ring-1 focus:ring-accent" />
+                  </div>
+                </div>
+                <div>
+                  <label for="s-buycosts" class="block text-sm font-medium text-ink mb-1.5">Buying costs + works</label>
+                  <div class="relative">
+                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-muted">€</span>
+                    <input id="s-buycosts" type="number" min="0" step="500" value="0"
+                           class="w-full rounded-md border border-hairline bg-white pl-7 pr-3 py-2.5 text-ink focus:border-ink focus:outline-none focus:ring-1 focus:ring-accent" />
+                  </div>
+                </div>
+              </div>
+              <div>
+                <label for="s-rate" class="block text-sm font-medium text-ink mb-1.5">Your marginal IRS rate</label>
+                <div class="relative max-w-[10rem]">
+                  <input id="s-rate" type="number" min="0" max="48" step="0.5" value="35"
+                         class="w-full rounded-md border border-hairline bg-white pl-3 pr-7 py-2.5 text-ink focus:border-ink focus:outline-none focus:ring-1 focus:ring-accent" />
+                  <span class="absolute right-3 top-1/2 -translate-y-1/2 text-muted">%</span>
+                </div>
+                <p class="text-xs text-muted mt-1.5">Residents: 12.5%–48% depending on total income.</p>
+              </div>
+              <label class="flex items-start gap-2.5 text-sm text-muted cursor-pointer">
+                <input id="s-reinvest" type="checkbox" class="mt-0.5 accent-accent" />
+                <span>This was my main home and I'm reinvesting the proceeds (relief may apply, sets gains tax to €0).</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- results -->
+          <div class="rounded-lg bg-surface border border-hairline p-6">
+            <dl class="space-y-3 text-sm">
+              <div class="flex items-baseline justify-between gap-4">
+                <dt class="text-muted">Sale price</dt>
+                <dd id="r-sprice" class="text-ink font-medium tabular-nums">—</dd>
+              </div>
+              <div class="flex items-baseline justify-between gap-4">
+                <dt class="text-muted">Agency commission</dt>
+                <dd id="r-comm" class="text-ink font-medium tabular-nums">—</dd>
+              </div>
+              <div class="flex items-baseline justify-between gap-4">
+                <dt class="text-muted">Other selling costs</dt>
+                <dd id="r-scosts" class="text-ink font-medium tabular-nums">—</dd>
+              </div>
+              <div class="flex items-baseline justify-between gap-4">
+                <dt class="text-muted">Capital gains tax (est.)</dt>
+                <dd id="r-cgt" class="text-ink font-medium tabular-nums">—</dd>
+              </div>
+              <div class="flex items-baseline justify-between gap-4">
+                <dt class="text-muted">Mortgage repaid</dt>
+                <dd id="r-smort" class="text-ink font-medium tabular-nums">—</dd>
+              </div>
+              <div class="flex items-baseline justify-between gap-4 pt-3 border-t border-hairline">
+                <dt class="text-ink font-medium">Net proceeds</dt>
+                <dd id="r-net" class="text-accent font-serif text-2xl tabular-nums">—</dd>
+              </div>
+            </dl>
+            <p id="r-snote" class="text-xs text-muted mt-4"></p>
+          </div>
+        </div>
+
+        <p class="text-xs text-muted mt-6 leading-relaxed max-w-2xl">
+          Capital gains: since 2023, 50% of the net gain is taxable for both residents and
+          non-residents, at your marginal IRS rate. This estimate ignores the inflation coefficient
+          (which lowers tax on property held over 24 months) and assumes your commission, selling
+          and buying costs are deductible. Main-home reinvestment relief can reduce the gain to zero.
+          An estimate, not tax advice; confirm with a tax adviser.
+        </p>
+      </section>
+
+    </div>
+
+    <!-- CTA -->
+    <section class="border-t border-hairline bg-surface">
+      <div class="max-w-3xl mx-auto px-6 lg:px-8 py-14 text-center">
+        <h2 class="font-serif text-2xl sm:text-3xl text-ink mb-3">Want the real numbers for a specific property?</h2>
+        <p class="text-muted mb-7 max-w-xl mx-auto">
+          These tools get you in the ballpark. For an exact picture, whether you're buying or
+          selling, taxes, financing and all, let's talk.
+        </p>
+        <a href="contact.html"
+           class="cursor-pointer inline-flex items-center gap-2 bg-ink text-white text-sm px-7 py-3.5 hover:bg-accent transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2">
+          Talk to Natalie
+          <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+    </section>
+
+      <!-- ============== FOOTER ============== -->
+  <footer class="bg-white border-t border-hairline">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10 py-16 lg:py-20">
+      <div class="grid gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-4">
+          <a href="index.html" class="font-serif text-3xl">Natalie Gutman</a>
+          <p class="text-muted text-sm mt-4 max-w-xs leading-relaxed">Boutique real estate for international buyers and sellers across Portugal's Golden Triangle.</p>
+        </div>
+        <div class="lg:col-span-2">
+          <p class="label mb-4">Contact</p>
+          <ul class="space-y-2 text-sm text-muted">
+            <li><a href="tel:+351969227709" class="link-underline hover:text-ink">+351 969 227 709</a></li>
+            <li><a href="mailto:bhinvest7@gmail.com" class="link-underline hover:text-ink">bhinvest7@gmail.com</a></li>
+            <li><a href="https://wa.me/351969227709" class="link-underline hover:text-ink">WhatsApp</a></li>
+          </ul>
+        </div>
+        <div class="lg:col-span-2">
+          <p class="label mb-4">Based in</p>
+          <p class="text-sm text-muted leading-relaxed">Cascais<br>Lisbon, Portugal</p>
+        </div>
+        <div class="lg:col-span-4">
+          <p class="label mb-4">Explore</p>
+          <ul class="grid grid-cols-2 gap-x-6 gap-y-2 text-sm text-muted">
+            <li><a href="buy.html" class="link-underline hover:text-ink">Buy</a></li>
+            <li><a href="sell.html" class="link-underline hover:text-ink">Sell</a></li>
+            <li><a href="calculators.html" class="link-underline hover:text-ink">Calculators</a></li>
+            <li><a href="guide.html" class="link-underline hover:text-ink">Guide</a></li>
+            <li><a href="privacy.html" class="link-underline hover:text-ink">Privacy</a></li>
+            <li><a href="terms.html" class="link-underline hover:text-ink">Terms</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 mt-14 pt-8 border-t border-hairline">
+        <ul class="flex items-center gap-x-6 label text-faint">
+          <li><a href="#" aria-label="Instagram (link coming soon)" class="hover:text-ink">Instagram</a></li>
+          <li><a href="#" aria-label="Facebook (link coming soon)" class="hover:text-ink">Facebook</a></li>
+          <li><a href="#" aria-label="LinkedIn (link coming soon)" class="hover:text-ink">LinkedIn</a></li>
+        </ul>
+        <p class="text-xs text-faint">&copy; <span id="year"></span> Natalie Gutman. All rights reserved.</p>
+      </div>
+      <p class="text-xs text-faint mt-8 max-w-3xl leading-relaxed">
+        Natalie Gutman, real estate consultant &middot; Cascais, Portugal. Property mediation is provided
+        through a licensed brokerage (AMI no. to be confirmed). Information on this site is general
+        and not legal, tax, or financial advice.
+      </p>
+    </div>
+  </footer>
+
+  </main>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // ════════════════════════════════════════════════════════════════════════
+    //  RATES & TAX TABLES ,  Mainland Portugal, 2026
+    //  ⚠️  UPDATE THIS BLOCK when rates change (typically each new year / Budget).
+    //  Sources verified 2026-06-14:
+    //   • IMT 2026 tables: AT Ofício Circulado 40129/2026 (OE 2026, +2% escalões).
+    //   • Non-resident flat 7.5% IMT: Decreto-Lei 97/2026 ("Construir Portugal"), in force 21 May 2026.
+    //   • IMT Jovem (≤35, 1st HPP): total IMT + Imposto do Selo exemption up to €330,539,
+    //     partial up to €660,982 (credit = tax due on €330,539), none above.
+    //   • Capital gains: 50% of gain taxable for residents & non-residents (since 2023).
+    //   • Agency commission: typically ~5% + 23% VAT, paid by the seller (negotiable; no official table).
+    // ════════════════════════════════════════════════════════════════════════
+    var RATES = {
+      stampDutyPct: 0.8,            // Imposto do Selo on property transfers
+      nonResidentImtPct: 7.5,       // Flat IMT for non-resident residential buyers
+      youngExemptCap: 330539,       // IMT Jovem: full IMT+IS exemption at/below this
+      youngExemptUpper: 660982,     // IMT Jovem: no benefit above this
+      vatPct: 23,                   // IVA on agency commission
+      cgtInclusion: 0.5,            // 50% of the gain is taxable
+
+      // Official 2026 IMT tables: tax = price × rate − deductible (parcela a abater).
+      // Top two bands are "taxa única" (whole value × rate, no deductible).
+      imt: {
+        primary: [   // Resident, own & permanent home (HPP)
+          { upTo: 106346,   rate: 0,   ded: 0 },
+          { upTo: 145470,   rate: 2,   ded: 2126.92 },
+          { upTo: 198347,   rate: 5,   ded: 6491.02 },
+          { upTo: 330539,   rate: 7,   ded: 10457.96 },
+          { upTo: 660982,   rate: 8,   ded: 13763.35 },
+          { upTo: 1150853,  rate: 6,   ded: 0 },
+          { upTo: Infinity, rate: 7.5, ded: 0 }
+        ],
+        secondary: [ // Resident, secondary / holiday home
+          { upTo: 106346,   rate: 1,   ded: 0 },
+          { upTo: 145470,   rate: 2,   ded: 1063.46 },
+          { upTo: 198347,   rate: 5,   ded: 5427.56 },
+          { upTo: 330539,   rate: 7,   ded: 9394.50 },
+          { upTo: 633931,   rate: 8,   ded: 12699.89 },
+          { upTo: 1150853,  rate: 6,   ded: 0 },
+          { upTo: Infinity, rate: 7.5, ded: 0 }
+        ]
+      }
+    };
+
+    // ── Helpers ──────────────────────────────────────────────────────────────
+    var eur = new Intl.NumberFormat('en-IE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
+    var pct = function (n) { return (Math.round(n * 100) / 100).toFixed(2) + '%'; };
+    var num = function (id) { var v = parseFloat(document.getElementById(id).value); return isFinite(v) && v >= 0 ? v : 0; };
+    var set = function (id, txt) { document.getElementById(id).textContent = txt; };
+    var checked = function (id) { var el = document.getElementById(id); return !!(el && el.checked); };
+
+    // Official IMT: price × bracket-rate − bracket-deductible (0 on the flat top bands).
+    function imtOfficial(price, table) {
+      for (var i = 0; i < table.length; i++) {
+        if (price <= table[i].upTo) {
+          return Math.max(0, price * table[i].rate / 100 - table[i].ded);
+        }
+      }
+      return 0;
+    }
+
+    // ── 1. Purchase costs ──────────────────────────────────────────────────
+    var NOTES = {
+      primary: 'Resident, primary & permanent home: IMT is exempt up to ' + eur.format(106346) +
+               ', then rises progressively from 2% to 8% (6% and 7.5% as flat rates on the highest values). Stamp Duty 0.8%.',
+      young: 'Buyer aged 35 or under, first permanent home (IMT Jovem): IMT and Stamp Duty are fully ' +
+             'exempt up to ' + eur.format(330539) + '. Between ' + eur.format(330539) + ' and ' + eur.format(660982) +
+             ' you are taxed only on the part above the limit; above ' + eur.format(660982) + ' the benefit no longer ' +
+             'applies. Stamp Duty on any mortgage loan is not exempt.',
+      secondary: 'Resident, secondary / holiday home: IMT is charged from the first euro, starting at 1% and rising to 8% (then 6%/7.5% flat). Stamp Duty 0.8%.',
+      nonresident: 'Non-resident buyer: a flat 7.5% IMT applies to residential property under the 2026 “Construir Portugal” ' +
+                   'rules (Decreto-Lei 97/2026, in force 21 May 2026), with no progressive bands. It does not apply if you ' +
+                   'are, or become within the legal period, a Portuguese tax resident, among other specified cases, confirm ' +
+                   'your situation with Portuguese tax counsel. Stamp Duty 0.8%.'
+    };
+    function calcPurchase() {
+      var price = num('p-price');
+      var mode = (document.querySelector('input[name="p-mode"]:checked') || {}).value || 'nonresident';
+      var imt, stamp;
+
+      if (mode === 'nonresident') {
+        imt = price * RATES.nonResidentImtPct / 100;
+        stamp = price * RATES.stampDutyPct / 100;
+      } else if (mode === 'young') {
+        if (price <= RATES.youngExemptCap) {
+          imt = 0; stamp = 0;
+        } else if (price <= RATES.youngExemptUpper) {
+          // Benefit = full IMT + Stamp Duty that would be due on the exemption cap.
+          imt = Math.max(0, imtOfficial(price, RATES.imt.primary) - imtOfficial(RATES.youngExemptCap, RATES.imt.primary));
+          stamp = Math.max(0, (price - RATES.youngExemptCap) * RATES.stampDutyPct / 100);
+        } else {
+          imt = imtOfficial(price, RATES.imt.primary);
+          stamp = price * RATES.stampDutyPct / 100;
+        }
+      } else { // primary or secondary
+        imt = imtOfficial(price, RATES.imt[mode]);
+        stamp = price * RATES.stampDutyPct / 100;
+      }
+
+      var notary = num('p-notary');
+      var legal = price * num('p-legal') / 100;
+      var costs = imt + stamp + notary + legal;
+
+      set('r-imt', eur.format(imt));
+      set('r-stamp', eur.format(stamp));
+      set('r-notary', eur.format(notary));
+      set('r-legal', eur.format(legal));
+      set('r-costs', eur.format(costs));
+      set('r-total', eur.format(price + costs));
+      set('r-eff', price > 0 ? 'That’s about ' + pct(costs / price * 100) + ' of the price in costs on top.' : '');
+      set('p-note', NOTES[mode]);
+    }
+
+    // ── 2. Mortgage ──────────────────────────────────────────────────────────
+    function calcMortgage() {
+      var price = num('m-price');
+      var deposit = Math.min(num('m-deposit'), 100);
+      var loan = price * (1 - deposit / 100);
+      var annualRate = num('m-rate');
+      var n = Math.round(num('m-term')) * 12;
+      var r = annualRate / 100 / 12;
+      var monthly = n <= 0 ? 0 : (r === 0 ? loan / n : loan * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1));
+      var repaid = monthly * n;
+
+      set('r-loan', eur.format(loan));
+      set('r-monthly', eur.format(monthly));
+      set('r-interest', eur.format(Math.max(0, repaid - loan)));
+      set('r-repaid', eur.format(repaid));
+    }
+
+    // ── 3. Rental yield ──────────────────────────────────────────────────────
+    function calcYield() {
+      var price = num('y-price');
+      var annualRent = num('y-rent') * 12;
+      var costs = num('y-costs');
+      set('r-gross', eur.format(annualRent));
+      set('r-gyield', price > 0 ? pct(annualRent / price * 100) : '—');
+      set('r-nyield', price > 0 ? pct((annualRent - costs) / price * 100) : '—');
+    }
+
+    // ── 4. ROI ─────────────────────────────────────────────────────────────
+    function calcRoi() {
+      var invested = num('o-invested');
+      var cashflow = num('o-income') - num('o-costs');
+      set('r-cashflow', eur.format(cashflow));
+      set('r-roi', invested > 0 ? pct(cashflow / invested * 100) : '—');
+      if (invested > 0 && cashflow > 0) {
+        set('r-payback', 'At this rate, your invested cash is returned in about ' +
+            (Math.round(invested / cashflow * 10) / 10) + ' years.');
+      } else {
+        set('r-payback', '');
+      }
+    }
+
+    // ── 5. Seller's net proceeds ─────────────────────────────────────────────
+    function calcSeller() {
+      var price = num('s-price');
+      var commPct = num('s-comm');
+      var vat = checked('s-vat') ? RATES.vatPct : 0;
+      var commission = price * commPct / 100 * (1 + vat / 100);
+      var otherCosts = num('s-costs');
+      var mortgage = num('s-mortgage');
+
+      // Optional capital gains
+      var buyPrice = num('s-buyprice');
+      var cgt = 0, gain = 0;
+      if (buyPrice > 0 && !checked('s-reinvest')) {
+        gain = Math.max(0, price - buyPrice - num('s-buycosts') - commission - otherCosts);
+        cgt = gain * RATES.cgtInclusion * num('s-rate') / 100;
+      }
+
+      var net = price - commission - otherCosts - cgt - mortgage;
+
+      set('r-sprice', eur.format(price));
+      set('r-comm', '− ' + eur.format(commission));
+      set('r-scosts', '− ' + eur.format(otherCosts));
+      set('r-cgt', cgt > 0 ? '− ' + eur.format(cgt) : eur.format(0));
+      set('r-smort', mortgage > 0 ? '− ' + eur.format(mortgage) : eur.format(0));
+      set('r-net', eur.format(net));
+      set('r-snote', vat ? 'Commission shown includes ' + RATES.vatPct + '% VAT.' : 'Commission shown excludes VAT.');
+    }
+
+    // ── Wire up: live recalculation ──────────────────────────────────────────
+    var calcs = [
+      { ids: ['p-price', 'p-legal', 'p-notary'], radios: 'p-mode', fn: calcPurchase },
+      { ids: ['m-price', 'm-deposit', 'm-rate', 'm-term'], fn: calcMortgage },
+      { ids: ['y-price', 'y-rent', 'y-costs'], fn: calcYield },
+      { ids: ['o-invested', 'o-income', 'o-costs'], fn: calcRoi },
+      { ids: ['s-price', 's-comm', 's-costs', 's-mortgage', 's-buyprice', 's-buycosts', 's-rate'],
+        checkboxes: ['s-vat', 's-reinvest'], fn: calcSeller }
+    ];
+    calcs.forEach(function (c) {
+      c.ids.forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) el.addEventListener('input', c.fn);
+      });
+      if (c.radios) {
+        document.querySelectorAll('input[name="' + c.radios + '"]').forEach(function (el) {
+          el.addEventListener('change', c.fn);
+        });
+      }
+      (c.checkboxes || []).forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) el.addEventListener('change', c.fn);
+      });
+      c.fn(); // initial render
+    });
+  </script>
+  <script>
+    (function () {
+      var btn = document.getElementById('menu-btn');
+      var menu = document.getElementById('mobile-menu');
+      if (!btn || !menu) return;
+      btn.addEventListener('click', function () {
+        var open = menu.classList.toggle('hidden') === false;
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+      menu.addEventListener('click', function (e) { if (e.target.closest('a')) { menu.classList.add('hidden'); btn.setAttribute('aria-expanded', 'false'); } });
+    })();
+  </script>
+</body>
+</html>
