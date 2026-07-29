@@ -92,4 +92,15 @@ Minimal one-file admin, same brand, no header/footer chrome — just:
   - Save button `bg-ink text-white px-7 py-3`; inline success/error line. All labels `label` style.
 
 ## 7. Copy rules
-Price format: `€` + thousands with `.` separators (pt-PT locale, no decimals). Never show `€0` — blank/null price renders "Price on request". Dates: none shown publicly.
+Price format: CUSTOM formatter (no Intl — its pt-PT output `1 250 000 €` is wrong for us): `€` prefix + dot thousands separators → `€1.250.000`, no decimals. Never show `€0` — blank/null price renders "Price on request". Dates: none shown publicly.
+Facts row: render ONLY set fields (null bedrooms → no bed item). For `plot`/`commercial` with no `area_built`, show `area_plot` m² with the area icon instead.
+States (properties.html): fetch error → `#properties-error` ("Listings are temporarily unavailable — please try again shortly.", same styling as empty line) + console.error; successful 0-row response → `#properties-empty`. Never both. Homepage teaser: `hidden` unless success AND ≥1 featured.
+
+## 8. Accessibility & responsive (binding)
+- Cards: the whole card is a real interactive control — wrap media+title in a `<button type="button" class="block w-full text-left …">` OR make the article `role`-free and put the open action on an inner button covering it; visible `focus-visible:ring-2 ring-accent` on focus; accessible name = property title.
+- Modal: `aria-labelledby` → title element id; close X is a `<button aria-label="Close">`; thumbnails are `<button>`s with `aria-label="Photo N"`; focus moves into dialog on open and RETURNS to the originating card button on close; Esc native.
+- Amenity icons: each svg carries `<title>label</title>` + parent `title` attr; icon row `flex flex-wrap gap-3` (wraps on narrow screens).
+- Thumbnail strip: `flex gap-2 mt-2 overflow-x-auto` (scrolls, never overflows the dialog).
+- Admin rows stack on mobile: `flex flex-wrap` with the thumb+title group `min-w-0` and actions row full-width below at <sm. Everything must be clean at 320px wide.
+- `[hidden]{display:none!important}` guard `<style>` on index.html, properties.html, admin.html (lesson C2).
+- New small text: use `text-muted`/`text-ink` — do NOT introduce new small `text-accent` copy (contrast); accent stays hover-only, matching the site.
