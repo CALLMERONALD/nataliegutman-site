@@ -60,6 +60,7 @@
   <!-- Self-hosted styles + fonts (no third-party requests) -->
   <link rel="stylesheet" href="assets/tailwind.css">
   <script src="assets/form-endpoint.js"></script>
+  <script src="assets/portfolio.js" defer></script>
 </head>
 
 <body class="bg-white text-ink">
@@ -72,6 +73,7 @@
       <ul class="hidden lg:flex items-center gap-9 label text-faint">
         <li><a href="buy.html" class="hover:text-ink transition-colors">Buy</a></li>
         <li><a href="sell.html" class="hover:text-ink transition-colors">Sell</a></li>
+        <li><a href="properties.html" class="hover:text-ink transition-colors">Portfolio</a></li>
         <li><a href="calculators.html" class="hover:text-ink transition-colors">Calculators</a></li>
         <li><a href="guide.html" class="hover:text-ink transition-colors">Guide</a></li>
         <li><a href="about.html" class="hover:text-ink transition-colors">About</a></li>
@@ -87,6 +89,7 @@
       <ul class="max-w-7xl mx-auto px-6 py-3 flex flex-col label text-ink divide-y divide-hairline">
         <li><a href="buy.html" class="block py-4">Buy</a></li>
         <li><a href="sell.html" class="block py-4">Sell</a></li>
+        <li><a href="properties.html" class="block py-4">Portfolio</a></li>
         <li><a href="calculators.html" class="block py-4">Calculators</a></li>
         <li><a href="guide.html" class="block py-4">Guide</a></li>
         <li><a href="about.html" class="block py-4">About</a></li>
@@ -270,11 +273,18 @@
           }).catch(function () {});
         }
 
-        contactForm.innerHTML =
-          '<div class="sm:col-span-2 py-10 text-center">' +
-          '<p class="font-serif text-3xl text-ink mb-3">Message sent.</p>' +
-          '<p class="text-muted">Thanks ' + (name.split(' ')[0] || 'for reaching out') + '. I\'ll be in touch within one business day.</p>' +
-          '</div>';
+        var result = document.createElement('div');
+        result.className = 'sm:col-span-2 py-10 text-center';
+        var heading = document.createElement('p');
+        heading.className = 'font-serif text-3xl text-ink mb-3';
+        heading.textContent = 'Message sent.';
+        var detail = document.createElement('p');
+        detail.className = 'text-muted';
+        detail.textContent = 'Thanks ' + (name.split(' ')[0] || 'for reaching out') + '. I\'ll be in touch within one business day.';
+        result.appendChild(heading);
+        result.appendChild(detail);
+        while (contactForm.firstChild) contactForm.removeChild(contactForm.firstChild);
+        contactForm.appendChild(result);
       });
     }
   </script>
