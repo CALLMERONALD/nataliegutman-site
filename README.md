@@ -53,7 +53,7 @@ Drop the folder into Netlify, Vercel, Cloudflare Pages, or any static host.
 ## Swap placeholders
 - **Guide cover** — currently a CSS placeholder card (no external image). Optionally replace with `assets/guide-cover.jpg` (3:4) — keep it local, don't reintroduce a third-party URL.
 - **Testimonial avatars** — currently CSS initials circles. When real testimonials arrive, swap in local avatar images (don't use `placehold.co` or other external hosts).
-- **Contact info** — `mailto:` is `bhinvest7@gmail.com`; update the `tel:` and `wa.me` links if the number changes. Contact blocks live on `index.html`, `buy.html` and `sell.html`.
+- **Contact info** — `mailto:` is `natalie.gutman@expportugal.com`; update the `tel:` and `wa.me` links if the number changes. Contact blocks live on `index.html`, `buy.html` and `sell.html`.
 - **Social links** — Instagram / Facebook / LinkedIn are placeholders (`href="#"`) in every footer. Swap in real profile URLs when handles are confirmed.
 - **OG image** — `assets/og-image.jpg` (1200×630) is generated from the portrait.
 

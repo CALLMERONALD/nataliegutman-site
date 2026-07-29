@@ -34,7 +34,7 @@
  */
 
 // Optional: inbox to notify on every submission. Leave '' to disable email alerts.
-var NOTIFY_EMAIL = 'bhinvest7@gmail.com';
+var NOTIFY_EMAIL = 'natalie.gutman@expportugal.com';
 
 function doPost(e) {
   var p = (e && e.parameter) ? e.parameter : {};
