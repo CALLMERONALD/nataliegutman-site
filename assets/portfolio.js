@@ -128,6 +128,16 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
     return fact;
   }
 
+  // DL 101-D/2020 art. 22(3): a property advertisement must state the energy class.
+  // The card is an advertisement in its own right, so this renders on the card too.
+  function energyLabel(value) {
+    return value === 'exempt' ? 'Energy: exempt' : 'Energy ' + String(value);
+  }
+
+  function createEnergyBadge(value) {
+    return createElement('span', 'inline-flex items-center border border-hairline px-2 py-0.5 text-xs text-muted', energyLabel(value));
+  }
+
   function createPropertyCard(property, onOpen) {
     var article = createElement('article', 'group relative min-w-0 [overflow-wrap:anywhere] reveal is-in');
     article.setAttribute('data-property-id', String(property.id || ''));
@@ -159,6 +169,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
     if (hasValue(property.bathrooms)) facts.appendChild(createCardFact('bath', property.bathrooms));
     var area = cardArea(property);
     if (hasValue(area)) facts.appendChild(createCardFact('area', area, ' m²'));
+    if (hasValue(property.energy_rating)) facts.appendChild(createEnergyBadge(property.energy_rating));
     article.appendChild(facts);
 
     var amenities = createElement('div', 'flex flex-wrap items-center gap-3 text-faint');
@@ -256,8 +267,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
         ['Built area', property.area_built, ' m²'],
         ['Plot area', property.area_plot, ' m²'],
         ['Floor', property.floor, ''],
-        ['Year built', property.year_built, ''],
-        ['Energy rating', property.energy_rating, '']
+        ['Year built', property.year_built, '']
       ];
       modalFacts.forEach(function (fact) {
         if (!hasValue(fact[1])) return;
@@ -266,6 +276,15 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
         pair.appendChild(createElement('p', 'text-ink', String(fact[1]) + fact[2]));
         specs.appendChild(pair);
       });
+      // Energy class is legally required in the advertisement, so it renders unconditionally
+      // (a published row cannot lack it — DB constraint published_needs_content).
+      var energyPair = createElement('div');
+      energyPair.appendChild(createElement('p', 'label text-faint mb-1', 'Energy class'));
+      energyPair.appendChild(createElement('p', 'text-ink',
+        hasValue(property.energy_rating)
+          ? (property.energy_rating === 'exempt' ? 'Exempt' : property.energy_rating)
+          : 'Not stated'));
+      specs.appendChild(energyPair);
 
       clearElement(description);
       String(property.description || '').split(/\r?\n\s*\r?\n/).filter(function (paragraph) {

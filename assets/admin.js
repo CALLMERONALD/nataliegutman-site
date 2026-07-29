@@ -717,6 +717,11 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
     if (values.published && (!values.photos.length || !values.description)) {
       throw new Error('Published properties need at least one photo and a description.');
     }
+    // Mirrors the published_needs_content DB constraint: Portuguese law requires the
+    // energy class in every property advertisement (DL 101-D/2020 art. 22(3)).
+    if (values.published && !values.energy_rating) {
+      throw new Error('Published properties must state an energy class — Portuguese law requires it in every property advertisement. Choose the class from the valid certificate, or "Exempt".');
+    }
     return values;
   }
 

@@ -80,12 +80,19 @@ $fn$;
 alter table natalie.properties drop constraint if exists photos_is_array;
 alter table natalie.properties drop constraint if exists photos_valid;
 alter table natalie.properties add constraint photos_valid check (natalie.valid_photos(photos));
+-- PT energy certificate scale + the statutory exemption case
 alter table natalie.properties drop constraint if exists energy_rating_known;
 alter table natalie.properties add constraint energy_rating_known check (
-  energy_rating is null or energy_rating in ('A+','A','B','B-','C','D','E','F'));
+  energy_rating is null or energy_rating in ('A+','A','B','B-','C','D','E','F','exempt'));
+-- A published listing IS a property advertisement. DL 101-D/2020 art. 22(3) makes the
+-- energy class mandatory in property ads (art. 35(1)(e): EUR 250-3.740 / 2.500-44.890),
+-- so publication is blocked at the DB rather than merely discouraged in the UI.
 alter table natalie.properties drop constraint if exists published_needs_content;
 alter table natalie.properties add constraint published_needs_content check (
-  (not published) or (jsonb_array_length(photos) >= 1 and description is not null and char_length(btrim(description)) > 0));
+  (not published) or (
+    jsonb_array_length(photos) >= 1
+    and description is not null and char_length(btrim(description)) > 0
+    and energy_rating is not null));
 
 -- updated_at is server-owned
 create or replace function natalie.set_updated_at() returns trigger language plpgsql as

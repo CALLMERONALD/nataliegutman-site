@@ -140,10 +140,10 @@
                      class="w-full border border-hairline bg-white px-4 py-3 text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent" />
             </div>
             <div>
-              <label for="property-energy" class="label block mb-2">Energy rating</label>
+              <label for="property-energy" class="label block mb-2">Energy class <span aria-hidden="true">*</span></label>
               <select id="property-energy" name="energy_rating"
                       class="w-full border border-hairline bg-white px-4 py-3 text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent">
-                <option value="">Not specified</option>
+                <option value="" disabled selected>Select the class…</option>
                 <option value="A+">A+</option>
                 <option value="A">A</option>
                 <option value="B">B</option>
@@ -152,7 +152,9 @@
                 <option value="D">D</option>
                 <option value="E">E</option>
                 <option value="F">F</option>
+                <option value="exempt">Exempt (building not covered by the SCE)</option>
               </select>
+              <p class="text-xs text-faint mt-2">Required to publish. Portuguese law requires the energy class from a valid certificate in every property advertisement.</p>
             </div>
 
             <div class="sm:col-span-2 flex flex-wrap gap-x-8 gap-y-3 py-2">
