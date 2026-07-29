@@ -148,3 +148,32 @@ VERDICT: NOT YET
 - ACCEPTED (12): check-key globs workspace files (excl. node_modules/docs/.git), not git tracking. PLAN.
 - ACCEPTED (13): canonical + sitemap assert exact `https://nataliegutman.com/properties.html`. PLAN.
 - ACCEPTED (14): credentialed seed RUNS are Fable/operator work; Codex ships the script + secret-free checks only. PLAN Rock 3.
+
+## Round 4 (2026-07-29)
+### Integrator findings (Codex, verbatim)
+- [FIX] UI-SPEC §1 places `div`, `p`, and `h3` flow content inside a button whose permitted content model is phrasing content, making the binding card nonconforming HTML [HTML Standard](https://html.spec.whatwg.org/multipage/form-elements.html#the-button-element) -> Use phrasing descendants or the covered inner-button pattern while preserving heading semantics.
+- [FIX] The ambiguity reconciler treats row existence as success, which misclassifies failed edits because their rows already exist and leaves ambiguous deletes or failed reconciliation GETs undefined -> Reconcile creates by existence, edits by persisted intended values, and deletes by absence; preserve photos and report unknown state whenever reconciliation remains inconclusive.
+- [FIX] No Playwright case exercises an ambiguous row response, so the new reconciliation logic can be entirely broken while every listed proof passes -> Forward a live create/edit/delete mutation, throw after commit, and assert operation-specific reconciliation without destructive compensation.
+- [FIX] An upload timeout or 5xx may occur after Storage committed the attempted object, yet cleanup covers only objects recognized as successfully uploaded -> Pre-generate the batch keys, treat every attempted key as a cleanup candidate, and test a forwarded upload whose successful response is discarded.
+- [FIX] The cleanup “retry note” has no defined persistence, lifecycle, or retry action, so preserved keys can disappear on reload without cleanup -> Store a durable pending-cleanup queue and retry authenticated deletions until confirmed.
+- [FIX] `check-key.mjs` has three conflicting scopes because Rock 1 omits root JavaScript and includes its own `service_role` sentinel while Rock 2 still says tracked files -> Define one `**/*.{html,js,mjs}` source scan with explicit dependency/generated exclusions, construct the sentinel without self-matching, and reference that checker once.
+- [FIX] PLAN maps only null price to “Price on request” while UI-SPEC forbids displaying `€0` and the database permits zero -> Define zero and null identically in the formatter and add a stored-zero rendering assertion.
+- [FIX] Public proof checks only the enquiry URL and never loads `contact.html`, so UUID validation, title fetching, and safe textarea prefill can all be broken while proof passes -> Follow a valid enquiry link and assert the exact prefill, then prove malformed UUIDs are ignored.
+- [FIX] Token-rotation proof sends only one failing request, so it does not prove the required single-flight behavior under concurrent 401 responses -> Launch two concurrent admin requests with the stale token and assert one refresh plus two successful retries.
+- [FIX] The second-user security proof covers table INSERT and Storage upload but not table UPDATE/DELETE or Storage SELECT/DELETE -> Attempt every privileged operation with the transient user and require denial without altering Natalie’s fixture.
+- [FIX] Dynamically revealed login, save, cleanup, and portfolio messages lack specified live-region semantics, so visual tests pass while assistive technology receives no status feedback -> Bind errors to `role="alert"` and nonurgent results to `role="status"` or appropriate `aria-live` regions.
+- [FIX] Seed reconciliation specifies upload-failure cleanup but not initial row-write ordering or ambiguous row failure, despite drafts allowing a materially simpler row-first flow -> Upsert the fixed draft row first, upload deterministic keys, patch the photo array, and let reruns reconcile any interrupted stage.
+VERDICT: NOT YET
+### Visionary response (Fable) — all 12 ACCEPTED
+- (1) card rewritten to the stretched-button pattern (empty button, absolute overlay) — valid HTML, semantics preserved. UI-SPEC §1.
+- (2) operation-specific reconciliation (create=existence, edit=value-compare, delete=absence; inconclusive → no compensation + alert). PLAN.
+- (3) ambiguous-outcome E2E case (forward-then-throw stub, assert non-destructive reconcile). PLAN proof.
+- (4) pre-generated batch keys; every ATTEMPTED key is a cleanup candidate; discarded-success E2E case. PLAN.
+- (5) durable localStorage pending-cleanup queue, retried on every admin load until confirmed. PLAN.
+- (6) one canonical check-key.mjs definition; sentinel built as 'service'+'_role'; workspace glob scope. PLAN.
+- (7) zero == null == "Price on request" + stored-zero assertion. PLAN + UI-SPEC §7.
+- (8) contact.html prefill E2E (exact text; malformed UUID ignored). PLAN proof.
+- (9) single-flight proven with two concurrent stale-token requests → exactly one refresh. PLAN proof.
+- (10) second-user proof extended to the full privilege matrix. PLAN proof.
+- (11) role=alert / role=status live regions specified. UI-SPEC §8.
+- (12) seed flow simplified to row-first upsert (Integrator tie-break on execution honored). PLAN Rock 3.

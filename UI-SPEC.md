@@ -5,8 +5,11 @@ Design language: match the existing site. Serif display (`font-serif`), small-ca
 ## 1. Data-driven property card (public, used on properties.html grid + homepage teaser)
 
 ```html
-<article class="group reveal is-in" data-property-id="{id}">
- <button type="button" class="block w-full text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent" aria-label="{title} — view details">
+<!-- stretched-button pattern: button is empty (phrasing-content-safe), absolutely covers the card;
+     heading/text stay semantic siblings. Card root is position:relative. -->
+<article class="group relative reveal is-in" data-property-id="{id}">
+  <button type="button" aria-label="{title} — view details"
+          class="absolute inset-0 z-10 w-full cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"></button>
   <div class="relative aspect-[4/3] bg-surface overflow-hidden mb-5">
     <img src="{cover_photo}" alt="{title}" loading="lazy"
          class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
@@ -23,7 +26,6 @@ Design language: match the existing site. Serif display (`font-serif`), small-ca
   </div>
   <!-- amenity icon row: ONLY amenities the property has, max all 10, w-[18px] h-[18px] text-faint, each svg gets <title> for tooltip/a11y -->
   <div class="flex flex-wrap items-center gap-3 text-faint">[amenity icons]</div>
- </button>
 </article>
 ```
 
@@ -95,7 +97,7 @@ Minimal one-file admin, same brand, no header/footer chrome — just:
   - Save button `bg-ink text-white px-7 py-3`; inline success/error line. All labels `label` style.
 
 ## 7. Copy rules
-Price format: CUSTOM formatter (no Intl — its pt-PT output `1 250 000 €` is wrong for us): `€` prefix + dot thousands separators → `€1.250.000`, no decimals. Never show `€0` — blank/null price renders "Price on request". Dates: none shown publicly.
+Price format: CUSTOM formatter (no Intl — its pt-PT output `1 250 000 €` is wrong for us): `€` prefix + dot thousands separators → `€1.250.000`, no decimals. Zero and null are IDENTICAL: both render "Price on request" (never `€0`). Dates: none shown publicly.
 Facts row: render ONLY set fields (null bedrooms → no bed item). For `plot`/`commercial` with no `area_built`, show `area_plot` m² with the area icon instead.
 States (properties.html): fetch error → `#properties-error` ("Listings are temporarily unavailable — please try again shortly.", same styling as empty line) + console.error; successful 0-row response → `#properties-empty`. Never both. Homepage teaser: `hidden` unless success AND ≥1 featured.
 
@@ -107,3 +109,4 @@ States (properties.html): fetch error → `#properties-error` ("Listings are tem
 - Admin rows stack on mobile: `flex flex-wrap` with the thumb+title group `min-w-0` and actions row full-width below at <sm. Everything must be clean at 320px wide.
 - `[hidden]{display:none!important}` guard `<style>` on index.html, properties.html, admin.html (lesson C2).
 - New small text: use `text-muted`/`text-ink` — do NOT introduce new small `text-accent` copy (contrast); accent stays hover-only, matching the site.
+- Live regions: every dynamically shown error message (login failure, save failure, cleanup warning, `#properties-error`) carries `role="alert"`; non-urgent results (save success, `#properties-empty`) carry `role="status"`.
