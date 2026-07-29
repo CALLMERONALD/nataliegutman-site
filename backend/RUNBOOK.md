@@ -28,7 +28,8 @@ curl -X PUT http://localhost:8000/auth/v1/admin/users/696378f9-f9f9-4a72-8f5d-66
 Hand over out-of-band (never email the password together with the URL). Update `.env.local`.
 
 ## 3. Schema changes
-Edit + re-run `001-init.sql` (idempotent), or apply deltas as `00N-*.sql`; always end with
+BEFORE first deploy: `001-init.sql` may be edited + re-run (idempotent, tracks live truth).
+AFTER first deploy: 001 is frozen — every change is a new numbered `00N-*.sql` delta; always end with
 `NOTIFY pgrst, 'reload schema';`. PostgREST exposure lives in `/docker/supabase/.env`
 `PGRST_DB_SCHEMAS` (backup `.env` first; `docker compose up -d rest` after edits).
 

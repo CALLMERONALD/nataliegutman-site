@@ -5,7 +5,8 @@ Design language: match the existing site. Serif display (`font-serif`), small-ca
 ## 1. Data-driven property card (public, used on properties.html grid + homepage teaser)
 
 ```html
-<article class="group cursor-pointer reveal is-in" data-property-id="{id}">
+<article class="group reveal is-in" data-property-id="{id}">
+ <button type="button" class="block w-full text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent" aria-label="{title} — view details">
   <div class="relative aspect-[4/3] bg-surface overflow-hidden mb-5">
     <img src="{cover_photo}" alt="{title}" loading="lazy"
          class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
@@ -21,7 +22,8 @@ Design language: match the existing site. Serif display (`font-serif`), small-ca
     <span class="inline-flex items-center gap-1.5">[area icon] {area_built} m²</span>
   </div>
   <!-- amenity icon row: ONLY amenities the property has, max all 10, w-[18px] h-[18px] text-faint, each svg gets <title> for tooltip/a11y -->
-  <div class="flex items-center gap-3 text-faint">[amenity icons]</div>
+  <div class="flex flex-wrap items-center gap-3 text-faint">[amenity icons]</div>
+ </button>
 </article>
 ```
 
@@ -42,6 +44,7 @@ Design language: match the existing site. Serif display (`font-serif`), small-ca
     <div id="property-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-14"></div>
     <p id="properties-empty" class="hidden text-muted text-center py-20">New listings are being prepared.
        <a href="contact.html" class="link-underline text-ink">Tell me what you're looking for</a> and I'll search privately.</p>
+    <p id="properties-error" class="hidden text-muted text-center py-20">Listings are temporarily unavailable — please try again shortly.</p>
   </div>
 </section>
 ```
@@ -49,7 +52,7 @@ Design language: match the existing site. Serif display (`font-serif`), small-ca
 
 ## 3. Detail modal (native `<dialog id="property-modal">`, same pattern as guide modal on index)
 - `w-full max-w-4xl p-0 border border-hairline bg-white text-ink`, `::backdrop rgba(15,20,25,.6)`.
-- Content: gallery (main img `aspect-[4/3] object-cover w-full` + thumbnail strip `flex gap-2 mt-2`, thumbs `w-20 h-14 object-cover cursor-pointer opacity-60`, active thumb `opacity-100`), then `p-8 sm:p-10`:
+- Content: gallery (main img `aspect-[4/3] object-cover w-full` + thumbnail strip `flex gap-2 mt-2`, thumbs are `<button type="button" aria-label="Photo N">` wrapping `w-20 h-14 object-cover` imgs, `opacity-60`, active `opacity-100`, `focus-visible:ring-2 ring-accent`), then `p-8 sm:p-10`:
   - label location · status chip inline if not available
   - `font-serif text-3xl` title, price line `text-xl mt-1`
   - spec row (beds/baths/built m² [/plot m² if set] / floor / year / energy rating — only fields that are set) as `label text-faint` key + `text-ink` value pairs in a `flex flex-wrap gap-x-8 gap-y-3 py-6 border-y border-hairline my-6`

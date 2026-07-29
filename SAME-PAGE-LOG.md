@@ -115,3 +115,36 @@ VERDICT: NOT YET
 - ACCEPTED (17): seeds use fixed UUIDs + reconcile semantics + compensation. PLAN Rock 3.
 - ACCEPTED (18): sitemap proof = xmllint --noout + exactly one properties.html <loc>. PLAN Rock 3.
 - ACCEPTED (19): ?property= gated by strict UUID regex + encodeURIComponent + safe assignment. PLAN Rock 1.
+
+## Round 3 (2026-07-29)
+### Integrator findings (Codex, verbatim)
+- [FIX] The new teaser CTA still changes 11px text to the 3.14:1 accent on hover, and matching existing links does not make the new interaction state accessible -> Remove `hover:text-accent` or use a hover token meeting 4.5:1 contrast.
+- [FIX] Rock 0 still claims INSERT/DELETE-only policies and records only the old proof despite the required owner-SELECT policy and newly proven constraints -> Make the DONE summary match `001-init.sql` and record the complete reproducible proof matrix.
+- [FIX] RUNBOOK §3 still instructs operators to edit and rerun `001-init.sql`, contradicting §1’s frozen-migration rule -> Permit rerunning 001 only before first deployment and require numbered migrations afterward.
+- [FIX] Sequential uploads can fail after earlier files succeed, but admin compensation is defined only for row-write failure -> Delete all newly uploaded keys when any upload in the batch fails and prove failure on the second upload.
+- [FIX] Treating every failed row request as a definite rejection can delete photos after a timeout or 5xx where the database actually committed -> Generate client-side row IDs and reconcile ambiguous mutations before performing compensation.
+- [FIX] Round 2’s requested object-delete failure remains untested, so cleanup can fail silently while the compensation proof passes -> Force Storage DELETE failure, preserve the keys for retry, and require a visible cleanup warning.
+- [FIX] UI-SPEC calls the mouse-styled article and thumbnails exact markup while §8 requires real buttons, and Playwright proves only mouse clicks -> Replace the earlier snippets with explicit button markup and test keyboard activation, Escape, and focus restoration.
+- [FIX] The 320px responsive requirements have no executable proof, so overflow and unusable admin actions can ship while all listed checks pass -> Add 320px viewport assertions for page width, modal thumbnails, amenity wrapping, and stacked admin rows.
+- [FIX] The exact properties skeleton omits `#properties-error` and Playwright never forces a fetch failure, so the required outage state can be absent while proof passes -> Add the hidden error element and intercept a failed request to assert error visibility, empty-state exclusion, and hidden teaser.
+- [FIX] Admin proof does not round-trip valid nondefault status, type, energy, amenities, optional facts, or blank values, allowing serialization bugs across most of the form -> Save one full-field fixture plus one blank-optional fixture and assert database values and public rendering.
+- [FIX] `check-nav.mjs` claims to require portfolio links in every HTML file even though `admin.html` intentionally has no navigation -> Enumerate the 11 public pages and separately assert that admin has no portfolio navigation.
+- [FIX] `check-key.mjs` scans only tracked files, so newly created untracked production files can contain a service key while the check passes -> Scan workspace HTML and JavaScript files directly with explicit dependency and generated-file exclusions.
+- [FIX] The sitemap check accepts any origin whose path ends in `/properties.html`, so a noncanonical URL passes -> Assert exactly `https://nataliegutman.com/properties.html` in both the sitemap and canonical tag.
+- [FIX] Rock 3 assigns Codex a proof that executes a script reading forbidden `.env.local` credentials -> Assign the credentialed seed runs to Fable or the operator and keep Codex responsible for implementation and secret-free checks.
+VERDICT: NOT YET
+### Visionary response (Fable)
+- REJECTED-FINAL (1): settled in round 2 under the Visionary design seat — hover-only accent on more-links is the site's established interaction pattern; a single divergent link is worse UX than a site-wide token fix, which sits in ISSUES pending the client. Re-raising a settled point is out of protocol; decision stands.
+- ACCEPTED (2): Rock 0 summary rewritten to match 001-init.sql live truth + full proof matrix recorded.
+- ACCEPTED (3): RUNBOOK §3 now states 001 rerunnable only pre-deploy; numbered deltas after.
+- ACCEPTED (4): any mid-batch upload failure → delete ALL new keys + abort. PLAN.
+- ACCEPTED (5): client-generated row UUIDs; ambiguous row outcomes (timeout/5xx) reconciled by GET-by-id before any compensation. PLAN.
+- ACCEPTED (6): storage-delete failure path stubbed in E2E → keys preserved + visible cleanup warning. PLAN.
+- ACCEPTED (7): §1 card + §3 thumbs rewritten as explicit <button> markup; keyboard/Esc/focus-return assertions added. UI-SPEC + PLAN.
+- ACCEPTED (8): 320px executable assertions added (overflow, wrap, scroll, stacked admin). PLAN.
+- ACCEPTED (9): #properties-error added to the binding skeleton; forced fetch-failure test added. UI-SPEC + PLAN.
+- ACCEPTED (10): full-field + blank-optional fixtures round-tripped in proof. PLAN.
+- ACCEPTED (11): check-nav enumerates the 11 public pages; admin asserted nav-free. PLAN.
+- ACCEPTED (12): check-key globs workspace files (excl. node_modules/docs/.git), not git tracking. PLAN.
+- ACCEPTED (13): canonical + sitemap assert exact `https://nataliegutman.com/properties.html`. PLAN.
+- ACCEPTED (14): credentialed seed RUNS are Fable/operator work; Codex ships the script + secret-free checks only. PLAN Rock 3.
