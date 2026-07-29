@@ -15,7 +15,9 @@ curl -X POST http://localhost:8000/auth/v1/admin/users \
   -d '{"email":"natalichn@gmail.com","password":"<NEW>","email_confirm":true}'
 ```
 Current user id (bound in all RLS policies): `696378f9-f9f9-4a72-8f5d-66ec03a09312`.
-If the account is ever recreated, the id changes → re-run `001-init.sql` with the new `NATALIE_UID`.
+If the account is ever recreated, the id changes → write a NEW numbered migration
+(`00N-rebind-uid.sql`) that re-creates the uid-bound policies with the new value; after first
+deploy, `001-init.sql` is frozen history (during this initial unreleased cycle it tracks live truth).
 
 ## 2. Password reset (Natalie forgot it)
 ```
@@ -32,6 +34,7 @@ Edit + re-run `001-init.sql` (idempotent), or apply deltas as `00N-*.sql`; alway
 
 ## 4. Backups / limits
 - DB: nightly `pg_dumpall` on the VPS (03:30, 7-day rotation) covers `natalie.*` rows.
-- Storage FILES are NOT in pg_dumpall — bucket objects live in the storage volume.
-  Off-site/storage backup is tracked in ISSUES.md.
+- Storage FILES: added to the same nightly script 2026-07-29 (`storage_*.tar.gz` of
+  `/docker/supabase/volumes/storage`, 7-day rotation; run once and verified).
+  Off-site copies + restore drill are tracked in ISSUES.md.
 - Bucket hard limits: JPEG only, ≤5 MB/object (enforced server-side).

@@ -45,7 +45,7 @@ Design language: match the existing site. Serif display (`font-serif`), small-ca
   </div>
 </section>
 ```
-- Loading state: nothing (grid fills when fetch resolves); on fetch error show the empty-state line.
+- Loading state: nothing (grid fills when fetch resolves). Error/empty behavior: §7 is authoritative (`#properties-error` vs `#properties-empty` — never the same element).
 
 ## 3. Detail modal (native `<dialog id="property-modal">`, same pattern as guide modal on index)
 - `w-full max-w-4xl p-0 border border-hairline bg-white text-ink`, `::backdrop rgba(15,20,25,.6)`.
@@ -88,7 +88,7 @@ Minimal one-file admin, same brand, no header/footer chrome — just:
   - Top bar: serif "Listings" + `+ Add property` button (bg-ink text-white px-5 py-2.5 text-sm) + `Sign out` (label link) right-aligned.
   - Table-less list: rows `flex items-center gap-5 py-4 border-b border-hairline` — thumb `w-20 h-14 object-cover bg-surface`, title+location stacked (title `font-serif text-lg`), status `label`, Published toggle (checkbox styled `accent-ink` + label), `Edit` / `Delete` label links (Delete confirms via `confirm()`).
   - Form (add/edit, replaces list view; `Back to list` link): two-col `grid sm:grid-cols-2 gap-5` fields —
-    title*, location_area*, price (number, blank = price on request), status (select: Available/Under offer/Sold), type (select: Apartment/House/Villa/Townhouse/Penthouse/Plot/Commercial), bedrooms, bathrooms, area_built, area_plot, floor (text), year_built, energy_rating (select A+…F or blank), featured (checkbox), published (checkbox), description (textarea rows=6, full width), amenities (full width: `grid grid-cols-2 sm:grid-cols-3 gap-3` of checkbox+icon+label), photos (full width: file input multiple accept image/*; client-side downscale to max 1600px JPEG q0.82 via canvas BEFORE upload; thumbnails row with ✕ remove and ←/→ reorder buttons; first photo = cover, mark it "Cover").
+    title*, location_area*, price (number, blank = price on request), status (select: Available/Under offer/Sold), type (select: Apartment/House/Villa/Townhouse/Penthouse/Plot/Commercial), bedrooms, bathrooms, area_built, area_plot, floor (text), year_built, energy_rating (select: blank, A+, A, B, B-, C, D, E, F — exact DB enum), featured (checkbox), published (checkbox), description (textarea rows=6, full width), amenities (full width: `grid grid-cols-2 sm:grid-cols-3 gap-3` of checkbox+icon+label), photos (full width: file input multiple accept .jpg,.jpeg,.png,.webp; reject >20MB or >8000px sources before canvas; client-side downscale to max 1600px JPEG q0.82 via canvas BEFORE upload; thumbnails row with ✕ remove and ←/→ reorder buttons; first photo = cover, mark it "Cover").
   - Save button `bg-ink text-white px-7 py-3`; inline success/error line. All labels `label` style.
 
 ## 7. Copy rules

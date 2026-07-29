@@ -72,3 +72,46 @@ VERDICT: NOT YET
 - ACCEPTED (32 FIX): backend/check-key.mjs decodes the embedded JWT and asserts role=anon.
 - ACCEPTED (33 FIX): RLS proof adds transient second authenticated user — insert 403, unpublished invisible, storage denied; deleted after.
 - ACCEPTED (34 FIX): hostile-content fixture (script/onerror payloads) asserted to render inert.
+
+## Round 2 (2026-07-29)
+### Integrator findings (Codex, verbatim)
+- [FIX] UI-SPEC §2 still maps fetch failures to the empty state while §7 requires `#properties-error`, so opposite implementations both satisfy the binding spec -> Delete the stale §2 instruction and make §7 authoritative.
+- [FIX] UI-SPEC §4 still adds `hover:text-accent` to a new 11px CTA despite §8’s contrast rule -> Remove that hover color from the new teaser CTA while leaving the client-approved hero copy unchanged.
+- [FIX] The backend contract sends bearer authorization only on mutations, so admin GETs run as anon and cannot retrieve Natalie’s drafts -> Require bearer authorization on every admin Data API request, including GET/HEAD.
+- [FIX] The global mutation contract mandates JSON content type and `Content-Profile`, which conflicts with JPEG Storage uploads and the JPEG-only bucket -> Scope profile/JSON headers to PostgREST and require `Content-Type: image/jpeg` for Storage uploads.
+- [FIX] Any valid GoTrue account can pass the admin login screen even though RLS later rejects its writes -> Verify the returned JWT `sub` equals Natalie’s UID before exposing the admin UI and test this with the transient second user.
+- [FIX] `published_needs_content` accepts `[null]`, numbers, arbitrary strings, and more than 12 photo entries, so the live “empty photos” proof passes while malformed published listings remain possible -> Enforce 1–12 unique string keys matching the UUID `.jpg` convention and add hostile constraint probes.
+- [CLARIFY] UI-SPEC abbreviates energy ratings as `A+…F` while the database accepts any text -> Confirm the exact enum, such as `A+, A, B, B-, C, D, E, F`, and enforce it in SQL.
+- [KILL] The anonymous `storage.objects` SELECT policy is unnecessary for public asset URLs and permits bucket listing, exposing object keys for draft photos -> Drop that policy and verify deletion through the already-known public object URLs instead of listing the bucket. [Supabase Storage guidance](https://supabase.com/docs/guides/storage/security/access-control)
+- [FIX] RUNBOOK says to rerun the migration with a replacement UID, but `001-init.sql` unconditionally resets `NATALIE_UID` to the old value -> Freeze the applied migration and use a new UID-rebinding migration or an externally supplied psql variable.
+- [FIX] The revoked-session test proves refresh failure after logout, not successful rotation when an access token expires normally -> Corrupt or expire only the stored access token while retaining a valid refresh token, then assert retry success and replacement of both stored tokens.
+- [FIX] “POST logout THEN clear storage” can leave Natalie logged in locally when the logout request fails -> Clear local session state in `finally`, while reporting that server-side revocation could not be confirmed.
+- [FIX] `grep -L` succeeds when any clean file exists even if another contains `service_role`, and the JWT checker targets only `portfolio.js` -> Use a failing recursive absence assertion and decode every embedded API-key literal, or centralize one checked public config.
+- [FIX] The revised upload plan rejects large files but still lacks a decoded-pixel limit, while UI-SPEC §6 continues to allow unrestricted `image/*` -> Align the spec to JPEG/PNG/WebP and reject excessive dimensions before allocating the full canvas.
+- [FIX] The only confirmed backup covers database rows on the same VPS while unique listing photos have no backup and no restore drill -> Add off-site database and Storage-volume backups with monitored completion and a tested restore before launch.
+- [FIX] Orphan compensation is specified but the happy-path E2E never exercises it, so every cleanup branch could be broken while proof passes -> Inject row-write and object-delete failures and assert compensation plus a visible cleanup warning.
+- [FIX] Uploading two photos does not prove the required reorder, cover-selection, removal, or removed-object cleanup controls -> Reorder and remove a photo in Playwright, then assert the public cover order, persisted keys, and deleted object.
+- [FIX] Draft seeding skips by title, so a collision or partially created draft is reported as idempotent success -> Use fixed seed UUIDs and reconcile the complete row/photo state with upload compensation.
+- [FIX] Rock 3’s sitemap proof contains a placeholder `…parse sitemap…` command and does not assert the required URL -> Run `xmllint --noout sitemap.xml` and separately assert exactly one canonical `properties.html` `<loc>`.
+- [FIX] The untrusted `?property=` value is destined for a PostgREST filter and visible reference text without an explicit boundary check -> Require canonical UUID syntax and URL-encode it before querying or displaying the reference.
+VERDICT: NOT YET
+### Visionary response (Fable)
+- ACCEPTED (1): stale §2 error-state line removed; §7 authoritative.
+- REJECTED (2): the teaser CTA uses accent on HOVER only — identical to every existing `more-link` on the site; §8 already bans new STATIC small accent text; site-wide accent contrast stays in ISSUES for Natalie's sign-off.
+- ACCEPTED (3): bearer now required on EVERY admin Data API request incl. GET (drafts are RLS-hidden). PLAN header contract rewritten.
+- ACCEPTED (4): JSON/profile headers scoped to PostgREST; Storage uploads use image/jpeg; Auth uses apikey+JSON. PLAN.
+- ACCEPTED (5): admin gate decodes JWT and requires sub == Natalie's UID before showing UI; second-user test asserts the gate. PLAN.
+- ACCEPTED (6): photos constraint → natalie.valid_photos(): ≤12 unique '<uuid>.jpg' string keys. APPLIED live + migration; hostile probes in my proof.
+- ANSWERED (7): PT energy certificate scale A+, A, B, B-, C, D, E, F enforced in SQL (APPLIED) + exact select options in UI-SPEC §6.
+- ACCEPTED (8 KILL): anon storage SELECT policy DROPPED live (public URLs proven still served via bucket flag; anon list now returns hidden/empty). Discovery: Storage delete needs owner SELECT → added authenticated owner-read policy scoped to Natalie+bucket; full upload→public-fetch→delete→404 cycle re-proven.
+- ACCEPTED (9, modified): RUNBOOK now prescribes a new numbered rebind migration for UID changes; 001 tracks live truth only during this unreleased cycle, frozen at first deploy.
+- ACCEPTED (10): rotation proof = corrupt access token w/ valid refresh → assert auto-refresh, retry success, BOTH tokens replaced. PLAN.
+- ACCEPTED (11): logout clears local state in finally + "server sign-out unconfirmed" notice on failure. PLAN.
+- ACCEPTED (12): check-key.mjs scans every tracked .html/.js, fails on any service_role string, decodes every eyJ literal and asserts role=anon. PLAN.
+- ACCEPTED (13): input types restricted to jpg/jpeg/png/webp; >20MB or >8000px rejected pre-canvas. PLAN + UI-SPEC §6.
+- ACCEPTED (14, partial): storage volume ADDED to the nightly VPS backup script (backup.sh patched, run once, tar verified 257MB). Off-site copy + restore drill remain ISSUES — not a launch gate for a portfolio page whose content is re-creatable by its owner; risk accepted and logged.
+- ACCEPTED (15, modified): compensation branch exercised with a REAL injected failure — photos uploaded, then row write violates the amenity whitelist → 400 → assert object cleanup + visible error. PLAN proof.
+- ACCEPTED (16): reorder + remove photo steps added to the E2E proof (persisted order, public cover, deleted object). PLAN.
+- ACCEPTED (17): seeds use fixed UUIDs + reconcile semantics + compensation. PLAN Rock 3.
+- ACCEPTED (18): sitemap proof = xmllint --noout + exactly one properties.html <loc>. PLAN Rock 3.
+- ACCEPTED (19): ?property= gated by strict UUID regex + encodeURIComponent + safe assignment. PLAN Rock 1.

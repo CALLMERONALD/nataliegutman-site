@@ -66,8 +66,23 @@ alter table natalie.properties drop constraint if exists amenities_is_known_arra
 alter table natalie.properties add constraint amenities_is_known_array check (
   jsonb_typeof(amenities) = 'array'
   and amenities <@ '["parking","garage","elevator","pool","garden","terrace","sea_view","air_con","storage","furnished"]'::jsonb);
+-- photos: array of ≤12 unique '<uuid>.jpg' object keys
+create or replace function natalie.valid_photos(p jsonb) returns boolean immutable language sql as
+$fn$
+  select jsonb_typeof(p) = 'array'
+    and jsonb_array_length(p) <= 12
+    and not exists (
+      select 1 from jsonb_array_elements(p) e
+      where jsonb_typeof(e) <> 'string'
+         or e #>> '{}' !~ '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\.jpg$')
+    and (select count(distinct e #>> '{}') from jsonb_array_elements(p) e) = jsonb_array_length(p)
+$fn$;
 alter table natalie.properties drop constraint if exists photos_is_array;
-alter table natalie.properties add constraint photos_is_array check (jsonb_typeof(photos) = 'array');
+alter table natalie.properties drop constraint if exists photos_valid;
+alter table natalie.properties add constraint photos_valid check (natalie.valid_photos(photos));
+alter table natalie.properties drop constraint if exists energy_rating_known;
+alter table natalie.properties add constraint energy_rating_known check (
+  energy_rating is null or energy_rating in ('A+','A','B','B-','C','D','E','F'));
 alter table natalie.properties drop constraint if exists published_needs_content;
 alter table natalie.properties add constraint published_needs_content check (
   (not published) or (jsonb_array_length(photos) >= 1 and description is not null and char_length(btrim(description)) > 0));
@@ -91,9 +106,14 @@ drop policy if exists "natalie props update" on storage.objects;  -- deliberatel
 drop policy if exists "natalie props delete" on storage.objects;
 create policy "natalie props delete" on storage.objects
   for delete to authenticated using (bucket_id = 'natalie-properties' and auth.uid() = :'NATALIE_UID'::uuid);
+-- NO anon select policy: public URLs are served via the bucket's public flag; a select
+-- policy would let anon LIST the bucket and expose draft photo keys.
 drop policy if exists "natalie props public read" on storage.objects;
-create policy "natalie props public read" on storage.objects
-  for select using (bucket_id = 'natalie-properties');
+-- owner select IS required: the Storage API resolves objects via select before delete
+drop policy if exists "natalie props owner read" on storage.objects;
+create policy "natalie props owner read" on storage.objects
+  for select to authenticated
+  using (bucket_id = 'natalie-properties' and auth.uid() = :'NATALIE_UID'::uuid);
 
 commit;
 notify pgrst, 'reload schema';
