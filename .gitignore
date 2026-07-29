@@ -11,3 +11,6 @@ docs/
 /*.jpeg
 /*-check.jpeg
 /proof-*.png
+
+# Secrets
+.env.local
