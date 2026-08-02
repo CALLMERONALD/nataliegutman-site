@@ -14,8 +14,11 @@ module.exports = {
       },
       fontFamily: {
         sans:    ['"Hanken Grotesk Variable"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-        serif:   ['"Cormorant Variable"', 'ui-serif', 'Georgia', 'serif'],
+        serif:   ['"Cormorant Garamond"', 'ui-serif', 'Georgia', 'serif'],
         script:  ['"Pinyon Script"', 'ui-serif', 'cursive'],
+        playfair: ['"Playfair Display Variable"', 'ui-serif', 'Georgia', 'serif'],
+        garamond: ['"Cormorant Garamond"', 'ui-serif', 'Georgia', 'serif'],
+        montserrat: ['"Montserrat Variable"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
       },
       letterSpacing: {
         tightest: '-0.04em',

@@ -21,6 +21,62 @@
   src: url('fonts/cormorant-latin-wght-italic.woff2') format('woff2-variations');
 }
 @font-face {
+  font-family: 'Cormorant Garamond';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 300;
+  src: url('fonts/cormorant-garamond-latin-300-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Cormorant Garamond';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url('fonts/cormorant-garamond-latin-400-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Cormorant Garamond';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url('fonts/cormorant-garamond-latin-500-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Cormorant Garamond';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url('fonts/cormorant-garamond-latin-600-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Cormorant Garamond';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url('fonts/cormorant-garamond-latin-700-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Cormorant Garamond';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 400;
+  src: url('fonts/cormorant-garamond-latin-400-italic.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Playfair Display Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400 900;
+  src: url('fonts/playfair-display-latin-wght-normal.woff2') format('woff2-variations');
+}
+@font-face {
+  font-family: 'Montserrat Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('fonts/montserrat-latin-wght-normal.woff2') format('woff2-variations');
+}
+@font-face {
   font-family: 'Pinyon Script';
   font-style: normal;
   font-display: swap;
@@ -47,9 +103,13 @@
   }
   /* Serif display — the luxury register */
   h1, h2, h3 {
-    font-family: 'Cormorant Variable', ui-serif, Georgia, serif;
+    font-family: 'Cormorant Garamond', ui-serif, Georgia, serif;
     font-weight: 400;
     letter-spacing: 0.005em;
+  }
+  /* Subheadings — the paragraph directly under any title */
+  h1 + p, h2 + p, h3 + p {
+    font-family: 'Montserrat Variable', ui-sans-serif, system-ui, sans-serif;
   }
 }
 
