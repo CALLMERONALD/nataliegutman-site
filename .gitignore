@@ -14,3 +14,8 @@ docs/
 
 # Secrets
 .env.local
+
+# Internal legal documents — contain personal data (client address/NIF, testimonial records).
+# This repo is PUBLIC; these stay local only.
+backend/DPA-natalie-draft.md
+backend/testimonials-record.md
