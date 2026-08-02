@@ -21,10 +21,11 @@ Two clauses are deliberate and should not be quietly dropped:
 ```
 DATA PROCESSING AGREEMENT — PROPERTY LISTINGS HOSTING
 
-Between:  Natalie Gutman, real estate consultant, of [FULL ADDRESS],
-          NIF [NIF] ("you", the Controller)
-And:      Exclusive Recipe Unipessoal Lda, NIPC [TO CONFIRM AGAINST CERTIDÃO],
-          [REGISTERED ADDRESS — TO CONFIRM] ("we", the Processor)
+Between:  Natalie Gutman, real estate consultant, of [FULL ADDRESS — FROM NATALIE],
+          NIF [NIF — FROM NATALIE] ("you", the Controller)
+And:      Exclusive Recipe Unipessoal Lda, NIPC 516366718,
+          Beco da Areia n.º 25, Birre, 2750-053 Cascais, Portugal ("we", the Processor)
+          [CONFIRM NIPC + address against the certidão permanente before signing]
 
 Date: [DATE]
 
@@ -71,9 +72,9 @@ Date: [DATE]
    (access, correction, deletion) and with your obligations under Articles
    32–36 GDPR, given the nature of the processing.
 
-9. Location. All processing takes place in the European Union (our server is
-   located in France; our sub-processor is established in Lithuania). No
-   transfer outside the European Economic Area arises from this arrangement.
+9. Location. All processing takes place in the European Union: our server is
+   located in Paris, France, and our sub-processor is established in Lithuania.
+   No transfer outside the European Economic Area arises from this arrangement.
 
 10. Deletion and export. On termination, or on your written request, we will
     provide you with an export of your listing data and photographs and then

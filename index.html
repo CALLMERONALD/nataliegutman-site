@@ -403,6 +403,11 @@
           <input type="checkbox" required class="mt-0.5 accent-ink" />
           <span>I have read and accept the <a href="privacy.html" class="link-underline text-muted">Privacy Policy</a>.</span>
         </label>
+        <!-- Marketing consent must be separate, optional and un-ticked (GDPR art. 7 / ePrivacy Lei 41/2004 art. 13-A) -->
+        <label class="flex items-start gap-3 text-xs text-faint">
+          <input id="g-marketing" name="marketing_opt_in" type="checkbox" value="yes" class="mt-0.5 accent-ink" />
+          <span>Optional: email me occasional tips and updates about buying in Portugal. I can unsubscribe at any time.</span>
+        </label>
       </form>
     </div>
   </dialog>
@@ -508,6 +513,9 @@
         var emailInput = guideForm.querySelector('#g-email');
         if (!emailInput || !emailInput.checkValidity()) { emailInput && emailInput.reportValidity(); return; }
         var email = emailInput.value;
+        var marketingBox = guideForm.querySelector('#g-marketing');
+        // Recorded per-lead: this flag IS the proof of consent for marketing email.
+        var marketingOptIn = marketingBox && marketingBox.checked ? 'yes' : 'no';
 
         // Unlock the on-site guide for this visitor.
         try { localStorage.setItem('natalie_guide_unlocked', '1'); } catch (err) {}
@@ -519,6 +527,7 @@
             mode: 'no-cors',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: 'email=' + encodeURIComponent(email) + '&role='
+                + '&marketing_opt_in=' + encodeURIComponent(marketingOptIn)
           }).catch(function () {});
         }
 

@@ -1029,6 +1029,9 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
   }
 
   async function init() {
+    // Never boot the admin inside a frame — no session, no listeners, nothing to clickjack.
+    // (Belt-and-braces with the inline guard in admin.html; GH Pages can't send frame headers.)
+    if (window.top !== window.self) return;
     bindElements();
     appendAmenityIcons();
     elements.loginForm.addEventListener('submit', handleLogin);

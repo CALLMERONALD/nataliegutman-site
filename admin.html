@@ -14,7 +14,18 @@
 
   <style>
     [hidden] { display: none !important; }
+    /* Anti-clickjacking: GitHub Pages cannot send X-Frame-Options / frame-ancestors,
+       so the page starts hidden and is only revealed when it is the top frame. */
+    html.framed body { display: none !important; }
   </style>
+  <script>
+    // Runs before <body> parses: if we are inside a frame, keep the UI hidden and
+    // try to break out. Nothing to overlay means nothing to clickjack.
+    if (window.top !== window.self) {
+      document.documentElement.className += ' framed';
+      try { window.top.location = window.self.location; } catch (e) { /* cross-origin: stay hidden */ }
+    }
+  </script>
 </head>
 
 <body class="bg-white text-ink min-h-screen">
@@ -152,9 +163,10 @@
                 <option value="D">D</option>
                 <option value="E">E</option>
                 <option value="F">F</option>
-                <option value="exempt">Exempt (building not covered by the SCE)</option>
+                <option value="exempt">Exempt (building legally not covered by the SCE)</option>
               </select>
-              <p class="text-xs text-faint mt-2">Required to publish. Portuguese law requires the energy class from a valid certificate in every property advertisement.</p>
+              <p class="text-xs text-faint mt-2">Required to publish. Portuguese law (DL 101-D/2020) requires the energy class from a <strong>valid certificate</strong> in every property advertisement — copy it from the certificate, don't estimate.</p>
+              <p class="text-xs text-faint mt-2">Only choose <strong>Exempt</strong> where the building is genuinely outside the SCE (a narrow legal exception). Choosing it without a real exemption puts the fine (€250–€3,740) on you, not on the website.</p>
             </div>
 
             <div class="sm:col-span-2 flex flex-wrap gap-x-8 gap-y-3 py-2">

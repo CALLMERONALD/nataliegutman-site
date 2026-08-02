@@ -65,11 +65,12 @@ function doPost(e) {
 
   } else { // email signup (the free-guide forms)
     appendRow_('Email Signups',
-      ['Timestamp', 'Email', 'Interested in'],
-      [now, p.email || '', p.role || '']);
+      ['Timestamp', 'Email', 'Interested in', 'Marketing opt-in'],
+      [now, p.email || '', p.role || '', p.marketing_opt_in === 'yes' ? 'YES' : 'no']);
     notify_('New guide signup',
       'Email: ' + (p.email || '') + '\n' +
-      'Interested in: ' + (p.role || ''));
+      'Interested in: ' + (p.role || '') + '\n' +
+      'Marketing opt-in: ' + (p.marketing_opt_in === 'yes' ? 'YES' : 'no'));
   }
 
   return ContentService
