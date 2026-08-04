@@ -38,3 +38,13 @@
 - [ ] Confirm the hero CTA label "Explore Services & Portfolio" with Natalie (it now targets the portfolio page only).
 - [ ] Post-deploy smoke from https://nataliegutman.com: properties.html renders, admin login works, one test listing publishes and appears, then unpublish/delete it.
 - [ ] Freeze backend/001-init.sql after first deploy (RUNBOOK §1/§3: further changes = numbered deltas).
+
+## Off-market page (2026-08-03)
+
+- [ ] Michael: current light "Apple-style" off-market design shipped as v1 but flagged "not that great" — revisit the design later (his note 2026-08-03).
+
+## Exclusive listing pages (2026-08-03)
+
+- [ ] gandarinha.html is a LOCALHOST DRAFT (not committed). DONE 2026-08-03: real specs + section copy from Natalie's docs (House B content PDF + brochure), real villa photos in gallery, floor plans (brochure pages 8-10) extracted into assets/photos/gandarinha-plan-*.png, price shown as €17,000,000 per Natalie, viewing form wired to the shared SHEETS_URL pattern. Hero is APPROVED by Michael + Natalie — do not change it. RESOLVED 2026-08-04 (audit + Codex fix pass): energy class set to **A** (Michael-confirmed — the earlier "B" was a placeholder in neither PDF); AI-walkthrough disclosure added (visible label + footer, EU AI Act art. 50(4)); lawyer delta-pass done. SHEETS_URL is still empty in assets/form-endpoint.js, but forms no longer claim success — they now show "Online form unavailable" with WhatsApp/phone routes instead of a false thank-you. STILL BLOCKING DEPLOY: SCE certificate number + validity date; the written photo/AI permission artefact filed locally.
+- [ ] Gandarinha energy record: energy class A confirmed by Michael 2026-08-04; the SCE certificate number and validity date are still to be added to the page when available.
+- [ ] Gandarinha photo / AI-animation permission: permission confirmed by Michael 2026-08-04; the written artefact still needs to be filed in the repo's local evidence trail alongside `backend/testimonials-record.md`, which is gitignored because the repo is PUBLIC. Do not create or fabricate the permission document.

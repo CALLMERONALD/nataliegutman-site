@@ -137,71 +137,49 @@
           <div class="border border-hairline bg-surface p-6 sm:p-10 flex justify-center">
             <div class="relative w-full max-w-[320px]" style="aspect-ratio: 611.82 / 1172.61;">
               <img src="assets/portugal.svg" alt="Map of Portugal showing key cities" class="absolute inset-0 w-full h-full select-none" draggable="false" />
+              <!-- Markers live in the map's own coordinate system (same viewBox as
+                   portugal.svg) so they stay pinned to the geography at every size.
+                   Land bbox in that system: x 118–612, y 0–1172. -->
+              <svg viewBox="0 0 611.82129 1172.6089" class="absolute inset-0 w-full h-full select-none" aria-hidden="true" style="paint-order: stroke; stroke-linejoin: round;">
+                <!-- SPAIN + ATLANTIC OCEAN -->
+                <text x="555" y="500" text-anchor="middle" font-size="19" letter-spacing="4" fill="#5C5C5C" font-weight="500">SPAIN</text>
+                <text x="40" y="580" text-anchor="middle" font-size="17" letter-spacing="4" fill="#B8893C" font-style="italic" transform="rotate(-90 40 580)">ATLANTIC OCEAN</text>
 
-              <!-- City markers: positioned by lat/lon percentage. Golden Triangle in accent gold. -->
+                <!-- Cities & regions (calibrated against the rendered coastline:
+                     x = 51 + (lon + 9.5005) * 158.8, y = 37 + (42.154 - lat) * 205.6) -->
+                <g fill="#1A1A1A" font-size="19" font-weight="500">
+                  <circle cx="222" cy="162" r="7" fill="#fff" stroke="#1A1A1A" stroke-width="3.5"/>
+                  <text x="236" y="169" stroke="#FAF8F4" stroke-width="7">Braga</text>
+                  <circle cx="192" cy="242" r="7" fill="#fff" stroke="#1A1A1A" stroke-width="3.5"/>
+                  <text x="178" y="249" text-anchor="end" stroke="#FAF8F4" stroke-width="7">Porto</text>
+                  <circle cx="323" cy="241" r="7" fill="#fff" stroke="#1A1A1A" stroke-width="3.5"/>
+                  <text x="337" y="248" stroke="#FAF8F4" stroke-width="7">Douro Valley</text>
+                  <circle cx="191" cy="348" r="7" fill="#fff" stroke="#1A1A1A" stroke-width="3.5"/>
+                  <text x="176" y="355" text-anchor="end" stroke="#FAF8F4" stroke-width="7">Aveiro</text>
+                  <circle cx="224" cy="438" r="7" fill="#fff" stroke="#1A1A1A" stroke-width="3.5"/>
+                  <text x="238" y="445" stroke="#FAF8F4" stroke-width="7">Coimbra</text>
+                  <circle cx="182" cy="1080" r="7" fill="#fff" stroke="#1A1A1A" stroke-width="3.5"/>
+                  <text x="167" y="1087" text-anchor="end" stroke="#FAF8F4" stroke-width="7">Lagos</text>
+                  <circle cx="250" cy="1082" r="7" fill="#fff" stroke="#1A1A1A" stroke-width="3.5"/>
+                  <text x="250" y="1062" text-anchor="middle" stroke="#FAF8F4" stroke-width="7">Albufeira</text>
+                  <circle cx="300" cy="1088" r="7" fill="#fff" stroke="#1A1A1A" stroke-width="3.5"/>
+                  <text x="314" y="1095" stroke="#FAF8F4" stroke-width="7">Faro</text>
+                </g>
 
-              <!-- Braga -->
-              <span class="absolute" style="left:32.5%; top:12.2%; transform:translate(-50%,-50%);">
-                <span class="block w-2 h-2 rounded-full bg-white border-2 border-ink"></span>
-                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-[10px] text-ink font-medium whitespace-nowrap">Braga</span>
-              </span>
-              <!-- Porto -->
-              <span class="absolute" style="left:26.6%; top:19.4%; transform:translate(-50%,-50%);">
-                <span class="block w-2 h-2 rounded-full bg-white border-2 border-ink"></span>
-                <span class="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-ink font-medium whitespace-nowrap">Porto</span>
-              </span>
-              <!-- Douro Valley -->
-              <span class="absolute" style="left:58.0%; top:18.8%; transform:translate(-50%,-50%);">
-                <span class="block w-2 h-2 rounded-full bg-white border-2 border-ink"></span>
-                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-[10px] text-ink font-medium whitespace-nowrap">Douro Valley</span>
-              </span>
-              <!-- Aveiro -->
-              <span class="absolute" style="left:26.2%; top:29.1%; transform:translate(-50%,-50%);">
-                <span class="block w-2 h-2 rounded-full bg-white border-2 border-ink"></span>
-                <span class="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-ink font-medium whitespace-nowrap">Aveiro</span>
-              </span>
-              <!-- Coimbra -->
-              <span class="absolute" style="left:33.0%; top:37.3%; transform:translate(-50%,-50%);">
-                <span class="block w-2 h-2 rounded-full bg-white border-2 border-ink"></span>
-                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-[10px] text-ink font-medium whitespace-nowrap">Coimbra</span>
-              </span>
-
-              <!-- Sintra -->
-              <span class="absolute" style="left:4.9%; top:63.5%; transform:translate(-50%,-50%);">
-                <span class="block w-2.5 h-2.5 rounded-full bg-accent border-2 border-accent ring-2 ring-accent/30"></span>
-                <span class="absolute right-3.5 top-1/2 -translate-y-1/2 text-[10px] text-accent font-semibold whitespace-nowrap">Sintra</span>
-              </span>
-              <!-- Cascais -->
-              <span class="absolute" style="left:3.7%; top:65.5%; transform:translate(-50%,-50%);">
-                <span class="block w-2.5 h-2.5 rounded-full bg-accent border-2 border-accent ring-2 ring-accent/30"></span>
-                <span class="absolute right-3.5 top-3 text-[10px] text-accent font-semibold whitespace-nowrap">Cascais</span>
-              </span>
-              <!-- Lisbon -->
-              <span class="absolute" style="left:11.9%; top:65.0%; transform:translate(-50%,-50%);">
-                <span class="block w-3 h-3 rounded-full bg-accent border-2 border-accent ring-2 ring-accent/30"></span>
-                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-[11px] text-accent font-bold whitespace-nowrap">Lisbon</span>
-              </span>
-
-              <!-- Lagos -->
-              <span class="absolute" style="left:25.3%; top:95.3%; transform:translate(-50%,-50%);">
-                <span class="block w-2 h-2 rounded-full bg-white border-2 border-ink"></span>
-                <span class="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-ink font-medium whitespace-nowrap">Lagos</span>
-              </span>
-              <!-- Albufeira -->
-              <span class="absolute" style="left:37.8%; top:95.5%; transform:translate(-50%,-50%);">
-                <span class="block w-2 h-2 rounded-full bg-white border-2 border-ink"></span>
-                <span class="absolute left-1/2 -translate-x-1/2 top-3 text-[10px] text-ink font-medium whitespace-nowrap">Albufeira</span>
-              </span>
-              <!-- Faro -->
-              <span class="absolute" style="left:46.9%; top:96.9%; transform:translate(-50%,-50%);">
-                <span class="block w-2 h-2 rounded-full bg-white border-2 border-ink"></span>
-                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-[10px] text-ink font-medium whitespace-nowrap">Faro</span>
-              </span>
-
-              <!-- SPAIN label -->
-              <span class="absolute right-2 top-[42%] text-[10px] tracking-[0.2em] text-muted font-medium">SPAIN</span>
-              <!-- ATLANTIC OCEAN label -->
-              <span class="absolute left-2 top-[48%] text-[9px] tracking-[0.22em] text-accent italic" style="writing-mode: vertical-rl; transform: rotate(180deg);">ATLANTIC OCEAN</span>
+                <!-- The Golden Triangle -->
+                <g fill="#B8893C" font-size="19" font-weight="600">
+                  <circle cx="69" cy="727" r="13" opacity="0.25"/>
+                  <circle cx="69" cy="727" r="8"/>
+                  <text x="72" y="708" text-anchor="middle" stroke="#FAF8F4" stroke-width="7">Sintra</text>
+                  <circle cx="66" cy="750" r="13" opacity="0.25"/>
+                  <circle cx="66" cy="750" r="8"/>
+                  <text x="68" y="774" text-anchor="middle" stroke="#FAF8F4" stroke-width="7">Cascais</text>
+                  <circle cx="108" cy="743" r="16" opacity="0.25"/>
+                  <circle cx="108" cy="743" r="10"/>
+                  <text x="126" y="750" font-size="21" font-weight="700" stroke="#FAF8F4" stroke-width="7">Lisbon</text>
+                </g>
+              </svg>
+            </div>
           </div>
           <figcaption class="text-xs text-muted text-center mt-4">
             <span class="inline-flex items-center gap-2 mr-4"><span class="inline-block w-2 h-2 rounded-full border border-ink"></span>Cities &amp; regions</span>

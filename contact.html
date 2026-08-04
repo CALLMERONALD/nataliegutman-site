@@ -260,6 +260,11 @@
         var role    = (contactForm.querySelector('#c-role') || {}).value || '';
         var message = (contactForm.querySelector('#c-msg')  || {}).value || '';
 
+        if (!SHEETS_URL) {
+          window.showFormUnavailable(contactForm, 'sm:col-span-2 py-10 text-center');
+          return;
+        }
+
         if (SHEETS_URL) {
           fetch(SHEETS_URL, {
             method: 'POST',

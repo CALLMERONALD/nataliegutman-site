@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Off-Market Collection · Natalie Gutman</title>
+  <meta name="description" content="A private selection of off-market properties across Cascais, Lisbon and Sintra, shared personally by Natalie Gutman." />
+  <!-- Unlisted page: shared by private link only. noindex, no canonical, not in the
+       sitemap, deliberately NOT in robots.txt (a Disallow line would advertise it),
+       and no public page links here. -->
+  <meta name="robots" content="noindex,nofollow" />
+
+  <!-- Open Graph: kept so the link previews nicely when Natalie shares it -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Natalie Gutman" />
+  <meta property="og:title" content="The Off-Market Collection · Natalie Gutman" />
+  <meta property="og:description" content="A private selection of off-market properties across Cascais, Lisbon and Sintra." />
+  <meta property="og:image" content="https://nataliegutman.com/assets/og-image.jpg" />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- Favicons -->
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+
+  <!-- Self-hosted styles + fonts (no third-party requests) -->
+  <link rel="stylesheet" href="assets/tailwind.css">
+  <script src="assets/portfolio.js" defer></script>
+
+  <style>
+    [hidden] { display: none !important; }
+    dialog#property-modal::backdrop { background: rgba(15, 20, 25, 0.55); }
+    /* This page's soft-radius system (the one deliberate departure from the
+       square-edged public site): imagery and the modal get 20px corners. */
+    body[data-off-market] #property-grid article > div.overflow-hidden { border-radius: 1.25rem; }
+    body[data-off-market] dialog#property-modal { border-radius: 1.25rem; }
+  </style>
+  <script>
+    // Same calm scroll-reveal contract as the rest of the site.
+    if (!window.matchMedia || !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.documentElement.classList.add('reveal-on');
+    }
+  </script>
+</head>
+
+<body class="bg-white text-muted" data-off-market>
+
+  <!-- ============== PRIVATE HEADER (deliberately minimal: this page is an invitation, not the site) ============== -->
+  <header class="sticky top-0 z-30 bg-white/85 backdrop-blur-md border-b border-hairline">
+    <div class="max-w-6xl mx-auto px-6 lg:px-10 h-16 flex items-center justify-between">
+      <a href="index.html" class="inline-block"><img src="assets/logo-script.png" alt="Natalie Gutman" class="h-9 w-auto" /></a>
+      <a href="contact.html" class="label !text-accent hover:!text-accent-hover transition-colors">Contact Natalie</a>
+    </div>
+  </header>
+
+  <main>
+    <!-- ============== HERO ============== -->
+    <section>
+      <div class="max-w-6xl mx-auto px-6 lg:px-10 pt-20 lg:pt-24 pb-16 lg:pb-24 text-center">
+        <p class="text-3xl sm:text-4xl text-accent mb-6 reveal" style="font-family: 'Pinyon Script', cursive;">By private invitation</p>
+        <h1 class="font-serif text-5xl sm:text-6xl lg:text-7xl leading-[1.05] text-ink mb-6 reveal" style="--reveal-delay: 90ms;">The Off-Market Collection</h1>
+        <p class="text-lg leading-relaxed max-w-xl mx-auto reveal" style="--reveal-delay: 180ms;">Homes for sale quietly across Cascais, Lisbon and Sintra. Kept off the public portals and off my main portfolio, and shared by private link.</p>
+        <div class="w-16 h-px bg-accent mx-auto mt-10 reveal" style="--reveal-delay: 260ms;"></div>
+      </div>
+    </section>
+
+    <!-- ============== A WORD FROM NATALIE ============== -->
+    <section class="bg-surface">
+      <div class="max-w-6xl mx-auto px-6 lg:px-10 py-16 lg:py-24">
+        <div class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+          <div class="lg:col-span-4 reveal">
+            <img src="assets/natalie.png" alt="Natalie Gutman" class="w-48 lg:w-full max-w-[280px] mx-auto lg:mx-0 rounded-[1.25rem]" />
+          </div>
+          <div class="lg:col-span-8 reveal" style="--reveal-delay: 120ms;">
+            <p class="font-serif text-2xl sm:text-3xl leading-snug text-ink max-w-2xl">Some owners prefer to sell without the exposure of a public listing. These homes are kept off the portals and off my public portfolio. I share them by private link, with buyers I trust to treat them with discretion.</p>
+            <p class="text-3xl text-accent mt-8" style="font-family: 'Pinyon Script', cursive;">Natalie</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== THE COLLECTION ============== -->
+    <section>
+      <div class="max-w-6xl mx-auto px-6 lg:px-10 py-16 lg:py-24">
+        <h2 class="font-serif text-3xl sm:text-4xl text-ink mb-12 lg:mb-16 text-center reveal">Currently in the collection</h2>
+        <div id="property-grid" class="grid md:grid-cols-2 gap-x-10 gap-y-16"></div>
+        <p id="properties-empty" class="hidden text-muted text-center py-20" hidden role="status">The collection is between properties at the moment.
+          <a href="contact.html" class="link-underline text-ink">Tell me what you're looking for</a> and I'll search privately.</p>
+        <p id="properties-error" class="hidden text-muted text-center py-20" hidden role="alert">Listings are temporarily unavailable. Please try again shortly.</p>
+      </div>
+    </section>
+
+    <!-- ============== DISCRETION, IN PRACTICE ============== -->
+    <section class="bg-surface">
+      <div class="max-w-6xl mx-auto px-6 lg:px-10 py-16 lg:py-24">
+        <div class="max-w-3xl mx-auto divide-y divide-hairline">
+          <div class="grid sm:grid-cols-12 gap-2 sm:gap-8 py-7 reveal">
+            <p class="sm:col-span-4 font-serif text-xl text-ink">Private mandates</p>
+            <p class="sm:col-span-8 leading-relaxed">Every home here is under a signed mediation agreement with its owner, including their consent to discreet marketing.</p>
+          </div>
+          <div class="grid sm:grid-cols-12 gap-2 sm:gap-8 py-7 reveal">
+            <p class="sm:col-span-4 font-serif text-xl text-ink">Shared by invitation</p>
+            <p class="sm:col-span-8 leading-relaxed">This page is not linked from the website and does not appear in search results. It reaches you because I sent it to you. It is an unlisted page, not a secure one — please don't forward the link.</p>
+          </div>
+          <div class="grid sm:grid-cols-12 gap-2 sm:gap-8 py-7 reveal">
+            <p class="sm:col-span-4 font-serif text-xl text-ink">Directly with me</p>
+            <p class="sm:col-span-8 leading-relaxed">Enquiries come straight to my phone, not to a portal inbox. Viewings are arranged privately around the owner's wishes.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== CLOSING CTA ============== -->
+    <section>
+      <div class="max-w-6xl mx-auto px-6 lg:px-10 py-16 lg:py-24 text-center">
+        <h2 class="font-serif text-3xl sm:text-4xl text-ink mb-4 reveal">Looking for something specific?</h2>
+        <p class="max-w-xl mx-auto leading-relaxed mb-10 reveal">Tell me what you want and I'll search for it off the market, before it reaches the portals.</p>
+        <div class="flex flex-wrap items-center justify-center gap-6 reveal">
+          <a href="https://wa.me/351969227709" class="inline-block bg-ink text-white font-medium px-8 py-3.5 rounded-full hover:bg-accent hover:text-ink transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2">Message me on WhatsApp</a>
+          <a href="tel:+351969227709" class="link-underline text-ink">+351 969 227 709</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="property-modal" aria-labelledby="property-modal-title" class="w-full max-w-4xl lg:max-w-6xl p-0 border border-hairline bg-white text-ink max-h-[calc(100dvh-2rem)] overflow-y-auto lg:overflow-hidden overscroll-contain">
+    <div class="relative lg:grid lg:grid-cols-[3fr_2fr] lg:h-[min(46rem,calc(100dvh-2rem))]">
+      <button type="button" id="property-modal-close" aria-label="Close" class="absolute top-4 right-4 z-10 p-2 bg-white/90 text-faint hover:text-ink transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent">
+        <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path stroke-linecap="round" d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+
+      <div class="bg-surface lg:flex lg:flex-col lg:min-h-0">
+        <div class="relative lg:flex-1 lg:min-h-0">
+          <img id="property-modal-main-image" alt="" class="w-full aspect-[4/3] max-h-[45dvh] object-contain lg:absolute lg:inset-0 lg:h-full lg:max-h-none lg:aspect-auto" />
+          <button type="button" id="property-modal-prev" aria-label="Previous photo" hidden
+                  class="absolute left-3 top-1/2 -translate-y-1/2 z-10 p-2 bg-white/90 text-ink hover:text-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent">
+            <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15 6l-6 6 6 6"/></svg>
+          </button>
+          <button type="button" id="property-modal-next" aria-label="Next photo" hidden
+                  class="absolute right-3 top-1/2 -translate-y-1/2 z-10 p-2 bg-white/90 text-ink hover:text-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent">
+            <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 6l6 6-6 6"/></svg>
+          </button>
+          <span id="property-modal-photo-count" class="absolute bottom-3 right-3 z-10 bg-ink/70 text-white text-xs px-2 py-1" hidden></span>
+        </div>
+        <div id="property-modal-thumbnails" class="flex gap-2 p-2 overflow-x-auto bg-white"></div>
+      </div>
+
+      <div class="p-8 sm:p-10 lg:min-h-0 lg:overflow-y-auto overscroll-contain [overflow-wrap:anywhere]">
+        <div id="property-modal-location" class="flex flex-wrap items-center gap-3 mb-4"></div>
+        <h2 id="property-modal-title" class="font-serif text-3xl"></h2>
+        <p id="property-modal-price" class="text-xl mt-1"></p>
+
+        <div id="property-modal-specs" class="flex flex-wrap gap-x-8 gap-y-3 py-6 border-y border-hairline my-6"></div>
+        <div id="property-modal-description" class="text-muted leading-relaxed space-y-4"></div>
+
+        <section id="property-modal-amenities-section" class="mt-8" hidden>
+          <h3 class="label text-faint mb-4">Amenities</h3>
+          <div id="property-modal-amenities" class="grid grid-cols-2 sm:grid-cols-3 gap-3"></div>
+        </section>
+
+        <div class="mt-8">
+          <a id="property-modal-enquiry" href="contact.html" class="more-link hover:text-accent transition-colors">
+            Enquire about this property
+            <svg viewBox="0 0 24 24" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+
+        <p class="text-xs text-faint leading-relaxed mt-8 pt-6 border-t border-hairline">
+          Details, measurements, price and availability are indicative, provided in good faith and subject to
+          change or prior sale. They do not form part of any offer or contract and should be independently
+          verified. Mediation through eXp Realty, a licensed brokerage (AMI 18470).
+        </p>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- ============== SLIM FOOTER ============== -->
+  <footer class="bg-surface">
+    <div class="max-w-6xl mx-auto px-6 lg:px-10 py-14 lg:py-16">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-8">
+        <a href="index.html" class="inline-block"><img src="assets/logo-script.png" alt="Natalie Gutman" class="h-10 w-auto" /></a>
+        <ul class="flex flex-wrap items-center gap-x-6 gap-y-2 label text-faint">
+          <li><a href="index.html" class="hover:text-ink transition-colors">nataliegutman.com</a></li>
+          <li><a href="privacy.html" class="hover:text-ink transition-colors">Privacy</a></li>
+          <li><a href="terms.html" class="hover:text-ink transition-colors">Terms</a></li>
+        </ul>
+      </div>
+      <!-- Advertising disclaimer + AMI attribution (Lei 15/2013): every listing page carries the licence holder -->
+      <p class="text-xs text-faint leading-relaxed max-w-3xl mt-10 pt-8 border-t border-hairline">
+        All listing details, measurements, prices and availability are indicative, provided in good faith
+        and subject to change or prior sale. They do not form part of any offer or contract, and should be
+        independently verified before you commit to a purchase. Energy performance class is stated for each
+        property as required by Decreto-Lei n.º 101-D/2020. Property mediation is provided through eXp Realty,
+        a licensed brokerage (AMI 18470).
+      </p>
+      <p class="text-xs text-faint mt-6">&copy; <span id="year"></span> Natalie Gutman. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Scroll-reveal (IntersectionObserver, no scroll listeners) — same contract as index.html.
+    (function () {
+      if (!document.documentElement.classList.contains('reveal-on')) return;
+      var els = document.querySelectorAll('.reveal');
+      if (!('IntersectionObserver' in window)) { els.forEach(function (el) { el.classList.add('is-in'); }); return; }
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) { entry.target.classList.add('is-in'); io.unobserve(entry.target); }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+      els.forEach(function (el) { io.observe(el); });
+    })();
+  </script>
+</body>
+</html>

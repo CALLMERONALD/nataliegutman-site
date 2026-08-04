@@ -1,11 +1,12 @@
 /**
  * GOOGLE APPS SCRIPT — Form collector for the Natalie Gutman site
  *
- * Captures all three form types into one spreadsheet (three tabs, created
+ * Captures all four form types into one spreadsheet (four tabs, created
  * automatically) AND optionally emails you on every submission:
  *   • Email Signups      — the free-guide forms (home + buy page)
  *   • Contact Messages   — the contact page + the buy/sell "send a message" forms
  *   • Valuation Requests — the seller valuation form
+ *   • Viewing Requests   — private property viewing requests
  *
  * SETUP (one-time, ~5 minutes):
  * ─────────────────────────────
@@ -62,6 +63,17 @@ function doPost(e) {
       'Address / area: ' + (p.address || '') + '\n' +
       'Property type: ' + (p.proptype || '') + '\n' +
       'Bedrooms: ' + (p.bedrooms || ''));
+
+  } else if (type === 'viewing') {
+    appendRow_('Viewing Requests',
+      ['Timestamp', 'Property', 'Name', 'Email', 'Phone', 'Preferred contact'],
+      [now, p.property || '', p.name || '', p.email || '', p.phone || '', p.preferred || '']);
+    notify_('New private viewing request',
+      'Property: ' + (p.property || '') + '\n' +
+      'Name: ' + (p.name || '') + '\n' +
+      'Email: ' + (p.email || '') + '\n' +
+      'Phone: ' + (p.phone || '') + '\n' +
+      'Preferred contact: ' + (p.preferred || ''));
 
   } else { // email signup (the free-guide forms)
     appendRow_('Email Signups',

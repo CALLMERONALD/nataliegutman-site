@@ -179,3 +179,16 @@
     transition-duration: 0.001ms !important;
   }
 }
+
+/* iOS Safari zooms the page when a focused text field is under 16px.
+   Mobile only, so the desktop type scale is untouched.
+   !important is required: the fields carry Tailwind's `.text-sm` utility (0,1,0),
+   which outranks the bare `select` / `textarea` element selectors (0,0,1). Measured
+   at 375px — without it, selects and textareas stayed at 14px and still zoomed. */
+@media (max-width: 639px) {
+  input:not([type='checkbox']):not([type='radio']):not([type='submit']):not([type='button']),
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}

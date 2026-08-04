@@ -94,18 +94,29 @@
     </section>
   </main>
 
-  <dialog id="property-modal" aria-labelledby="property-modal-title" class="w-full max-w-4xl p-0 border border-hairline bg-white text-ink max-h-[calc(100dvh-2rem)] overflow-y-auto">
-    <div class="relative">
+  <dialog id="property-modal" aria-labelledby="property-modal-title" class="w-full max-w-4xl lg:max-w-6xl p-0 border border-hairline bg-white text-ink max-h-[calc(100dvh-2rem)] overflow-y-auto lg:overflow-hidden overscroll-contain">
+    <div class="relative lg:grid lg:grid-cols-[3fr_2fr] lg:h-[min(46rem,calc(100dvh-2rem))]">
       <button type="button" id="property-modal-close" aria-label="Close" class="absolute top-4 right-4 z-10 p-2 bg-white/90 text-faint hover:text-ink transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent">
         <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path stroke-linecap="round" d="M6 6l12 12M18 6L6 18"/></svg>
       </button>
 
-      <div>
-        <img id="property-modal-main-image" alt="" class="aspect-[4/3] object-cover w-full bg-surface" />
-        <div id="property-modal-thumbnails" class="flex gap-2 mt-2 overflow-x-auto"></div>
+      <div class="bg-surface lg:flex lg:flex-col lg:min-h-0">
+        <div class="relative lg:flex-1 lg:min-h-0">
+          <img id="property-modal-main-image" alt="" class="w-full aspect-[4/3] max-h-[45dvh] object-contain lg:absolute lg:inset-0 lg:h-full lg:max-h-none lg:aspect-auto" />
+          <button type="button" id="property-modal-prev" aria-label="Previous photo" hidden
+                  class="absolute left-3 top-1/2 -translate-y-1/2 z-10 p-2 bg-white/90 text-ink hover:text-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent">
+            <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15 6l-6 6 6 6"/></svg>
+          </button>
+          <button type="button" id="property-modal-next" aria-label="Next photo" hidden
+                  class="absolute right-3 top-1/2 -translate-y-1/2 z-10 p-2 bg-white/90 text-ink hover:text-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent">
+            <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 6l6 6-6 6"/></svg>
+          </button>
+          <span id="property-modal-photo-count" class="absolute bottom-3 right-3 z-10 bg-ink/70 text-white text-xs px-2 py-1" hidden></span>
+        </div>
+        <div id="property-modal-thumbnails" class="flex gap-2 p-2 overflow-x-auto bg-white"></div>
       </div>
 
-      <div class="p-8 sm:p-10 [overflow-wrap:anywhere]">
+      <div class="p-8 sm:p-10 lg:min-h-0 lg:overflow-y-auto overscroll-contain [overflow-wrap:anywhere]">
         <div id="property-modal-location" class="flex flex-wrap items-center gap-3 mb-4"></div>
         <h2 id="property-modal-title" class="font-serif text-3xl"></h2>
         <p id="property-modal-price" class="text-xl mt-1"></p>

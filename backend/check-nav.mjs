@@ -67,6 +67,12 @@ for (const fileName of publicPages) {
   }
 }
 
+for (const entry of fs.readdirSync(rootDirectory, { withFileTypes: true })) {
+  if (!entry.isFile() || !entry.name.endsWith('.html')) continue;
+  assert.doesNotMatch(read(entry.name), /TODO\(listing\)|TODO_ENERGY_CLASS/,
+    `${entry.name}: unresolved listing placeholder must block deployment`);
+}
+
 const properties = read('properties.html');
 assert.match(properties,
   /<link\s+rel=["']canonical["']\s+href=["']https:\/\/nataliegutman\.com\/properties\.html["']\s*\/?>/i,
@@ -93,7 +99,64 @@ if (fs.existsSync(adminPath)) {
   assert.doesNotMatch(admin, /href=["']properties\.html["']/i, 'admin.html must not link to Portfolio');
 }
 
+// off-market.html is unlisted: noindex, no canonical, absent from the sitemap,
+// and no other page may link to it (the link is shared privately by Natalie).
+const offMarket = read('off-market.html');
+const offMarketRobots = offMarket.match(/<meta\b[^>]*name=["']robots["'][^>]*content=["']([^"']+)["'][^>]*>/i);
+assert.ok(offMarketRobots, 'off-market.html: missing robots meta');
+const offMarketDirectives = offMarketRobots[1].split(',').map((directive) => directive.trim().toLowerCase());
+assert.ok(offMarketDirectives.includes('noindex') && offMarketDirectives.includes('nofollow'),
+  'off-market.html: robots meta must contain noindex,nofollow');
+assert.doesNotMatch(offMarket, /rel=["']canonical["']/i, 'off-market.html must not declare a canonical URL');
+assert.match(offMarket, /<body\b[^>]*\bdata-off-market\b/i, 'off-market.html: body must carry data-off-market');
+// The private page deliberately has NO public navigation (minimal invitation header)
+// and must keep the Lei 15/2013 licence attribution.
+assert.doesNotMatch(offMarket, /aria-label=["']Primary["']/i, 'off-market.html must not carry the public site navigation');
+assert.match(offMarket, /AMI 18470/, 'off-market.html must carry the eXp Realty AMI 18470 attribution');
+assert.doesNotMatch(read('sitemap.xml'), /off-market/i, 'sitemap.xml must not list off-market.html');
+assert.doesNotMatch(read('robots.txt'), /off-market/i, 'robots.txt must not mention off-market.html (a Disallow line would advertise it)');
+for (const fileName of publicPages) {
+  assert.doesNotMatch(read(fileName), /href=["'][^"']*off-market/i,
+    `${fileName} must not link to off-market.html`);
+}
+
+// gandarinha.html is also unlisted: noindex, absent from robots and sitemap,
+// and not linked from any public page.
+const gandarinha = read('gandarinha.html');
+const gandarinhaRobots = gandarinha.match(/<meta\b[^>]*name=["']robots["'][^>]*content=["']([^"']+)["'][^>]*>/i);
+assert.ok(gandarinhaRobots, 'gandarinha.html: missing robots meta');
+const gandarinhaDirectives = gandarinhaRobots[1].split(',').map((directive) => directive.trim().toLowerCase());
+assert.ok(gandarinhaDirectives.includes('noindex') && gandarinhaDirectives.includes('nofollow'),
+  'gandarinha.html: robots meta must contain noindex,nofollow');
+assert.doesNotMatch(read('sitemap.xml'), /gandarinha/i, 'sitemap.xml must not list gandarinha.html');
+assert.doesNotMatch(read('robots.txt'), /gandarinha/i, 'robots.txt must not mention gandarinha.html');
+for (const fileName of publicPages) {
+  assert.doesNotMatch(read(fileName), /href=["'][^"']*gandarinha/i,
+    `${fileName} must not link to gandarinha.html`);
+}
+
+const formEndpoint = read('assets/form-endpoint.js');
+assert.match(formEndpoint, /Your request has not been sent\./,
+  'assets/form-endpoint.js: missing honest unconfigured-endpoint message');
+assert.match(formEndpoint, /https:\/\/wa\.me\/351969227709/,
+  'assets/form-endpoint.js: fallback must link to WhatsApp');
+assert.match(formEndpoint, /tel:\+351969227709/,
+  'assets/form-endpoint.js: fallback must link to Natalie by phone');
+for (const [fileName, expectedFallbacks] of [
+  ['buy.html', 1],
+  ['sell.html', 2],
+  ['contact.html', 1],
+  ['gandarinha.html', 1]
+]) {
+  assert.equal(countMatches(read(fileName), /if \(!SHEETS_URL\) \{\s*window\.showFormUnavailable/g), expectedFallbacks,
+    `${fileName}: every enquiry form must stop at the honest fallback when SHEETS_URL is empty`);
+}
+
 console.log(`check-nav: ${publicPages.length} public pages passed`);
 console.log('check-nav: desktop and mobile Portfolio order passed');
 console.log('check-nav: properties metadata and sitemap passed');
 console.log('check-nav: admin navigation exclusion passed');
+console.log('check-nav: listing placeholder guard passed');
+console.log('check-nav: off-market unlisted invariants passed');
+console.log('check-nav: gandarinha unlisted invariants passed');
+console.log('check-nav: unconfigured form fallbacks passed');

@@ -501,6 +501,11 @@
           return;
         }
 
+        if (!SHEETS_URL) {
+          window.showFormUnavailable(valForm, 'py-6 text-center');
+          return;
+        }
+
         if (SHEETS_URL) {
           fetch(SHEETS_URL, {
             method: 'POST',
@@ -534,6 +539,11 @@
         var name    = (contactForm.querySelector('#c-name')  || {}).value || '';
         var email   = (contactForm.querySelector('#c-email') || {}).value || '';
         var message = (contactForm.querySelector('#c-msg')   || {}).value || '';
+
+        if (!SHEETS_URL) {
+          window.showFormUnavailable(contactForm, 'sm:col-span-2 py-8 text-center');
+          return;
+        }
 
         if (SHEETS_URL) {
           fetch(SHEETS_URL, {

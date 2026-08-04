@@ -712,7 +712,8 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
       amenities: formData.getAll('amenities').map(String),
       photos: photoItems.map(function (item) { return item.key; }),
       featured: formData.get('featured') === 'on',
-      published: formData.get('published') === 'on'
+      published: formData.get('published') === 'on',
+      off_market: formData.get('off_market') === 'on'
     };
     if (values.published && (!values.photos.length || !values.description)) {
       throw new Error('Published properties need at least one photo and a description.');
@@ -751,6 +752,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
       });
       inputByName('featured').checked = property.featured === true;
       inputByName('published').checked = property.published === true;
+      inputByName('off_market').checked = property.off_market === true;
       var selectedAmenities = Array.isArray(property.amenities) ? property.amenities : [];
       Array.prototype.forEach.call(elements.propertyForm.querySelectorAll('input[name="amenities"]'), function (checkbox) {
         checkbox.checked = selectedAmenities.indexOf(checkbox.value) !== -1;
@@ -801,6 +803,9 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
       identity.appendChild(copy);
       row.appendChild(identity);
       row.appendChild(createElement('p', 'label flex-none', STATUS_LABELS[property.status] || property.status || ''));
+      if (property.off_market === true) {
+        row.appendChild(createElement('p', 'label flex-none text-accent', 'Off-market'));
+      }
 
       var actions = createElement('div', 'w-full sm:w-auto flex flex-wrap items-center gap-4 sm:ml-auto');
       var publishLabel = createElement('label', 'label text-ink inline-flex items-center gap-2');

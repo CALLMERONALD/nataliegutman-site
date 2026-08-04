@@ -97,8 +97,19 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
     });
   }
 
+  // off-market.html marks its <body data-off-market>; every other page gets only
+  // the public (off_market=false) listings. Off-market rows are still published=true
+  // rows — same RLS, just a different page.
+  function listingsQuery(offMarket) {
+    return '?select=*&published=eq.true&off_market=eq.' + (offMarket ? 'true' : 'false') + '&order=created_at.desc';
+  }
+
+  function isOffMarketPage() {
+    return document.body.hasAttribute('data-off-market');
+  }
+
   function fetchProperties() {
-    return apiGet('?select=*&published=eq.true&order=created_at.desc');
+    return apiGet(listingsQuery(isOffMarketPage()));
   }
 
   function fetchPropertyTitle(id) {
@@ -194,15 +205,38 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
     var modal = document.getElementById('property-modal');
     if (!modal) return null;
     var closeButton = document.getElementById('property-modal-close');
+    var prevButton = document.getElementById('property-modal-prev');
+    var nextButton = document.getElementById('property-modal-next');
     var returnTarget = null;
+    // The arrow buttons are static markup, so their listeners attach once here and
+    // dispatch through this gallery state, which every openModal call resets.
+    var gallery = { count: 0, index: 0, select: function () {} };
+
+    function stepPhoto(delta) {
+      if (gallery.count < 2) return;
+      gallery.select((gallery.index + delta + gallery.count) % gallery.count);
+    }
+
+    prevButton.addEventListener('click', function () { stepPhoto(-1); });
+    nextButton.addEventListener('click', function () { stepPhoto(1); });
+    modal.addEventListener('keydown', function (event) {
+      if (event.key === 'ArrowLeft') { event.preventDefault(); stepPhoto(-1); }
+      else if (event.key === 'ArrowRight') { event.preventDefault(); stepPhoto(1); }
+    });
 
     closeButton.addEventListener('click', function () { modal.close(); });
     modal.addEventListener('click', function (event) {
       if (event.target === modal) modal.close();
     });
     modal.addEventListener('close', function () {
+      document.body.style.overflow = '';
       if (returnTarget && document.contains(returnTarget)) returnTarget.focus();
       returnTarget = null;
+    });
+    // Back/forward-cache can restore the page with the scroll lock still applied
+    // (modal was open when the user navigated away). Clear it unless the modal is open.
+    window.addEventListener('pageshow', function () {
+      if (!modal.open) document.body.style.overflow = '';
     });
 
     return function openModal(property, originButton) {
@@ -219,15 +253,24 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
       var amenitiesSection = document.getElementById('property-modal-amenities-section');
       var amenitiesGrid = document.getElementById('property-modal-amenities');
       var enquiry = document.getElementById('property-modal-enquiry');
+      var photoCount = document.getElementById('property-modal-photo-count');
 
       mainImage.src = photoUrl(photos[0]);
       mainImage.alt = String(property.title || '');
       clearElement(thumbnails);
 
+      gallery.count = photos.length;
+      gallery.index = 0;
+      prevButton.hidden = photos.length < 2;
+      nextButton.hidden = photos.length < 2;
+      photoCount.hidden = photos.length < 2;
+
       var thumbnailButtons = [];
       function selectPhoto(index) {
+        gallery.index = index;
         mainImage.src = photoUrl(photos[index]);
         mainImage.alt = String(property.title || '') + ', photo ' + (index + 1);
+        photoCount.textContent = (index + 1) + ' / ' + photos.length;
         thumbnailButtons.forEach(function (button, buttonIndex) {
           var active = buttonIndex === index;
           button.classList.toggle('opacity-60', !active);
@@ -235,6 +278,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
           button.setAttribute('aria-pressed', active ? 'true' : 'false');
         });
       }
+      gallery.select = selectPhoto;
 
       photos.forEach(function (key, index) {
         var button = createElement('button', 'flex-none opacity-60 focus-visible:outline-none focus-visible:ring-2 ring-accent');
@@ -306,6 +350,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
 
       enquiry.href = 'contact.html?property=' + encodeURIComponent(String(property.id || ''));
       returnTarget = originButton;
+      document.body.style.overflow = 'hidden';
       modal.showModal();
       closeButton.focus();
     };
@@ -379,7 +424,10 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
         formatPrice(null) !== 'Price on request' || !UUID_PATTERN.test('11111111-1111-4111-8111-111111111111') ||
         UUID_PATTERN.test('11111111-1111-4111-8111-11111111111Z') ||
         cardArea({ type: 'plot', area_built: null, area_plot: 900 }) !== 900 ||
-        knownAmenities({ amenities: ['pool', 'pool', 'unknown'] }).join(',') !== 'pool') {
+        knownAmenities({ amenities: ['pool', 'pool', 'unknown'] }).join(',') !== 'pool' ||
+        listingsQuery(false).indexOf('off_market=eq.false') === -1 ||
+        listingsQuery(true).indexOf('off_market=eq.true') === -1 ||
+        listingsQuery(true).indexOf('published=eq.true') === -1) {
       throw new Error('Portfolio self-check failed');
     }
     console.log('portfolio self-check: ok');

@@ -8,6 +8,8 @@ mydatabase.db
 docs/
 
 # Internal reference / proof / page screenshots (design-process artifacts)
+# Root photographer originals stay local.
+/*.jpg
 /*.jpeg
 /*-check.jpeg
 /proof-*.png
@@ -19,3 +21,6 @@ docs/
 # This repo is PUBLIC; these stay local only.
 backend/DPA-natalie-draft.md
 backend/testimonials-record.md
+Edits/
+edits  pic for landing page/
+gandarinha-work/
