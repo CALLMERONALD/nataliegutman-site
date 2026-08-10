@@ -34,14 +34,14 @@ function countMatches(source, pattern) {
 }
 
 function assertPortfolioOrder(nav, fileName, viewport) {
-  assert.equal(countMatches(nav, /href=["']properties\.html["']/g), 1,
-    `${fileName}: ${viewport} nav must contain exactly one properties.html link`);
-  assert.match(nav, /href=["']properties\.html["'][^>]*>\s*Portfolio\s*<\/a>/,
+  assert.equal(countMatches(nav, /href=["']\/properties["']/g), 1,
+    `${fileName}: ${viewport} nav must contain exactly one /properties link`);
+  assert.match(nav, /href=["']\/properties["'][^>]*>\s*Portfolio\s*<\/a>/,
     `${fileName}: ${viewport} properties link must be labelled Portfolio`);
 
-  const sell = nav.indexOf('href="sell.html"');
-  const portfolio = nav.indexOf('href="properties.html"');
-  const calculators = nav.indexOf('href="calculators.html"');
+  const sell = nav.indexOf('href="/sell"');
+  const portfolio = nav.indexOf('href="/properties"');
+  const calculators = nav.indexOf('href="/calculators"');
   assert.ok(sell !== -1 && sell < portfolio && portfolio < calculators,
     `${fileName}: ${viewport} Portfolio must sit between Sell and Calculators`);
 }
@@ -58,11 +58,11 @@ for (const fileName of publicPages) {
 
   if (fileName === 'properties.html') {
     for (const [viewport, nav] of [['desktop', desktopNav], ['mobile', mobileNav]]) {
-      const link = nav.match(/<a\b[^>]*href=["']properties\.html["'][^>]*>\s*Portfolio\s*<\/a>/i);
+      const link = nav.match(/<a\b[^>]*href=["']\/properties["'][^>]*>\s*Portfolio\s*<\/a>/i);
       assert.ok(link && /aria-current=["']page["']/.test(link[0]),
         `properties.html: ${viewport} Portfolio link must be current`);
     }
-    assert.match(desktopNav, /href=["']properties\.html["'][^>]*class=["'][^"']*\btext-ink\b[^"']*["']/,
+    assert.match(desktopNav, /href=["']\/properties["'][^>]*class=["'][^"']*\btext-ink\b[^"']*["']/,
       'properties.html: desktop Portfolio link must use the text-ink active state');
   }
 }
@@ -75,7 +75,7 @@ for (const entry of fs.readdirSync(rootDirectory, { withFileTypes: true })) {
 
 const properties = read('properties.html');
 assert.match(properties,
-  /<link\s+rel=["']canonical["']\s+href=["']https:\/\/nataliegutman\.com\/properties\.html["']\s*\/?>/i,
+  /<link\s+rel=["']canonical["']\s+href=["']https:\/\/nataliegutman\.com\/properties["']\s*\/?>/i,
   'properties.html: missing exact canonical link');
 assert.match(properties, /<meta\b[^>]*name=["']description["'][^>]*content=["'][^"']+["'][^>]*>/i,
   'properties.html: missing description meta');
@@ -88,15 +88,15 @@ assert.ok(robotsDirectives.includes('index') && robotsDirectives.includes('follo
   'properties.html: robots meta must contain index,follow');
 
 const sitemap = read('sitemap.xml');
-const propertyLocs = [...sitemap.matchAll(/<loc>\s*https:\/\/nataliegutman\.com\/properties\.html\s*<\/loc>/g)];
+const propertyLocs = [...sitemap.matchAll(/<loc>\s*https:\/\/nataliegutman\.com\/properties\s*<\/loc>/g)];
 assert.equal(propertyLocs.length, 1,
-  'sitemap.xml: properties.html URL must appear exactly once as a loc');
+  'sitemap.xml: /properties URL must appear exactly once as a loc');
 
 const adminPath = path.join(rootDirectory, 'admin.html');
 if (fs.existsSync(adminPath)) {
   const admin = fs.readFileSync(adminPath, 'utf8');
   assert.doesNotMatch(admin, /aria-label=["']Primary["']/i, 'admin.html must not contain public navigation');
-  assert.doesNotMatch(admin, /href=["']properties\.html["']/i, 'admin.html must not link to Portfolio');
+  assert.doesNotMatch(admin, /href=["']\/properties["']/i, 'admin.html must not link to Portfolio');
 }
 
 // off-market.html is unlisted: noindex, no canonical, absent from the sitemap,

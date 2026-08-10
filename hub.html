@@ -19,7 +19,7 @@
     (function gate() {
       try {
         if (!localStorage.getItem('natalie_guide_unlocked')) {
-          window.location.replace('index.html#guide');
+          window.location.replace('/#guide');
         }
       } catch (e) {}
     })();
@@ -32,16 +32,16 @@
     <!-- ============== HEADER ============== -->
   <header class="sticky top-0 z-30 bg-white/85 backdrop-blur-md border-b border-hairline">
     <nav class="max-w-7xl mx-auto px-6 lg:px-10 h-16 flex items-center justify-between" aria-label="Primary">
-      <a href="index.html" class="inline-block"><img src="assets/logo-script.png" alt="Natalie Gutman" class="h-9 w-auto" /></a>
+      <a href="/" class="inline-block"><img src="assets/logo-script.png" alt="Natalie Gutman" class="h-9 w-auto" /></a>
 
       <ul class="hidden lg:flex items-center gap-9 label text-faint">
-        <li><a href="buy.html" class="hover:text-ink transition-colors">Buy</a></li>
-        <li><a href="sell.html" class="hover:text-ink transition-colors">Sell</a></li>
-        <li><a href="properties.html" class="hover:text-ink transition-colors">Portfolio</a></li>
-        <li><a href="calculators.html" class="hover:text-ink transition-colors">Calculators</a></li>
-        <li><a href="guide.html" class="hover:text-ink transition-colors">Guide</a></li>
-        <li><a href="about.html" class="hover:text-ink transition-colors">About</a></li>
-        <li><a href="contact.html" class="hover:text-ink transition-colors">Contact</a></li>
+        <li><a href="/buy" class="hover:text-ink transition-colors">Buy</a></li>
+        <li><a href="/sell" class="hover:text-ink transition-colors">Sell</a></li>
+        <li><a href="/properties" class="hover:text-ink transition-colors">Portfolio</a></li>
+        <li><a href="/calculators" class="hover:text-ink transition-colors">Calculators</a></li>
+        <li><a href="/guide" class="hover:text-ink transition-colors">Guide</a></li>
+        <li><a href="/about" class="hover:text-ink transition-colors">About</a></li>
+        <li><a href="/contact" class="hover:text-ink transition-colors">Contact</a></li>
       </ul>
 
       <button id="menu-btn" type="button" class="lg:hidden -mr-1 p-2 text-ink" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
@@ -51,13 +51,13 @@
 
     <div id="mobile-menu" class="lg:hidden hidden bg-white border-t border-hairline">
       <ul class="max-w-7xl mx-auto px-6 py-3 flex flex-col label text-ink divide-y divide-hairline">
-        <li><a href="buy.html" class="block py-4">Buy</a></li>
-        <li><a href="sell.html" class="block py-4">Sell</a></li>
-        <li><a href="properties.html" class="block py-4">Portfolio</a></li>
-        <li><a href="calculators.html" class="block py-4">Calculators</a></li>
-        <li><a href="guide.html" class="block py-4">Guide</a></li>
-        <li><a href="about.html" class="block py-4">About</a></li>
-        <li><a href="contact.html" class="block py-4">Contact</a></li>
+        <li><a href="/buy" class="block py-4">Buy</a></li>
+        <li><a href="/sell" class="block py-4">Sell</a></li>
+        <li><a href="/properties" class="block py-4">Portfolio</a></li>
+        <li><a href="/calculators" class="block py-4">Calculators</a></li>
+        <li><a href="/guide" class="block py-4">Guide</a></li>
+        <li><a href="/about" class="block py-4">About</a></li>
+        <li><a href="/contact" class="block py-4">Contact</a></li>
       </ul>
     </div>
   </header>
@@ -84,7 +84,7 @@
       <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
         <!-- Card 1: The Guide, active -->
-        <a href="guide.html"
+        <a href="/guide"
            class="group relative flex flex-col border border-hairline bg-white hover:border-ink transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2">
           <div class="bg-ink p-8 flex items-center justify-center" style="min-height:180px">
             <svg viewBox="0 0 24 24" class="w-14 h-14 text-accent" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true">
@@ -111,7 +111,7 @@
         </a>
 
         <!-- Card 2: Calculators, active -->
-        <a href="calculators.html"
+        <a href="/calculators"
            class="group relative flex flex-col border border-hairline bg-white hover:border-ink transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2">
           <div class="bg-surface p-8 flex items-center justify-center" style="min-height:180px">
             <svg viewBox="0 0 24 24" class="w-14 h-14 text-accent" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true">
@@ -138,7 +138,7 @@
         </a>
 
         <!-- Card 3: Talk to Natalie -->
-        <a href="contact.html"
+        <a href="/contact"
            class="group relative flex flex-col border border-hairline bg-white hover:border-ink transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2">
           <div class="bg-surface p-8 flex items-center justify-center" style="min-height:180px">
             <img src="assets/natalie.png" alt="Portrait of Natalie Gutman" class="w-24 h-24 object-cover object-top rounded-full border-2 border-hairline" />
@@ -168,7 +168,7 @@
     <section class="border-t border-hairline bg-surface">
       <div class="max-w-6xl mx-auto px-6 lg:px-8 py-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-sm text-muted">
         <p>More resources are on the way. Check back soon.</p>
-        <a href="index.html" class="link-underline hover:text-ink text-sm">← Back to main site</a>
+        <a href="/" class="link-underline hover:text-ink text-sm">← Back to main site</a>
       </div>
     </section>
 
@@ -177,7 +177,7 @@
     <div class="max-w-7xl mx-auto px-6 lg:px-10 py-16 lg:py-20">
       <div class="grid gap-12 lg:grid-cols-12">
         <div class="lg:col-span-3">
-          <a href="index.html" class="inline-block"><img src="assets/logo-script.png" alt="Natalie Gutman" class="h-12 w-auto" /></a>
+          <a href="/" class="inline-block"><img src="assets/logo-script.png" alt="Natalie Gutman" class="h-12 w-auto" /></a>
           <p class="text-muted text-sm mt-4 max-w-xs leading-relaxed">Boutique real estate for international buyers and sellers across Portugal's Golden Triangle.</p>
         </div>
         <div class="lg:col-span-4">
@@ -195,12 +195,12 @@
         <div class="lg:col-span-3">
           <p class="label mb-4">Explore</p>
           <ul class="grid grid-cols-2 gap-x-6 gap-y-2 text-sm text-muted">
-            <li><a href="buy.html" class="link-underline hover:text-ink">Buy</a></li>
-            <li><a href="sell.html" class="link-underline hover:text-ink">Sell</a></li>
-            <li><a href="calculators.html" class="link-underline hover:text-ink">Calculators</a></li>
-            <li><a href="guide.html" class="link-underline hover:text-ink">Guide</a></li>
-            <li><a href="privacy.html" class="link-underline hover:text-ink">Privacy</a></li>
-            <li><a href="terms.html" class="link-underline hover:text-ink">Terms</a></li>
+            <li><a href="/buy" class="link-underline hover:text-ink">Buy</a></li>
+            <li><a href="/sell" class="link-underline hover:text-ink">Sell</a></li>
+            <li><a href="/calculators" class="link-underline hover:text-ink">Calculators</a></li>
+            <li><a href="/guide" class="link-underline hover:text-ink">Guide</a></li>
+            <li><a href="/privacy" class="link-underline hover:text-ink">Privacy</a></li>
+            <li><a href="/terms" class="link-underline hover:text-ink">Terms</a></li>
           </ul>
         </div>
       </div>

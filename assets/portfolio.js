@@ -348,7 +348,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
       });
       amenitiesSection.hidden = propertyAmenities.length === 0;
 
-      enquiry.href = 'contact.html?property=' + encodeURIComponent(String(property.id || ''));
+      enquiry.href = '/contact?property=' + encodeURIComponent(String(property.id || ''));
       returnTarget = originButton;
       document.body.style.overflow = 'hidden';
       modal.showModal();
@@ -391,7 +391,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
       clearElement(grid);
       featured.forEach(function (property) {
         grid.appendChild(createPropertyCard(property, function () {
-          window.location.href = 'properties.html';
+          window.location.href = '/properties';
         }));
       });
       section.hidden = false;
