@@ -342,7 +342,7 @@
   <!-- ============== ARCHITECTURAL CONCEPT ============== -->
   <section>
     <div class="max-w-7xl mx-auto px-6 lg:px-10 pt-24 lg:pt-36 pb-14 lg:pb-20">
-      <div class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+      <div class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-stretch">
         <div class="lg:col-span-6 reveal">
           <h2 class="font-serif text-3xl sm:text-4xl text-accent-hover mb-6">A rare residence in the heart of Gandarinha</h2>
           <p class="leading-relaxed mb-4">Set within Gandarinha, one of the most prestigious and sought-after residential enclaves in Cascais, this exceptional villa offers a rare sense of space, privacy, and effortless comfort.</p>
@@ -351,8 +351,10 @@
           <p class="leading-relaxed mb-4">Thoughtful features such as a private lift and underfloor heating add to the everyday experience, while the scale and quality of the property allow it to be enjoyed equally as a peaceful private home or as a place to gather and entertain.</p>
           <p class="leading-relaxed">A truly uncommon opportunity to acquire a substantial private residence in one of Cascais' most tightly held addresses, where exceptional homes rarely come to market.</p>
         </div>
-        <div class="lg:col-span-6 overflow-hidden border border-hairline reveal" style="--reveal-delay: 120ms;">
-          <img src="assets/photos/gandarinha-aerial-portrait.jpg" alt="Aerial view of the estate within Gandarinha, the Cascais coastline and the Atlantic beyond" class="reveal-img w-full" width="1400" height="2489" loading="lazy" />
+        <!-- lg: image is absolutely positioned so the column tracks the TEXT height —
+             the portrait aerial crops to exactly the text block, no vertical spillage -->
+        <div class="lg:col-span-6 relative overflow-hidden border border-hairline reveal" style="--reveal-delay: 120ms;">
+          <img src="assets/photos/gandarinha-aerial-portrait.jpg" alt="Aerial view of the estate within Gandarinha, the Cascais coastline and the Atlantic beyond" class="reveal-img w-full lg:absolute lg:inset-0 lg:h-full lg:object-cover" width="1400" height="2489" loading="lazy" />
         </div>
       </div>
     </div>
@@ -601,21 +603,21 @@
   <section>
     <div class="max-w-7xl mx-auto px-6 lg:px-10 py-24 lg:py-36">
       <div class="max-w-3xl mx-auto text-center mb-14 lg:mb-20">
-        <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl text-accent-hover mb-6 reveal">The lifestyle: where sea meets elegance</h2>
-        <p class="leading-relaxed text-balance reveal">Cascais is a historic, charming coastal town that offers an unparalleled quality of life, thirty minutes from Lisbon. With over 300 sunny days a year, it is a haven of natural beauty, golf and culture.</p>
+        <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl text-accent-hover mb-6 reveal">Where the sea meets a refined way of life</h2>
+        <p class="leading-relaxed text-balance reveal">Cascais offers a rare balance of coastal beauty, understated elegance and an exceptional quality of life. Just 30 minutes from Lisbon, the town combines the ease of seaside living with excellent dining, culture, golf and nature, all within easy reach.</p>
       </div>
       <div class="grid md:grid-cols-3 gap-10 lg:gap-14 reveal">
         <div class="gx-spec border-t border-accent pt-6">
-          <h3 class="label text-ink mb-3">Championship golf</h3>
-          <p class="leading-relaxed">Home to five world-class golf courses, including Quinta da Marinha and Oitavos Dunes.</p>
+          <h3 class="label text-ink mb-3">World-class golf</h3>
+          <p class="leading-relaxed">Some of Portugal's finest golf courses are close by, including Quinta da Marinha and Oitavos Dunes, offering exceptional courses set among the Atlantic landscape.</p>
         </div>
         <div class="gx-spec border-t border-accent pt-6">
-          <h3 class="label text-ink mb-3">Gastronomy &amp; culture</h3>
-          <p class="leading-relaxed">Michelin-starred restaurants, refined coastal seafood, and a rich cultural scene of museums, galleries and festivals minutes from the estate.</p>
+          <h3 class="label text-ink mb-3">Dining &amp; culture</h3>
+          <p class="leading-relaxed">From refined seafood and acclaimed restaurants to galleries, museums and a vibrant cultural scene, Cascais offers an effortless blend of gastronomy, art and local character.</p>
         </div>
         <div class="gx-spec border-t border-accent pt-6">
-          <h3 class="label text-ink mb-3">Active coastal living</h3>
-          <p class="leading-relaxed">Miles of seaside bicycle paths, scenic views of Cabo da Roca, and world-renowned surf beaches like Guincho.</p>
+          <h3 class="label text-ink mb-3">Life by the Atlantic</h3>
+          <p class="leading-relaxed">The coastline is part of everyday life. Scenic cycling and walking routes, dramatic Atlantic landscapes and beaches such as Guincho are all within easy reach, offering a natural extension of the Cascais lifestyle.</p>
         </div>
       </div>
     </div>
