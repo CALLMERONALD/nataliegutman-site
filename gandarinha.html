@@ -260,7 +260,9 @@
         var email = (input.value || '').trim();
         if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { err.hidden = false; input.focus(); return; }
         err.hidden = true;
-        try { localStorage.setItem(KEY, email); } catch (e) {}
+        // Counsel 2026-08-13: store a flag, not the email — keeps the
+        // "strictly-necessary, no-personal-data storage" Lei 41/2004 position.
+        try { localStorage.setItem(KEY, '1'); } catch (e) {}
         if (window.SHEETS_URL) {
           var body = 'type=gate&property=' + encodeURIComponent('The Gandarinha Estate') + '&email=' + encodeURIComponent(email);
           try {
