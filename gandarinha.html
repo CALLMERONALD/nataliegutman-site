@@ -132,7 +132,7 @@
     /* The brochure map (licensed, page 3) carries its own printed legend on the
        left; the stage CSS-crops that margin out of view — the image file itself
        stays untouched. Crop: left 24% hidden → visible 76% of 3177px width. */
-    .gx-map-stage { position: relative; overflow: hidden; aspect-ratio: 2414 / 2223; background: #F6F4F0; border: 1px solid rgba(255,255,255,.16); }
+    .gx-map-stage { position: relative; overflow: hidden; aspect-ratio: 2414 / 2223; background: #FEFEFD; border: 1px solid #E6E3DD; }
     .gx-map-img { position: absolute; top: 0; left: -31.58%; width: 131.58%; height: 100%; max-width: none; }
     /* The printed legend's second column extends past the crop line over open
        ocean (stage x 0–14%, y 18–37%) — wash the residue out with a soft white
@@ -157,19 +157,19 @@
       @keyframes gxPing { 0% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1.8); } }
     }
     .gx-map.has-active .gx-pin:not(.is-active) { opacity: .42; }
-    .gx-map-ring { position: absolute; left: var(--x); top: var(--y); width: 3.2rem; aspect-ratio: 1; transform: translate(-50%,-50%); border-radius: 9999px; border: 2px solid rgba(211,165,91,.9); pointer-events: none; }
+    .gx-map-ring { position: absolute; left: var(--x); top: var(--y); width: 3.2rem; aspect-ratio: 1; transform: translate(-50%,-50%); border-radius: 9999px; border: 2px solid rgba(184,137,60,.9); pointer-events: none; }
 
     .gx-lm-group { margin-bottom: 1.4rem; }
     .gx-lm {
       display: flex; align-items: baseline; gap: .8rem; width: 100%; padding: .5rem .55rem;
-      background: none; border: 0; border-bottom: 1px solid rgba(255,255,255,.09);
-      color: rgba(255,255,255,.82); cursor: pointer; text-align: left; font-size: .875rem;
+      background: none; border: 0; border-bottom: 1px solid #E6E3DD;
+      color: #5C5C5C; cursor: pointer; text-align: left; font-size: .875rem;
       transition: background .18s, color .18s;
     }
-    .gx-lm .n { font-family: 'Montserrat Variable', ui-sans-serif, system-ui, sans-serif; font-size: .65rem; letter-spacing: .08em; color: #D3A55B; min-width: 1.3rem; }
+    .gx-lm .n { font-family: 'Montserrat Variable', ui-sans-serif, system-ui, sans-serif; font-size: .65rem; letter-spacing: .08em; color: #B8893C; min-width: 1.3rem; }
     .gx-lm .t { flex: 1; }
-    .gx-lm .d { font-size: .75rem; color: rgba(255,255,255,.55); white-space: nowrap; }
-    .gx-lm:hover, .gx-lm.is-active { background: rgba(255,255,255,.06); color: #fff; }
+    .gx-lm .d { font-size: .75rem; color: #6E6A63; white-space: nowrap; }
+    .gx-lm:hover, .gx-lm.is-active { background: #fff; color: #1A1A1A; }
 
     /* ── Viewing modal + discrete floating trigger ──────────────────────── */
     #viewing-modal { border: 0; padding: 0; background: #fff; width: min(640px, 92vw); max-height: 90dvh; overflow: auto; margin: auto; }
@@ -228,7 +228,6 @@
        connected). With JS disabled the gate stays hidden and the page loads. -->
   <div id="gate" class="fixed inset-0 z-50 bg-ink items-center justify-center px-6" hidden>
     <div class="max-w-md w-full text-center">
-      <img src="assets/logo-script-white.png" alt="Natalie Gutman" class="h-10 w-auto mx-auto mb-10" />
       <p class="label !text-white/50 mb-4">Private listing</p>
       <h2 class="font-garamond font-medium uppercase tracking-[0.1em] text-white text-3xl sm:text-4xl leading-[1.15] mb-4">The Gandarinha Estate</h2>
       <p class="font-montserrat font-light text-white/75 text-sm leading-relaxed mb-8">Enter your email to view this private listing.</p>
@@ -241,6 +240,7 @@
       </form>
       <p class="text-xs text-white/40 mt-8 leading-relaxed">Your email is used only to manage access to this private listing.
         <a href="/privacy" class="underline hover:text-white/70">Privacy Policy</a></p>
+      <img src="assets/logo-script-white.png" alt="Natalie Gutman" class="h-11 w-auto mx-auto mt-8" />
     </div>
   </div>
   <script>
@@ -300,9 +300,11 @@
         <div class="max-w-7xl mx-auto px-6 lg:px-10 pb-14 lg:pb-20 relative">
           <div class="wt-caption text-center" data-at="0">
             <h1 class="font-garamond font-medium uppercase tracking-[0.1em] text-white text-4xl sm:text-6xl lg:text-7xl leading-[1.05] mb-5">The Gandarinha<br class="sm:hidden" /> Estate</h1>
+            <p class="font-montserrat text-white/60 text-sm mt-5 tracking-wide">Scroll to move through the house.</p>
+          </div>
+          <div class="wt-caption absolute inset-x-0 bottom-14 lg:bottom-20 text-center px-6" data-at="1">
             <p class="font-montserrat text-white/90 text-base sm:text-lg tracking-wide mb-4">Where Atlantic Light Meets Architectural Mastery</p>
             <p class="font-montserrat font-light text-white/80 text-sm sm:text-base leading-loose max-w-xl mx-auto">A rare private residence on 2,438&nbsp;m² in Cascais' most exclusive enclave. Designed for grand scale, effortless entertaining, and absolute privacy.</p>
-            <p class="font-montserrat text-white/60 text-sm mt-5 tracking-wide">Scroll to move through the house.</p>
           </div>        </div>
       </div>
 
@@ -324,24 +326,25 @@
       <dl class="grid grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-10 text-center reveal">
         <!-- Price is deliberately absent from this entire page (Michael's instruction
              2026-08-13: no price mention AT ALL, not even "on request"). Do not re-add. -->
-        <div><dt class="label text-faint mb-2">Location</dt><dd class="font-montserrat text-xl font-medium text-ink">Gandarinha · Cascais</dd></div>
-        <div><dt class="label text-faint mb-2">Private land</dt><dd class="font-montserrat text-xl font-medium text-ink">2,438 m²</dd></div>
-        <div><dt class="label text-faint mb-2">Construction</dt><dd class="font-montserrat text-xl font-medium text-ink">1,020 m²</dd></div>
-        <div><dt class="label text-faint mb-2">Levels</dt><dd class="font-montserrat text-xl font-medium text-ink">3 floors · private lift</dd></div>
-        <div><dt class="label text-faint mb-2">Bedrooms</dt><dd class="font-montserrat text-xl font-medium text-ink">6 en-suite + staff</dd></div>
-        <div><dt class="label text-faint mb-2">Pool</dt><dd class="font-montserrat text-xl font-medium text-ink">15.5 × 5 m</dd></div>
+        <div><dt class="label text-faint mb-2">Location</dt><dd class="font-montserrat text-xl text-ink">Gandarinha · Cascais</dd></div>
+        <div><dt class="label text-faint mb-2">Private land</dt><dd class="font-montserrat text-xl text-ink">2,438 m²</dd></div>
+        <div><dt class="label text-faint mb-2">Construction</dt><dd class="font-montserrat text-xl text-ink">1,020 m²</dd></div>
+        <div><dt class="label text-faint mb-2">Levels</dt><dd class="font-montserrat text-xl text-ink">3 floors · private lift</dd></div>
+        <div><dt class="label text-faint mb-2">Bedrooms</dt><dd class="font-montserrat text-xl text-ink">6 en-suite + staff</dd></div>
+        <div><dt class="label text-faint mb-2">Pool</dt><dd class="font-montserrat text-xl text-ink">15.5 × 5 m</dd></div>
+        <div><dt class="label text-faint mb-2">Smart home</dt><dd class="font-montserrat text-xl text-ink">Climate, security &amp; lift</dd></div>
         <!-- Energy class is MANDATORY in every PT property ad (DL 101-D/2020). -->
-        <div><dt class="label text-faint mb-2">Energy class</dt><dd class="font-montserrat text-xl font-medium text-ink">A</dd></div>
+        <div><dt class="label text-faint mb-2">Energy class</dt><dd class="font-montserrat text-xl text-ink">A</dd></div>
       </dl>
     </div>
   </section>
 
   <!-- ============== ARCHITECTURAL CONCEPT ============== -->
   <section>
-    <div class="max-w-7xl mx-auto px-6 lg:px-10 py-24 lg:py-36">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10 pt-24 lg:pt-36 pb-14 lg:pb-20">
       <div class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-center">
         <div class="lg:col-span-6 reveal">
-          <h2 class="font-garamond font-medium uppercase tracking-[0.08em] text-3xl sm:text-4xl lg:text-[2.6rem] leading-[1.15] text-ink mb-6">Where Atlantic Light Meets Architectural Mastery</h2>
+          <h2 class="font-serif text-3xl sm:text-4xl text-accent-hover mb-6">Where Atlantic light meets architectural mastery</h2>
           <p class="leading-relaxed mb-4">Set behind private gates in Cascais' most prestigious enclave, this private estate offers a rare balance of absolute privacy, grand scale, and modern architecture. Every living space is framed by expansive floor-to-ceiling glass, allowing the interior to flow naturally into lush private gardens, limestone terraces, and a grand 15.5-metre swimming pool.</p>
           <p class="leading-relaxed"><span class="text-ink">A rare opportunity in Gandarinha:</span> properties of this magnitude on single private parcels rarely come to market here. It represents an exceptional and exclusive offering in Cascais' most tightly held residential enclave.</p>
         </div>
@@ -357,10 +360,11 @@
        (gandarinha-work/pdf/brochure-p08–p10). Halo positions are % coordinates
        over the untouched plan images. -->
   <section id="floorplans">
-    <div class="max-w-7xl mx-auto px-6 lg:px-10 py-24 lg:py-36">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10 py-14 lg:py-20">
       <div class="max-w-3xl mx-auto text-center mb-12 lg:mb-16">
         <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl text-accent-hover mb-6 reveal">Architectural layout, floor by floor</h2>
-        <p class="leading-relaxed reveal">Designed for grand entertaining and private relaxation, the house is organised across three meticulously planned levels, all connected by a private lift. Choose a level, then touch a space to place it on the plan.</p>
+        <p class="leading-relaxed reveal">Designed for grand entertaining and private relaxation, the house is organised across three meticulously planned levels, all connected by a private lift.</p>
+        <p class="mt-3 text-sm text-faint reveal">Choose a level, then touch a space to place it on the plan.</p>
       </div>
 
       <div class="gx-fp-tabs reveal" role="tablist" aria-label="Floor plans">
@@ -417,6 +421,9 @@
             <button class="gx-room" data-pins="36.9,36.2;35.5,39.4;38.8,39.4;40.3,22.1" data-desc="A spacious guest suite of 27 m² with walk-in closet and private bathroom, plus a second en-suite bedroom of 15 m².">
               <span class="r-name">Two main-floor suites</span><span class="r-area">27 + 15 m²</span>
             </button>
+            <button class="gx-room" data-pins="44.1,23.1" data-desc="A discreet guest washroom off the main hall, beside the kitchen.">
+              <span class="r-name">Social WC</span><span class="r-area">—</span>
+            </button>
             <button class="gx-room" data-pins="55.1,32.3;70.2,20.2;35.6,29.1" data-desc="Paved outdoor lounges, shaded limestone terraces, and the 15.5 m × 5 m private turquoise pool.">
               <span class="r-name">Outdoor living &amp; pool deck</span><span class="r-area">171 m² + pool</span>
             </button>
@@ -425,23 +432,17 @@
           <!-- Level 1 rooms -->
           <div id="fp-rooms-f" role="tabpanel" aria-labelledby="fp-tab-f" hidden>
             <p class="label text-ink gx-fp-kicker">Level 1 — The executive living quarters</p>
-            <!-- OPEN QUESTION for Natalie (2026-08-13): her brief defines the primary
-                 suite as "zones 02-05" (the Room-01 wing beside the office, 29.87 m²
-                 bedroom) yet also gives the primary bedroom as 32 m² with the
-                 spa-inspired bath and the additional suites as 26-30. On brochure p10
-                 only Room 04 (zone 15, 31.94 m²) is ~32, and its WC 03 (13.85 m²) is
-                 the only spa-scale bath. The rows below use that attribution
-                 (counsel-endorsed 2026-08-12); if Natalie confirms zones 02-05 instead,
-                 restore the wing row + 26-32 range from git history (peer session's
-                 version, reverted here). -->
-            <button class="gx-room" data-pins="51.9,34.4" data-desc="An expansive private master wing: the primary bedroom, a walk-in dressing room, a spa-inspired marble bathroom, and direct terrace access.">
-              <span class="r-name">Primary executive suite</span><span class="r-area">32 m²</span>
+            <!-- RESOLVED by Michael 2026-08-13: primary suite = the zones 02-05 wing
+                 INCLUDING the central office (rows merged, 47 m² as instructed =
+                 the displayed 32 + 15; brochure sum for that wing is 29.87 + 15.33
+                 ≈ 45 — flagged in the sourcing-email ledger, item 5). Further
+                 suites = plan zones 06-15 (Rooms 08/13/15 = 30.04 / 25.62 /
+                 31.94 m² → range 26-32). -->
+            <button class="gx-room" data-pins="51.8,21.7;42.0,24.2;44.1,19.8;46.5,19.2" data-desc="An expansive private wing: the primary bedroom with walk-in dressing room and spa-inspired marble bathroom, together with the central private office.">
+              <span class="r-name">Primary executive suite</span><span class="r-area">47 m²</span>
             </button>
-            <button class="gx-room" data-pins="42.0,24.2" data-desc="A dedicated central private office at the heart of the private quarters.">
-              <span class="r-name">Private office</span><span class="r-area">15 m²</span>
-            </button>
-            <button class="gx-room" data-pins="51.8,21.7;51.6,27.9;38.0,36.1" data-desc="Each bedroom features its own en-suite bathroom, walk-in closet, and private terrace access.">
-              <span class="r-name">Three further bedroom suites</span><span class="r-area">26–30 m²</span>
+            <button class="gx-room" data-pins="51.6,27.9;38.0,36.1;51.9,34.4" data-desc="Each bedroom features its own en-suite bathroom, walk-in closet, and private terrace access.">
+              <span class="r-name">Three further bedroom suites</span><span class="r-area">26–32 m²</span>
             </button>
             <button class="gx-room" data-pins="34.3,35.9;38.8,22.0;55.1,33.8" data-desc="Three independent private balconies and terraces providing elevated outdoor spaces and coastal breezes.">
               <span class="r-name">Panoramic upper terraces</span><span class="r-area">× 3</span>
@@ -460,8 +461,11 @@
             <button class="gx-room" data-pins="27.8,28.3;44.9,39.1;40.6,39.1;39.6,30.3" data-desc="Four flexible rooms left unspecified for the buyer's custom use, the largest of 39 m².">
               <span class="r-name">Flexible multi-purpose rooms</span><span class="r-area">× 4</span>
             </button>
-            <button class="gx-room" data-pins="53.3,34.7;49.3,34.7;81.5,20.0;77.2,20.4;81.0,25.5" data-desc="Three separate bathrooms, technical utility rooms, and a dedicated laundry facility.">
+            <button class="gx-room" data-pins="53.3,34.7;49.3,34.7;81.5,20.0;77.2,20.4" data-desc="Two further bathrooms, technical utility rooms, and a dedicated laundry facility.">
               <span class="r-name">Utility &amp; facilities</span><span class="r-area">—</span>
+            </button>
+            <button class="gx-room" data-pins="81.0,25.5" data-desc="A dedicated washroom in the pool annex, serving the pool deck directly.">
+              <span class="r-name">Pool bathroom</span><span class="r-area">—</span>
             </button>
           </div>
         </div>
@@ -474,7 +478,7 @@
        its numbers all live in the key-facts band and on the floor-plan tabs;
        key metrics are stated once, per Natalie's brief) -->
   <section>
-    <div class="max-w-7xl mx-auto px-6 lg:px-10 py-24 lg:py-36">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10 pt-14 lg:pt-20 pb-24 lg:pb-36">
       <div class="max-w-3xl mx-auto text-center mb-14 lg:mb-20">
         <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl text-accent-hover mb-6 reveal">Premium finishes, systems &amp; security</h2>
         <p class="leading-relaxed reveal">Built with uncompromised quality, featuring leading international luxury brands.</p>
@@ -607,11 +611,11 @@
        impossible (that pin is on the Guincho dune coast). Labels here follow
        the real geography (Michael-confirmed for 4): 4 = Cascais Marina,
        6 = Praia da Cresmina. Natalie to confirm 6. -->
-  <section class="bg-ink">
+  <section class="bg-surface">
     <div class="max-w-7xl mx-auto px-6 lg:px-10 py-24 lg:py-36">
       <div class="max-w-3xl mb-12 lg:mb-16 reveal">
-        <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl text-[#D3A55B] mb-5">Everything Cascais is minutes away</h2>
-        <p class="text-white/70 leading-relaxed">Beaches, the marina, the golf courses and Cabo da Roca surround the estate — with Lisbon thirty minutes away via the coast road. Touch a landmark to place it on the coast.</p>
+        <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl text-accent-hover mb-5">Prime location &amp; surroundings</h2>
+        <p class="leading-relaxed">Beaches, the marina, the golf courses and Cabo da Roca surround the estate — with Lisbon thirty minutes away via the coast road. Touch a landmark to place it on the coast.</p>
       </div>
       <div class="gx-map grid lg:grid-cols-12 gap-10 lg:gap-14 items-center" id="lm-map">
         <div class="lg:col-span-7 reveal">
@@ -642,7 +646,7 @@
         </div>
         <div class="lg:col-span-5 reveal" style="--reveal-delay: 120ms;">
           <div class="gx-lm-group">
-            <p class="label !text-white/50 mb-3">Coast &amp; leisure</p>
+            <p class="label mb-3">Coast &amp; leisure</p>
             <button class="gx-lm" data-lm="4"><span class="n">4</span><span class="t">Cascais Marina</span></button>
             <button class="gx-lm" data-lm="6"><span class="n">6</span><span class="t">Praia da Cresmina</span></button>
             <button class="gx-lm" data-lm="7"><span class="n">7</span><span class="t">Guincho Beach</span></button>
@@ -650,7 +654,7 @@
             <button class="gx-lm" data-lm="2"><span class="n">2</span><span class="t">Tamariz Beach</span></button>
           </div>
           <div class="gx-lm-group">
-            <p class="label !text-white/50 mb-3">Golf &amp; sport</p>
+            <p class="label mb-3">Golf &amp; sport</p>
             <button class="gx-lm" data-lm="8"><span class="n">8</span><span class="t">Quinta da Marinha Golf</span></button>
             <button class="gx-lm" data-lm="9"><span class="n">9</span><span class="t">Oitavos Dunes Golf</span></button>
             <button class="gx-lm" data-lm="10"><span class="n">10</span><span class="t">Estoril Golf Club</span></button>
@@ -658,14 +662,14 @@
             <button class="gx-lm" data-lm="5"><span class="n">5</span><span class="t">Hippodrome</span></button>
           </div>
           <div class="gx-lm-group">
-            <p class="label !text-white/50 mb-3">Landmarks</p>
+            <p class="label mb-3">Landmarks</p>
             <button class="gx-lm" data-lm="14"><span class="n">14</span><span class="t">Casa das Histórias Paula Rego</span></button>
             <button class="gx-lm" data-lm="1"><span class="n">1</span><span class="t">Estoril Casino</span></button>
                         <button class="gx-lm" data-lm="12"><span class="n">12</span><span class="t">Cabo Raso Lighthouse</span></button>
             <button class="gx-lm" data-lm="13"><span class="n">13</span><span class="t">Cabo da Roca</span></button>
             <button class="gx-lm" data-lm="lisboa"><span class="n">→</span><span class="t">Lisbon</span><span class="d">30 min via the coast road</span></button>
           </div>
-          <p class="text-xs mt-6" style="color: rgba(255,255,255,.45);">The estate's exact location within Gandarinha is shared privately at the viewing.</p>
+          <p class="text-xs mt-6 text-faint">The estate's exact location within Gandarinha is shared privately at the viewing.</p>
         </div>
       </div>
     </div>
@@ -757,7 +761,6 @@
   <footer class="bg-surface">
     <div class="max-w-6xl mx-auto px-6 lg:px-10 py-14 lg:py-16">
       <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-8">
-        <a href="/" class="inline-block"><img src="assets/logo-script.png" alt="Natalie Gutman" class="h-10 w-auto" /></a>
         <ul class="flex flex-wrap items-center gap-x-6 gap-y-2 label text-faint">
           <li><a href="/" class="hover:text-ink transition-colors">nataliegutman.com</a></li>
           <li><a href="/privacy" class="hover:text-ink transition-colors">Privacy</a></li>
