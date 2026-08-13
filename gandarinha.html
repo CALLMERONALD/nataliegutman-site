@@ -523,6 +523,31 @@
     </div>
   </section>
 
+  <!-- ============== FILM: property reel ==============
+       Desktop/tablet get the reel trimmed past its rotate-your-phone intro and
+       rotated to true landscape; phones get the original portrait cut whose
+       intro asks the viewer to rotate the phone (Michael 2026-08-13). The
+       source is picked ONCE at load — no mid-playback swap if a phone rotates.
+       Master file (121 MB, over GitHub's 100 MB limit) lives untracked in
+       gandarinha-work/. -->
+  <section>
+    <div class="max-w-7xl mx-auto px-6 lg:px-10 pb-24 lg:pb-36">
+      <div class="mb-10 reveal">
+        <h2 class="font-serif text-3xl sm:text-4xl text-accent-hover">The house on film</h2>
+      </div>
+      <video id="film-video" class="w-full border border-hairline reveal" controls playsinline preload="metadata"></video>
+    </div>
+  </section>
+  <script>
+    (function () {
+      var v = document.getElementById('film-video');
+      if (!v) return;
+      var portrait = window.matchMedia('(max-width: 639px)').matches;
+      v.poster = portrait ? 'assets/gandarinha-film-poster-portrait.jpg' : 'assets/gandarinha-film-poster-landscape.jpg';
+      v.src = portrait ? 'assets/gandarinha-film-portrait.mp4' : 'assets/gandarinha-film-landscape.mp4';
+    })();
+  </script>
+
   <!-- ============== GALLERY: full photography (masonry + lightbox) ============== -->
   <section class="bg-surface">
     <div class="py-24 lg:py-36">
