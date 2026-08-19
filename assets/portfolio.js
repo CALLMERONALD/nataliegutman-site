@@ -101,7 +101,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
   // the public (off_market=false) listings. Off-market rows are still published=true
   // rows — same RLS, just a different page.
   function listingsQuery(offMarket) {
-    return '?select=*&published=eq.true&off_market=eq.' + (offMarket ? 'true' : 'false') + '&order=created_at.desc';
+    return '?select=*&published=eq.true&off_market=eq.' + (offMarket ? 'true' : 'false') + '&order=sort_order.asc.nullslast,created_at.desc';
   }
 
   function isOffMarketPage() {

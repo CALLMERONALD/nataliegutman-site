@@ -785,8 +785,21 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
     clearElement(elements.propertyList);
     elements.listEmpty.hidden = properties.length !== 0;
 
-    properties.forEach(function (property) {
+    properties.forEach(function (property, listIndex) {
       var row = createElement('article', 'flex flex-wrap sm:flex-nowrap items-center gap-5 py-4 border-b border-hairline min-w-0 [overflow-wrap:anywhere]');
+
+      var reorder = createElement('div', 'flex flex-col gap-1 flex-none');
+      [{ delta: -1, glyph: '↑', name: 'up', atEdge: listIndex === 0 },
+       { delta: 1, glyph: '↓', name: 'down', atEdge: listIndex === properties.length - 1 }].forEach(function (dir) {
+        var arrow = createElement('button', 'w-7 h-7 border border-hairline text-ink leading-none disabled:text-faint disabled:cursor-default focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent', dir.glyph);
+        arrow.type = 'button';
+        arrow.disabled = dir.atEdge;
+        arrow.setAttribute('aria-label', 'Move ' + String(property.title || 'property') + ' ' + dir.name);
+        arrow.addEventListener('click', function () { moveProperty(property, dir.delta); });
+        reorder.appendChild(arrow);
+      });
+      row.appendChild(reorder);
+
       var identity = createElement('div', 'flex items-center gap-4 min-w-0 flex-1 basis-full sm:basis-auto');
       var photoKeys = uniquePhotoKeys(property.photos);
       if (photoKeys.length) {
@@ -836,11 +849,36 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
     });
   }
 
+  async function moveProperty(property, delta) {
+    var index = properties.indexOf(property);
+    var target = index + delta;
+    if (index === -1 || target < 0 || target >= properties.length) return;
+    setMessage(elements.listStatus, 'Saving order…');
+    clearMessage(elements.listError);
+    try {
+      // First use materializes the current display order as 0..n-1 (older rows
+      // have sort_order null); afterwards a move only rewrites the two swapped
+      // rows. A mid-way failure self-heals: nullslast + the next click renumber.
+      var updates = [];
+      properties.forEach(function (row, i) {
+        var wanted = i === index ? target : (i === target ? index : i);
+        if (row.sort_order !== wanted) updates.push({ id: row.id, sort_order: wanted });
+      });
+      for (var i = 0; i < updates.length; i++) {
+        await dataRequest('PATCH', '?id=eq.' + encodeURIComponent(updates[i].id), { sort_order: updates[i].sort_order });
+      }
+      await loadProperties('Order saved.');
+    } catch (error) {
+      if (!error.authFailure) setMessage(elements.listError, 'The order could not be saved. Please try again.');
+      await loadProperties();
+    }
+  }
+
   async function loadProperties(successMessage) {
     clearMessage(elements.listError);
     setMessage(elements.listStatus, 'Loading listings…');
     try {
-      properties = await dataRequest('GET', '?select=*&order=created_at.desc');
+      properties = await dataRequest('GET', '?select=*&order=sort_order.asc.nullslast,created_at.desc');
       renderPropertyList();
       if (successMessage) setMessage(elements.listStatus, successMessage);
       else clearMessage(elements.listStatus);

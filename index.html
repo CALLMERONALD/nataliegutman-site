@@ -122,7 +122,7 @@
   <!-- ============== 1 · HEADER ============== -->
   <header class="absolute top-0 inset-x-0 z-30">
     <nav class="max-w-7xl mx-auto px-6 lg:px-10 h-20 flex items-center justify-between text-white" aria-label="Primary" id="site-nav">
-      <a href="/" class="inline-block"><img src="assets/logo-script-white.png" alt="Natalie Gutman" class="h-9 w-auto" /></a>
+      <a href="/" class="inline-block"><img src="assets/logo-script-white.png" alt="Natalie Gutman" class="h-11 w-auto" /></a>
 
       <ul class="hidden lg:flex items-center gap-9 label text-white/85">
         <li><a href="/buy" class="hover:text-white transition-colors">Buy</a></li>
@@ -162,9 +162,10 @@
       <div class="absolute inset-0 bg-gradient-to-b from-ink/45 via-ink/45 to-ink/65"></div>
 
       <div class="relative z-10 text-center text-white px-6 max-w-5xl">
-        <h1 class="text-balance font-montserrat font-bold text-[1.9rem] sm:text-5xl lg:text-6xl leading-[1.1] tracking-tight mb-6">
-          Boutique Real Estate in Cascais, Lisbon &amp; Sintra
+        <h1 class="text-balance font-montserrat font-bold text-[1.9rem] sm:text-5xl lg:text-6xl leading-[1.1] tracking-tight mb-5">
+          Boutique Real Estate in Portugal
         </h1>
+        <p class="label !text-white/75 mb-6">Cascais &middot; Lisbon &middot; Sintra</p>
         <p class="font-montserrat text-white/80 text-base sm:text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
           Representing buyers and sellers with expert guidance and total discretion.
         </p>
@@ -504,6 +505,14 @@
       document.querySelectorAll('[data-open-guide]').forEach(function (btn) {
         btn.addEventListener('click', function () { modal.showModal(); });
       });
+
+      // Locked /guide visits bounce here as /#guide — land them on the toolkit
+      // and open the email capture instead of silently dropping them at the top.
+      if (window.location.hash === '#guide') {
+        var toolkit = document.getElementById('toolkit');
+        if (toolkit) toolkit.scrollIntoView();
+        modal.showModal();
+      }
       document.getElementById('guide-modal-close').addEventListener('click', function () { modal.close(); });
       modal.addEventListener('click', function (e) { if (e.target === modal) modal.close(); });
 
