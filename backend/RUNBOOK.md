@@ -78,6 +78,11 @@ button in the listing modal copies `/p/<ref>` when the stub exists, else the alw
   updating, re-enable it from the Actions tab.
 - New listing → its preview link exists within ~15 min. Until then "Copy link" hands out the `?ref=`
   link (works, generic preview).
+- GitHub's runners (Azure) lose the path to the Hostinger VPS for 1 to 3 hours most days (the
+  same flakiness behind the n8n watchdog's false alarms). The build retries 3x, then skips quietly
+  with a warning (run stays green, stubs unchanged) and the next run catches up, so a sync can lag
+  a few hours in a bad stretch. A RED run therefore means a real problem (anon key, schema, script):
+  read its log. If `p/` has not updated for more than a day after a listing change, check Actions.
 - Off-market listings never get a stub (the repo is public); they keep `/off-market?ref=`.
 - Listing titles: no street numbers, no owner or family names. Stubs are committed to a PUBLIC repo
   and cannot be removed from git history (counsel 2026-08-26). To truly retract a photo, delete it in

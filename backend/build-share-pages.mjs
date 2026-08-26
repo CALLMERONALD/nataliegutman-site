@@ -108,14 +108,34 @@ export function render(property) {
 `;
 }
 
+// Transport-level failures (connect timeout, DNS, reset): the runner never got an
+// answer. HTTP errors are deliberately NOT matched: a 401/400 means a real problem.
+export function isNetworkError(error) {
+  const cause = error && error.cause ? (error.cause.code || error.cause.message || '') : '';
+  return /fetch failed|ECONNRESET|ETIMEDOUT|ENOTFOUND|ECONNREFUSED|UND_ERR/i.test(String(cause) + ' ' + String(error && error.message));
+}
+
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 async function fetchListings() {
-  const response = await fetch(SUPABASE_URL + '/rest/v1/properties' + QUERY, {
-    headers: { apikey: SUPABASE_ANON_KEY, 'Accept-Profile': 'natalie' }
-  });
-  if (!response.ok) throw new Error('Listings request failed with HTTP ' + response.status);
-  const rows = await response.json();
-  if (!Array.isArray(rows)) throw new Error('Listings response was not an array');
-  return rows.filter((row) => UUID_PATTERN.test(String(row.id)) && typeof row.title === 'string' && row.title);
+  // GitHub runners live on Azure and the Azure -> Hostinger path drops for 1 to 3
+  // hours most days (see the n8n-uptime-watchdog Brain page). Retry a few times
+  // here; main() then skips quietly on a persistent network failure.
+  for (let attempt = 1; ; attempt++) {
+    try {
+      const response = await fetch(SUPABASE_URL + '/rest/v1/properties' + QUERY, {
+        headers: { apikey: SUPABASE_ANON_KEY, 'Accept-Profile': 'natalie' }
+      });
+      if (!response.ok) throw new Error('Listings request failed with HTTP ' + response.status);
+      const rows = await response.json();
+      if (!Array.isArray(rows)) throw new Error('Listings response was not an array');
+      return rows.filter((row) => UUID_PATTERN.test(String(row.id)) && typeof row.title === 'string' && row.title);
+    } catch (error) {
+      if (!isNetworkError(error) || attempt >= 3) throw error;
+      console.warn(`share pages: attempt ${attempt} could not reach the VPS, retrying in 20s`);
+      await sleep(20000);
+    }
+  }
 }
 
 async function main() {
@@ -141,10 +161,24 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
       && html.includes('location.replace("/properties?ref=11111111")')
       && !html.includes('http-equiv')
       && describe({ ...sample, status: 'sold', energy_rating: 'exempt', bedrooms: null }).startsWith('Sold · ')
-      && describe({ ...sample, energy_rating: 'exempt' }).includes('€1.250.000 · Energy class: exempt · 3 bed');
+      && describe({ ...sample, energy_rating: 'exempt' }).includes('€1.250.000 · Energy class: exempt · 3 bed')
+      && isNetworkError(Object.assign(new TypeError('fetch failed'), { cause: { code: 'UND_ERR_CONNECT_TIMEOUT' } }))
+      && isNetworkError(Object.assign(new TypeError('fetch failed'), { cause: { code: 'ENOTFOUND' } }))
+      && !isNetworkError(new Error('Listings request failed with HTTP 401'))
+      && !isNetworkError(new Error('Listings response was not an array'));
     if (!ok) { console.error('share pages self-check FAILED'); process.exit(1); }
     console.log('share pages self-check: ok');
   } else {
-    main().catch((error) => { console.error(error); process.exit(1); });
+    main().catch((error) => {
+      if (isNetworkError(error)) {
+        // Known-flaky path: leave the stubs as they are and let the next scheduled
+        // run try again. Exit 0 so this does not email a failure for every blip; a
+        // red run therefore always means a real problem (key, schema, script).
+        console.warn('share pages: VPS unreachable from this runner, skipped (stubs unchanged):', error.cause ? error.cause.code : error.message);
+        process.exit(0);
+      }
+      console.error(error);
+      process.exit(1);
+    });
   }
 }
