@@ -63,7 +63,12 @@
     .rise { animation: riseIn 1.1s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: var(--rise-delay, 0ms); }
 
     /* Scroll-scrubbed walkthrough: captions are positioned/faded from JS. */
+    /* vh first = fallback for Safari <15.4 (no dvh): without it this sticky
+       wrapper has no height and the whole 850vh hero renders blank. */
+    .wt-viewport { height: 100vh; height: 100dvh; }
     .wt-caption { opacity: 0; transform: translateY(18px); will-change: opacity, transform; }
+    /* Captions sit over bright frames (sky, pool): a soft shadow keeps them legible. */
+    .wt-caption h1, .wt-caption p { text-shadow: 0 1px 10px rgba(0, 0, 0, 0.6); }
 
     /* Gallery lightbox backdrop */
     #gallery-lightbox::backdrop { background: rgba(12, 12, 14, 0.94); }
@@ -93,7 +98,7 @@
     .gx-fp-grid { display: grid; gap: 2rem; margin-top: 2.5rem; }
     @media (min-width: 1024px) { .gx-fp-grid { grid-template-columns: 7fr 5fr; gap: 3rem; align-items: start; } }
 
-    .gx-fp-scroller { border: 1px solid #E6E3DD; background: #fff; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .gx-fp-scroller { border: 1px solid #E6E3DD; background: #fff; overflow-x: auto; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; }
     .gx-fp-canvas { position: relative; aspect-ratio: 1600 / 1210; }
     @media (max-width: 639px) { .gx-fp-canvas { width: 220%; } } /* phones: pan the plan sideways */
     .gx-fp-plan { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0; transition: opacity .55s cubic-bezier(.16,1,.3,1); }
@@ -172,7 +177,7 @@
     .gx-lm:hover, .gx-lm.is-active { background: #fff; color: #1A1A1A; }
 
     /* ── Viewing modal + discrete floating trigger ──────────────────────── */
-    #viewing-modal { border: 0; padding: 0; background: #fff; width: min(640px, 92vw); max-height: 90dvh; overflow: auto; margin: auto; }
+    #viewing-modal { border: 0; padding: 0; background: #fff; width: min(640px, 92vw); max-height: 90vh; max-height: 90dvh; overflow: auto; margin: auto; }
     #viewing-modal::backdrop { background: rgba(12, 12, 14, .58); }
     @media (prefers-reduced-motion: no-preference) {
       #viewing-modal[open] { animation: gxModalIn .45s cubic-bezier(.16,1,.3,1); }
@@ -266,7 +271,7 @@
         if (window.SHEETS_URL) {
           var body = 'type=gate&property=' + encodeURIComponent('The Gandarinha Estate') + '&email=' + encodeURIComponent(email);
           try {
-            fetch(window.SHEETS_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body });
+            fetch(window.SHEETS_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body }).catch(function () {});
           } catch (e) {}
         }
         gate.style.display = 'none';
@@ -276,11 +281,13 @@
   </script>
 
   <!-- ============== HERO: scroll-scrubbed AI walkthrough ==============
-       The 45s walkthrough video is pre-exploded into 218 JPEG frames
-       (assets/walkthrough/gandarinha/). Scrolling scrubs the camera through
-       the house; captions fade in as each space is reached. -->
-  <section id="walkthrough" class="relative bg-ink" style="height: 850vh;">
-    <div class="sticky top-0 h-[100dvh] overflow-hidden">
+       The walkthrough video is pre-exploded into JPEG frames
+       (assets/walkthrough/gandarinha/, 218 on disk); the SEGMENTS list in the
+       script below picks the 72 that play (re-cut 2026-08-26: drone descent,
+       straight in through the front door to the pool window, then the pool).
+       Scrolling scrubs the camera; captions fade in at the start and the end. -->
+  <section id="walkthrough" class="relative bg-ink" style="height: 300vh;">
+    <div class="wt-viewport sticky top-0 overflow-hidden">
       <canvas id="wt-canvas" class="absolute inset-0 w-full h-full"></canvas>
       <noscript><img src="assets/walkthrough/gandarinha/f_001.jpg" alt="Aerial view of Villa Gandarinha above the Cascais coastline" class="absolute inset-0 w-full h-full object-cover" /></noscript>
       <div class="absolute inset-0 bg-gradient-to-t from-ink/75 via-ink/25 to-ink/40 pointer-events-none"></div>
@@ -300,7 +307,7 @@
         <div class="max-w-7xl mx-auto px-6 lg:px-10 pb-14 lg:pb-20 relative">
           <div class="wt-caption absolute inset-x-0 bottom-[52vh] text-center px-6" data-at="0">
             <h1 class="font-garamond font-medium uppercase tracking-[0.1em] text-white text-4xl sm:text-6xl lg:text-7xl leading-[1.05] mb-5">The Gandarinha<br class="sm:hidden" /> Estate</h1>
-            <p class="font-montserrat text-white/60 text-sm mt-5 tracking-wide">Scroll to move through the house.</p>
+            <p class="font-montserrat text-white/90 text-base mt-5 tracking-wide">Scroll to move through the house.</p>
           </div>
           <div class="wt-caption absolute inset-x-0 bottom-14 lg:bottom-20 text-center px-6" data-at="1">
             <p class="font-montserrat text-white/90 text-lg sm:text-xl tracking-wide mb-4">Where Atlantic Light Meets Architectural Mastery</p>
@@ -1033,8 +1040,15 @@
     // canvas (Apple product-page technique, no libraries). A passive scroll
     // listener only records position; all painting happens in one rAF loop.
     (function () {
-      var FRAME_COUNT = 218;
-      var FRAME_PATH = function (i) { return 'assets/walkthrough/gandarinha/f_' + String(i + 1).padStart(3, '0') + '.jpg'; };
+      // Re-cut 2026-08-26 (Michael): drone descent, then straight in through the
+      // front door into the living hall toward the pool window, then the pool.
+      // The exterior pull-back (f_025-058) and the suite/bath/terrace clips
+      // (f_083-194) are out; their frames stay on disk for a future re-cut.
+      var SEGMENTS = [[1, 24], [59, 82], [195, 218]];
+      var SEQUENCE = [];
+      SEGMENTS.forEach(function (seg) { for (var f = seg[0]; f <= seg[1]; f++) SEQUENCE.push(f); });
+      var FRAME_COUNT = SEQUENCE.length;
+      var FRAME_PATH = function (i) { return 'assets/walkthrough/gandarinha/f_' + String(SEQUENCE[i]).padStart(3, '0') + '.jpg'; };
 
       var section = document.getElementById('walkthrough');
       var canvas = document.getElementById('wt-canvas');
@@ -1047,12 +1061,15 @@
 
       var frames = new Array(FRAME_COUNT);
       var loadedCount = 0;
-      function loadFrame(i, onload) {
+      function loadFrame(i, onsettle) {
         if (frames[i]) return;
         var img = new Image();
         img.decoding = 'async';
+        img.onload = function () { loadedCount++; if (onsettle) onsettle(); };
+        // A failed frame must still settle (or one dropped cellular request
+        // stalls the loader forever) — null marks it retryable by the fill pass.
+        img.onerror = function () { frames[i] = null; if (onsettle) onsettle(); };
         img.src = FRAME_PATH(i);
-        img.onload = function () { loadedCount++; if (onload) onload(); };
         frames[i] = img;
       }
 
@@ -1081,12 +1098,20 @@
         var w = img.naturalWidth * scale, h = img.naturalHeight * scale;
         ctx.drawImage(img, (cw - w) / 2, (ch - h) / 2, w, h);
         drawnFrame = frameIndex;
+        // Safety net: if the label survived the skeleton phase (all skeleton
+        // frames failed), the first successful paint clears it.
+        if (loading && skeletonReady) { loading.remove(); loading = null; }
       }
 
       // Reduced motion: paint the first frame, show the title, skip the scrub.
       if (reduceMotion) {
+        section.style.height = '100vh'; // fallback for pre-dvh Safari
         section.style.height = '100dvh';
-        loadFrame(0, function () { resize(); draw(0); });
+        // No fill pass runs in this mode, so give frame 0 one retry.
+        loadFrame(0, function () {
+          if (frames[0] === null) loadFrame(0, function () { resize(); draw(0); });
+          else { resize(); draw(0); }
+        });
         if (captions[0]) { captions[0].style.opacity = 1; captions[0].style.transform = 'none'; }
         if (loading) loading.remove();
         window.addEventListener('resize', function () { resize(); draw(0); });
@@ -1101,7 +1126,9 @@
         skeletonLoaded++;
         if (!skeletonReady && skeletonLoaded >= skeletonTotal) {
           skeletonReady = true;
-          if (loading) { loading.style.transition = 'opacity 0.6s'; loading.style.opacity = 0; setTimeout(function () { loading.remove(); }, 700); }
+          // Only drop the label once something actually drew — if every skeleton
+          // frame failed (dead network) "Loading…" staying up is the honest state.
+          if (loading && loadedCount > 0) { var lbl = loading; loading = null; lbl.style.transition = 'opacity 0.6s'; lbl.style.opacity = 0; setTimeout(function () { lbl.remove(); }, 700); }
           var k = 0;
           (function fill() {
             var batch = 0;
