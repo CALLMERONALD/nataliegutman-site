@@ -7,6 +7,10 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
   var API_URL = SUPABASE_URL + '/rest/v1/properties';
   var PHOTO_BASE_URL = SUPABASE_URL + '/storage/v1/object/public/natalie-properties/';
   var UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+  // Shareable per-property link: <page>?ref=<first 8 hex of the id>, the same short
+  // ref the contact prefill already shows. ponytail: no slug column, no backend change;
+  // add a slug + pre-rendered pages only if per-listing SEO/previews are ever wanted.
+  var REF_PATTERN = /^[0-9a-f]{8}$/;
 
   var STATUS_LABELS = {
     available: 'Available',
@@ -79,6 +83,24 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
 
   function statusLabel(status) {
     return STATUS_LABELS[status] || String(status || '');
+  }
+
+  function propertyRef(property) {
+    return String(property.id || '').slice(0, 8);
+  }
+
+  function propertyUrl(property, pathname) {
+    return (pathname || window.location.pathname) + '?ref=' + propertyRef(property);
+  }
+
+  function requestedRef() {
+    var ref = new URLSearchParams(window.location.search).get('ref');
+    return ref && REF_PATTERN.test(ref) ? ref : '';
+  }
+
+  function dialogSupported() {
+    var modal = document.getElementById('property-modal');
+    return !!modal && typeof modal.showModal === 'function';
   }
 
   function apiGet(query) {
@@ -207,7 +229,10 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
     var closeButton = document.getElementById('property-modal-close');
     var prevButton = document.getElementById('property-modal-prev');
     var nextButton = document.getElementById('property-modal-next');
+    var copyButton = document.getElementById('property-modal-copy');
     var returnTarget = null;
+    var shareUrl = '';
+    var shareRef = '';
     // The arrow buttons are static markup, so their listeners attach once here and
     // dispatch through this gallery state, which every openModal call resets.
     var gallery = { count: 0, index: 0, select: function () {} };
@@ -232,7 +257,20 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
       document.body.style.overflow = '';
       if (returnTarget && document.contains(returnTarget)) returnTarget.focus();
       returnTarget = null;
+      history.replaceState(null, '', window.location.pathname);
     });
+    if (copyButton) {
+      copyButton.addEventListener('click', function () {
+        var url = window.location.origin + shareUrl;
+        function copied() {
+          copyButton.textContent = 'Link copied';
+          setTimeout(function () { copyButton.textContent = 'Copy link'; }, 2000);
+        }
+        function manual() { window.prompt('Copy this link', url); }
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(copied, manual);
+        else manual();
+      });
+    }
     // Back/forward-cache can restore the page with the scroll lock still applied
     // (modal was open when the user navigated away). Clear it unless the modal is open.
     window.addEventListener('pageshow', function () {
@@ -349,6 +387,18 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
       amenitiesSection.hidden = propertyAmenities.length === 0;
 
       enquiry.href = '/contact?property=' + encodeURIComponent(String(property.id || ''));
+      shareUrl = propertyUrl(property);
+      shareRef = propertyRef(property);
+      history.replaceState(null, '', shareUrl);
+      // Prefer the pre-rendered share page /p/<ref> (rich link preview) when it exists;
+      // otherwise the always-valid ?ref= link stays (listings published since the last
+      // share-pages build, off-market). Resolved on open, not on click, so the clipboard
+      // write below still happens inside the user gesture (Safari requires that).
+      (function (ref) {
+        fetch('/p/' + ref, { method: 'HEAD' }).then(function (response) {
+          if (response.ok && shareRef === ref) shareUrl = '/p/' + ref;
+        }).catch(function () {});
+      })(shareRef);
       returnTarget = originButton;
       document.body.style.overflow = 'hidden';
       modal.showModal();
@@ -373,6 +423,13 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
       properties.forEach(function (property) {
         grid.appendChild(createPropertyCard(property, openModal));
       });
+      // ?ref=<8 hex> deep link: open that property directly (skipped on browsers
+      // without <dialog>, where openModal is the contact-page fallback).
+      var ref = requestedRef();
+      if (!ref || !dialogSupported()) return;
+      var wanted = properties.filter(function (property) { return propertyRef(property) === ref; })[0];
+      if (!wanted) return;
+      openModal(wanted, grid.querySelector('[data-property-id="' + wanted.id + '"] button'));
     }).catch(function (error) {
       setStateVisibility(errorState, true);
       console.error('Unable to load published property listings.', error);
@@ -391,7 +448,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
       clearElement(grid);
       featured.forEach(function (property) {
         grid.appendChild(createPropertyCard(property, function () {
-          window.location.href = '/properties';
+          window.location.href = propertyUrl(property, '/properties');
         }));
       });
       section.hidden = false;
@@ -425,6 +482,9 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
         UUID_PATTERN.test('11111111-1111-4111-8111-11111111111Z') ||
         cardArea({ type: 'plot', area_built: null, area_plot: 900 }) !== 900 ||
         knownAmenities({ amenities: ['pool', 'pool', 'unknown'] }).join(',') !== 'pool' ||
+        propertyRef({ id: '11111111-1111-4111-8111-111111111111' }) !== '11111111' ||
+        propertyUrl({ id: '11111111-1111-4111-8111-111111111111' }, '/properties') !== '/properties?ref=11111111' ||
+        !REF_PATTERN.test('11111111') || REF_PATTERN.test('1111111') || REF_PATTERN.test('11111111-1') ||
         listingsQuery(false).indexOf('off_market=eq.false') === -1 ||
         listingsQuery(true).indexOf('off_market=eq.true') === -1 ||
         listingsQuery(true).indexOf('published=eq.true') === -1) {

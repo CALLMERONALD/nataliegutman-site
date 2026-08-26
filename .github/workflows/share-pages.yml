@@ -1,0 +1,40 @@
+# Keeps p/<ref>.html share stubs in sync with the published listings
+# (see backend/build-share-pages.mjs). Natalie publishes from the admin, so the
+# stubs regenerate on a schedule; a push only happens when p/ actually changed.
+# Known limit: GitHub disables scheduled workflows after 60 days without repo
+# activity; re-enable from the Actions tab (or run it by hand from there).
+name: share-pages
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: share-pages
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Build share stubs from the published listings
+        run: node backend/build-share-pages.mjs
+      - name: Commit and push only if p/ changed
+        run: |
+          git add -A p
+          if git diff --cached --quiet -- p; then
+            echo "share pages: no change"
+            exit 0
+          fi
+          git config user.name "share-pages bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "share pages: sync with published listings"
+          git push

@@ -264,61 +264,64 @@
 
     <!-- Section 4 -->
     <section id="s4" class="border-b border-hairline">
-      <div class="max-w-3xl mx-auto px-6 lg:px-8 py-16 lg:py-20 prose-body">
+      <div class="max-w-3xl mx-auto px-6 lg:px-8 pt-16 lg:pt-20 prose-body">
         <p class="text-xs uppercase tracking-[0.18em] text-accent mb-4">Section 04</p>
         <h2 class="font-serif text-3xl sm:text-4xl leading-tight mb-8">Key Factors for Your Decision</h2>
         <p>Before making a move, consider these five pillars:</p>
+      </div>
 
-        <div class="grid sm:grid-cols-2 gap-5 mt-8 not-prose">
-          <div class="border border-hairline bg-white p-6 hover:border-ink transition-colors duration-200">
+      <!-- Five pillars in one row on desktop: deliberately wider than the prose column -->
+      <div class="max-w-6xl mx-auto px-6 lg:px-8 pb-16 lg:pb-20">
+        <div class="grid sm:grid-cols-2 lg:grid-cols-5 gap-4 mt-8">
+          <div class="border border-hairline bg-white p-5 hover:border-ink transition-colors duration-200">
             <div class="w-10 h-10 bg-surface border border-hairline flex items-center justify-center mb-4">
               <svg viewBox="0 0 24 24" class="w-5 h-5 text-accent" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 21s-7-4.5-7-11a7 7 0 1114 0c0 6.5-7 11-7 11z"/>
                 <circle cx="12" cy="10" r="2.5"/>
               </svg>
             </div>
-            <p class="font-serif text-lg text-ink mb-2">Location</p>
+            <p class="font-serif font-bold text-lg text-ink mb-2">Location</p>
             <p class="text-sm text-muted leading-relaxed">Portugal is diverse. Consider climate, coast vs. countryside and local lifestyle.</p>
           </div>
 
-          <div class="border border-hairline bg-white p-6 hover:border-ink transition-colors duration-200">
+          <div class="border border-hairline bg-white p-5 hover:border-ink transition-colors duration-200">
             <div class="w-10 h-10 bg-surface border border-hairline flex items-center justify-center mb-4">
               <svg viewBox="0 0 24 24" class="w-5 h-5 text-accent" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18M7 7h7a3 3 0 010 6H9a3 3 0 000 6h8"/>
               </svg>
             </div>
-            <p class="font-serif text-lg text-ink mb-2">Budget</p>
+            <p class="font-serif font-bold text-lg text-ink mb-2">Budget</p>
             <p class="text-sm text-muted leading-relaxed">Prices vary by region. Research averages and account for taxes and closing costs.</p>
           </div>
 
-          <div class="border border-hairline bg-white p-6 hover:border-ink transition-colors duration-200">
+          <div class="border border-hairline bg-white p-5 hover:border-ink transition-colors duration-200">
             <div class="w-10 h-10 bg-surface border border-hairline flex items-center justify-center mb-4">
               <svg viewBox="0 0 24 24" class="w-5 h-5 text-accent" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
                 <circle cx="12" cy="12" r="9"/>
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 7v5l3 2"/>
               </svg>
             </div>
-            <p class="font-serif text-lg text-ink mb-2">Purpose</p>
+            <p class="font-serif font-bold text-lg text-ink mb-2">Purpose</p>
             <p class="text-sm text-muted leading-relaxed">Vacation, investment or permanent home? New Airbnb licenses are restricted in Lisbon and Porto.</p>
           </div>
 
-          <div class="border border-hairline bg-white p-6 hover:border-ink transition-colors duration-200">
+          <div class="border border-hairline bg-white p-5 hover:border-ink transition-colors duration-200">
             <div class="w-10 h-10 bg-surface border border-hairline flex items-center justify-center mb-4">
               <svg viewBox="0 0 24 24" class="w-5 h-5 text-accent" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 21V10l9-7 9 7v11M9 21v-6h6v6"/>
               </svg>
             </div>
-            <p class="font-serif text-lg text-ink mb-2">Infrastructure</p>
+            <p class="font-serif font-bold text-lg text-ink mb-2">Infrastructure</p>
             <p class="text-sm text-muted leading-relaxed">Check airports, highways, international schools and healthcare facilities nearby.</p>
           </div>
 
-          <div class="sm:col-span-2 border border-hairline bg-white p-6 hover:border-ink transition-colors duration-200">
+          <div class="sm:col-span-2 lg:col-span-1 border border-hairline bg-white p-5 hover:border-ink transition-colors duration-200">
             <div class="w-10 h-10 bg-surface border border-hairline flex items-center justify-center mb-4">
               <svg viewBox="0 0 24 24" class="w-5 h-5 text-accent" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 17l6-6 4 4 8-8M14 7h7v7"/>
               </svg>
             </div>
-            <p class="font-serif text-lg text-ink mb-2">Market trends</p>
+            <p class="font-serif font-bold text-lg text-ink mb-2">Market trends</p>
             <p class="text-sm text-muted leading-relaxed">Look at appreciation rates and rental demand. Consulting a local expert is crucial here.</p>
           </div>
         </div>
@@ -563,7 +566,8 @@
     <!-- About -->
     <section id="about" class="bg-ink text-white border-b border-ink">
       <div class="max-w-5xl mx-auto px-6 lg:px-8 py-20 lg:py-28">
-        <div class="grid lg:grid-cols-[260px_1fr] gap-10 lg:gap-14">
+        <!-- One family for the whole About block (Montserrat, what the h3+p "subheading" rule already gives paragraphs 2-3) -->
+        <div class="grid lg:grid-cols-[260px_1fr] gap-10 lg:gap-14 font-montserrat">
 
           <!-- Image column -->
           <div class="flex-none">
@@ -574,7 +578,7 @@
             </div>
             <div class="mt-6 text-sm">
               <p class="text-white/60 uppercase tracking-[0.18em] text-xs mb-2">Based in</p>
-              <p class="font-serif text-xl text-white">Cascais, Portugal</p>
+              <p class="text-lg text-white">Cascais, Portugal</p>
             </div>
           </div>
 
@@ -582,26 +586,22 @@
           <div>
             <p class="text-xs uppercase tracking-[0.18em] text-accent mb-4">About</p>
             <h2 class="font-serif text-3xl sm:text-4xl leading-tight mb-3 text-white">Natalie Gutman</h2>
-            <p class="font-serif text-lg text-white/70 italic mb-10">Your Strategic Partner for Real Estate &amp; Life in Portugal</p>
+            <p class="text-lg text-white/80 italic leading-relaxed mb-10">I believe that while a home is where the heart is, the purchase must be led by the head. Let's work together to make your move to Portugal both a personal joy and a professional success.</p>
 
             <p class="text-white/80 leading-relaxed">Buying a property in a foreign country is one of the most significant financial and emotional decisions you'll ever make. To do it right, you don't just need a real estate agent, you need a strategic partner who knows how to bridge the gap between a dream and a smart, calculated investment.</p>
 
-            <h3 class="font-serif text-xl mt-10 mb-3 text-white">From high-stakes negotiation to local expertise</h3>
+            <h3 class="font-montserrat font-semibold text-lg mt-10 mb-3 text-white">From high-stakes negotiation to local expertise</h3>
             <p class="text-white/80 leading-relaxed">My professional journey began in the competitive fashion industry in Israel, where I served as a professional Buyer. That fast-paced world taught me how to identify quality, analyze market data and master the art of high-stakes negotiation. In my world, "no" was always just the starting point of a deal. I bring that same fierce advocacy and sharp eye for value to every client I represent in the Portuguese market.</p>
 
-            <h3 class="font-serif text-xl mt-10 mb-3 text-white">Living the journey</h3>
+            <h3 class="font-montserrat font-semibold text-lg mt-10 mb-3 text-white">Living the journey</h3>
             <p class="text-white/80 leading-relaxed">Since 2019, I don't just sell properties in the "Golden Triangle", I live here. Since moving to Cascais with my family in 2019, I've spent the last six years immersing myself in the local culture, school systems and evolving real estate trends of Lisbon, Cascais and Sintra. I've walked the path you're on, and I combine that personal relocation experience with professional consulting to ensure your transition is seamless.</p>
 
-            <h3 class="font-serif text-xl mt-10 mb-4 text-white">What I bring to the table</h3>
+            <h3 class="font-montserrat font-semibold text-lg mt-10 mb-4 text-white">What I bring to the table</h3>
             <ul class="space-y-3 list-none text-white/80">
               <li><span class="text-white font-medium">The negotiator's edge.</span> I leverage years of experience in procurement to ensure you secure the best possible terms and never overpay.</li>
               <li><span class="text-white font-medium">Data-driven consulting.</span> I don't just look at the aesthetics of a home, I analyze ROI, market appreciation and the long-term potential of your investment.</li>
               <li><span class="text-white font-medium">A 360° perspective.</span> From finding the right neighborhood to navigating the bureaucracy and the "insider" local lifestyle, I'm with you every step of the way.</li>
             </ul>
-
-            <p class="font-serif italic text-accent text-xl sm:text-2xl leading-snug mt-12 border-l-2 border-accent pl-6">
-              I believe that while a home is where the heart is, the purchase must be led by the head. Let's work together to make your move to Portugal both a personal joy and a professional success.
-            </p>
 
             <div class="mt-12 border-t border-white/15 pt-10">
               <p class="text-xs uppercase tracking-[0.18em] text-white/60 mb-5">Contact me today to start your journey</p>

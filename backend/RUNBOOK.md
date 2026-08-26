@@ -59,3 +59,29 @@ cannot upload (403 RLS), cannot list the bucket (`[]`), cannot reach other schem
 GoTrue self-signup is disabled (`signup_disabled`). RLS — not the client-side JWT check — is the
 boundary, and it holds. Natalie's password is therefore the whole admin security boundary: keep it
 strong and unique.
+
+## 7. Share pages (link previews), added 2026-08-26
+
+`p/<ref>.html` is one static stub per PUBLISHED, non-off-market listing (ref = first 8 hex of the
+listing id, the same ref `/properties?ref=` uses). It exists only so a shared link unfurls with the
+listing's own title, cover photo and a "Cascais · €650.000 · 3 bed · 2 bath · 127 m² · Energy class B-"
+line (energy class is mandatory in every advertisement, DL 101-D/2020). The stub is `noindex` and
+JS-redirects visitors to `/properties?ref=<ref>`, which opens the listing. The public "Copy link"
+button in the listing modal copies `/p/<ref>` when the stub exists, else the always-valid `?ref=` link.
+
+- Generator: `node backend/build-share-pages.mjs` (`--self-check` runs its unit check). Rebuilds `p/`
+  from scratch from the anon API, so unpublished/deleted listings lose their stub. Fails closed: a
+  fetch error leaves the existing stubs untouched and the run red.
+- Automation: `.github/workflows/share-pages.yml` runs it every 15 min and pushes to `main` only when
+  `p/` changed (GitHub Pages redeploys on that push). Manual run: Actions tab → share-pages → Run
+  workflow. GitHub auto-disables schedules after 60 days without repo activity: if previews stop
+  updating, re-enable it from the Actions tab.
+- New listing → its preview link exists within ~15 min. Until then "Copy link" hands out the `?ref=`
+  link (works, generic preview).
+- Off-market listings never get a stub (the repo is public); they keep `/off-market?ref=`.
+- Listing titles: no street numbers, no owner or family names. Stubs are committed to a PUBLIC repo
+  and cannot be removed from git history (counsel 2026-08-26). To truly retract a photo, delete it in
+  the admin (§6); unpublishing only hides the row and drops the stub on the next run.
+- The preview image is the listing's first photo at its public storage URL (same retraction caveat
+  as §6). WhatsApp/Facebook cache previews per URL for days: after changing a cover photo the card
+  can show the old image until their cache expires (Facebook Sharing Debugger can force a rescrape).
