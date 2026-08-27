@@ -68,7 +68,7 @@
     .wt-viewport { height: 100vh; height: 100dvh; }
     .wt-caption { opacity: 0; transform: translateY(18px); will-change: opacity, transform; }
     /* Captions sit over bright frames (sky, pool): a soft shadow keeps them legible. */
-    .wt-caption h1, .wt-caption p { text-shadow: 0 1px 10px rgba(0, 0, 0, 0.6); }
+    .wt-caption h1, .wt-caption p, #wt-hint { text-shadow: 0 1px 10px rgba(0, 0, 0, 0.6); }
 
     /* Gallery lightbox backdrop */
     #gallery-lightbox::backdrop { background: rgba(12, 12, 14, 0.94); }
@@ -282,11 +282,13 @@
 
   <!-- ============== HERO: scroll-scrubbed AI walkthrough ==============
        The walkthrough video is pre-exploded into JPEG frames
-       (assets/walkthrough/gandarinha/, 218 on disk); the SEGMENTS list in the
-       script below picks the 72 that play (re-cut 2026-08-26: drone descent,
-       straight in through the front door to the pool window, then the pool).
-       Scrolling scrubs the camera; captions fade in at the start and the end. -->
-  <section id="walkthrough" class="relative bg-ink" style="height: 300vh;">
+       (assets/walkthrough/gandarinha/); the SEGMENTS list in the script below
+       picks the 96 that play (remade 2026-08-27: drone descent, AI bridge down
+       to the front door, in through the door to the pool window, AI bridge out
+       through the glass wall to the pool). Scrolling scrubs the camera; the
+       title shows at the start, the closing caption at the end, and the
+       "Scroll to move" hint stays up for the whole walkthrough. -->
+  <section id="walkthrough" class="relative bg-ink" style="height: 400vh;">
     <div class="wt-viewport sticky top-0 overflow-hidden">
       <canvas id="wt-canvas" class="absolute inset-0 w-full h-full"></canvas>
       <noscript><img src="assets/walkthrough/gandarinha/f_001.jpg" alt="Aerial view of Villa Gandarinha above the Cascais coastline" class="absolute inset-0 w-full h-full object-cover" /></noscript>
@@ -306,8 +308,7 @@
       <div class="absolute inset-x-0 bottom-0 z-[5] pointer-events-none">
         <div class="max-w-7xl mx-auto px-6 lg:px-10 pb-14 lg:pb-20 relative">
           <div class="wt-caption absolute inset-x-0 bottom-[52vh] text-center px-6" data-at="0">
-            <h1 class="font-garamond font-medium uppercase tracking-[0.1em] text-white text-4xl sm:text-6xl lg:text-7xl leading-[1.05] mb-5">The Gandarinha<br class="sm:hidden" /> Estate</h1>
-            <p class="font-montserrat text-white/90 text-base mt-5 tracking-wide">Scroll to move through the house.</p>
+            <h1 class="font-garamond font-medium uppercase tracking-[0.1em] text-white text-4xl sm:text-6xl lg:text-7xl leading-[1.05]">The Gandarinha<br class="sm:hidden" /> Estate</h1>
           </div>
           <div class="wt-caption absolute inset-x-0 bottom-14 lg:bottom-20 text-center px-6" data-at="1">
             <p class="font-montserrat text-white/90 text-lg sm:text-xl tracking-wide mb-4">Where Atlantic Light Meets Architectural Mastery</p>
@@ -315,6 +316,9 @@
           </div>        </div>
       </div>
 
+      <!-- Persistent scroll hint (Michael 2026-08-27): visible for the whole walkthrough,
+           yielding only to the closing caption in the last few percent. -->
+      <p id="wt-hint" class="absolute inset-x-0 bottom-8 lg:bottom-10 z-[5] text-center px-6 font-montserrat text-white/90 text-sm sm:text-base tracking-wide pointer-events-none">Scroll to move through the house.</p>
       <p id="wt-loading" class="absolute bottom-5 right-6 z-10 text-white/60 text-xs tracking-widest uppercase">Loading the walkthrough…</p>
     </div>
     <!-- NOTE 2026-08-04: the visible AI-walkthrough disclosure was REMOVED at Michael's
@@ -1040,11 +1044,13 @@
     // canvas (Apple product-page technique, no libraries). A passive scroll
     // listener only records position; all painting happens in one rAF loop.
     (function () {
-      // Re-cut 2026-08-26 (Michael): drone descent, then straight in through the
-      // front door into the living hall toward the pool window, then the pool.
-      // The exterior pull-back (f_025-058) and the suite/bath/terrace clips
-      // (f_083-194) are out; their frames stay on disk for a future re-cut.
-      var SEGMENTS = [[1, 24], [59, 82], [195, 218]];
+      // Remade 2026-08-27 (Michael): drone descent (f_001-024), AI bridge down to
+      // the front door (f_219-242, Kling v3 from f_024 to f_059), in through the
+      // door to the pool window (f_059-082), AI bridge out through the glass wall
+      // to the pool (f_243-266, Kling v3 from f_082 to a cleaned gallery pool
+      // photo). The original exterior pull-back and the suite/bath/terrace clips
+      // stay on disk unused.
+      var SEGMENTS = [[1, 24], [219, 242], [59, 82], [243, 266]];
       var SEQUENCE = [];
       SEGMENTS.forEach(function (seg) { for (var f = seg[0]; f <= seg[1]; f++) SEQUENCE.push(f); });
       var FRAME_COUNT = SEQUENCE.length;
@@ -1053,6 +1059,7 @@
       var section = document.getElementById('walkthrough');
       var canvas = document.getElementById('wt-canvas');
       var loading = document.getElementById('wt-loading');
+      var hint = document.getElementById('wt-hint');
       var captions = Array.prototype.slice.call(document.querySelectorAll('.wt-caption'));
       if (!section || !canvas || !canvas.getContext) return;
       var ctx = canvas.getContext('2d');
@@ -1113,6 +1120,7 @@
           else { resize(); draw(0); }
         });
         if (captions[0]) { captions[0].style.opacity = 1; captions[0].style.transform = 'none'; }
+        if (hint) hint.remove(); // nothing to scroll through in this mode
         if (loading) loading.remove();
         window.addEventListener('resize', function () { resize(); draw(0); });
         return;
@@ -1177,12 +1185,16 @@
         var idx = nearestLoaded(Math.round(current));
         if (idx >= 0) draw(idx);
 
+        var endVis = 0;
         for (var c = 0; c < captions.length; c++) {
           var at = parseFloat(captions[c].getAttribute('data-at'));
           var vis = Math.min(1, Math.max(0, 1 - Math.abs(walk - at) * 12));
           captions[c].style.opacity = vis;
           captions[c].style.transform = 'translateY(' + (18 * (1 - vis)) + 'px)';
+          if (at === 1) endVis = vis;
         }
+        // The hint stays up for the whole walkthrough and hands over to the closing caption.
+        if (hint) hint.style.opacity = 1 - endVis;
         requestAnimationFrame(loop);
       }
 
