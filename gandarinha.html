@@ -69,6 +69,8 @@
     .wt-caption { opacity: 0; transform: translateY(18px); will-change: opacity, transform; }
     /* Captions sit over bright frames (sky, pool): a soft shadow keeps them legible. */
     .wt-caption h1, .wt-caption p, #wt-hint { text-shadow: 0 1px 10px rgba(0, 0, 0, 0.6); }
+    .wt-chevron { animation: wtBounce 1.6s ease-in-out infinite; }
+    @keyframes wtBounce { 0%, 100% { transform: translateY(0); opacity: .75; } 50% { transform: translateY(6px); opacity: 1; } }
 
     /* Gallery lightbox backdrop */
     #gallery-lightbox::backdrop { background: rgba(12, 12, 14, 0.94); }
@@ -316,9 +318,15 @@
           </div>        </div>
       </div>
 
-      <!-- Persistent scroll hint (Michael 2026-08-27): visible for the whole walkthrough,
-           yielding only to the closing caption in the last few percent. -->
-      <p id="wt-hint" class="absolute inset-x-0 bottom-8 lg:bottom-10 z-[5] text-center px-6 font-montserrat text-white/90 text-sm sm:text-base tracking-wide pointer-events-none">Scroll to move through the house.</p>
+      <!-- Persistent scroll hint (Michael 2026-08-27): sits right under the title (the title
+           caption is anchored at bottom:52vh, so top:48vh is its lower edge), stays visible for
+           the whole walkthrough and yields only to the closing caption in the last few percent. -->
+      <div id="wt-hint" class="absolute inset-x-0 z-[5] flex justify-center px-6 pointer-events-none" style="top: calc(48vh + 1.25rem);">
+        <div class="inline-flex flex-col items-center gap-1.5 rounded-full bg-ink/45 backdrop-blur-sm px-7 py-3">
+          <p class="font-montserrat text-white text-sm sm:text-lg font-medium tracking-wide text-center">Scroll to move through the house.</p>
+          <svg class="wt-chevron w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></svg>
+        </div>
+      </div>
       <p id="wt-loading" class="absolute bottom-5 right-6 z-10 text-white/60 text-xs tracking-widest uppercase">Loading the walkthrough…</p>
     </div>
     <!-- NOTE 2026-08-04: the visible AI-walkthrough disclosure was REMOVED at Michael's
