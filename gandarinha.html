@@ -174,10 +174,6 @@
     .gd-stat-v.is-text { font-size: clamp(1.5rem, 2.1vw, 2rem); line-height: 1.2; }
     .gd-stat-s { display: block; font-family: 'Montserrat Variable', ui-sans-serif, system-ui, sans-serif; font-size: .8125rem; color: var(--grey); margin-top: .6rem; letter-spacing: 0; }
 
-    /* ── Lifestyle moments ──────────────────────────────────────────────── */
-    .gd-moment figcaption { margin-top: 1.1rem; }
-    .gd-moment p { max-width: 30em; }
-
     /* ── Floor-plan viewer (function kept, presentation rebuilt) ───────── */
     .gx-fp-tabs { display: flex; flex-wrap: wrap; gap: 0 2.5rem; border-bottom: 1px solid var(--line); }
     .gx-fp-tab { position: relative; cursor: pointer; background: none; border: 0; padding: 0 0 1rem; text-align: left; color: var(--grey); transition: color .25s; }
@@ -228,10 +224,9 @@
     .gx-lm .d { font-size: .75rem; color: var(--grey); white-space: nowrap; }
     .gx-lm:hover .t, .gx-lm.is-active .t { color: var(--olive); }
 
-    /* ── Materials board ─────────────────────────────────────────────────── */
-    .gd-mat figcaption, .gd-mat-text { padding-top: 1rem; }
-    .gd-mat-text { background: var(--stone); padding: 1.75rem; display: flex; flex-direction: column; justify-content: flex-end; }
-    .gd-spec { font-family: 'Cormorant Garamond', ui-serif, Georgia, serif; font-size: 1.35rem; line-height: 1.3; color: var(--charcoal); margin-top: .4rem; }
+    /* ── Materials & Craft: specification list ───────────────────────────── */
+    .gd-spec-row { padding-top: 1.25rem; border-top: 1px solid var(--line); }
+    .gd-spec { font-family: 'Cormorant Garamond', ui-serif, Georgia, serif; font-size: 1.5rem; line-height: 1.3; color: var(--charcoal); margin-top: .65rem; text-wrap: balance; }
 
     /* ── Form ───────────────────────────────────────────────────────────── */
     .gd-field { width: 100%; background: var(--paper); border: 1px solid var(--line); color: var(--charcoal); padding: .95rem 1rem; font-size: .9375rem; font-family: inherit; font-weight: 400; transition: border-color .25s; }
@@ -382,7 +377,7 @@
   </section>
 
   <!-- ============== 05 THE RESIDENCE ============== -->
-  <section id="residence" class="pt-28 lg:pt-44">
+  <section id="residence" class="pt-28 lg:pt-44 pb-28 lg:pb-44">
     <div class="max-w-7xl mx-auto px-6 lg:px-12">
       <div class="gd-frame aspect-[16/9] lg:aspect-[21/9] reveal">
         <img src="assets/photos/gandarinha/full/g11.jpg" alt="The residence seen from the garden, with the pool in the foreground" class="reveal-img" width="1920" height="1280" loading="lazy" />
@@ -396,29 +391,6 @@
           <p class="gd-body mt-6">The result is a residence that feels substantial without becoming formal, private without feeling isolated.</p>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- ============== 06 DESIGNED FOR LIVING ============== -->
-  <section class="max-w-7xl mx-auto px-6 lg:px-12 pt-28 lg:pt-44 pb-28 lg:pb-44">
-    <h2 class="gd-title reveal">Designed for Living</h2>
-    <div class="grid lg:grid-cols-12 gap-x-10 gap-y-16 lg:gap-y-24 mt-14 lg:mt-20">
-      <figure class="gd-moment lg:col-span-7 reveal">
-        <div class="gd-frame aspect-[3/2]"><img src="assets/photos/gandarinha/full/g12.jpg" alt="Morning light in the living room, opening to the garden" class="reveal-img" width="1920" height="1280" loading="lazy" /></div>
-        <figcaption><p class="gd-label">Morning</p><p class="gd-body mt-3">Natural light moves through the principal living spaces and into the gardens.</p></figcaption>
-      </figure>
-      <figure class="gd-moment lg:col-span-5 lg:mt-32 reveal" style="--reveal-delay: 120ms;">
-        <div class="gd-frame aspect-[4/5]"><img src="assets/photos/gandarinha/full/g09.jpg" alt="The kitchen and dining space, framed in oak" class="reveal-img" width="1920" height="1280" loading="lazy" /></div>
-        <figcaption><p class="gd-label">Entertaining</p><p class="gd-body mt-3">Generous interiors open directly onto the terraces and pool, creating an effortless setting for long lunches and evening gatherings.</p></figcaption>
-      </figure>
-      <figure class="gd-moment lg:col-span-5 reveal">
-        <div class="gd-frame aspect-[4/5]"><img src="assets/photos/gandarinha/full/g14.jpg" alt="A bedroom suite in oak with its walk-in closet and garden view" class="reveal-img" width="1920" height="1280" loading="lazy" /></div>
-        <figcaption><p class="gd-label">Retreat</p><p class="gd-body mt-3">The upper level creates a more private rhythm, centred around the principal suite and additional bedroom suites.</p></figcaption>
-      </figure>
-      <figure class="gd-moment lg:col-span-7 lg:mt-32 reveal" style="--reveal-delay: 120ms;">
-        <div class="gd-frame aspect-[3/2]"><img src="assets/photos/gandarinha-pool.jpg" alt="The private pool and limestone terrace, with the house behind" class="reveal-img" width="1600" height="1066" loading="lazy" /></div>
-        <figcaption><p class="gd-label">Outdoor living</p><p class="gd-body mt-3">A 15.5-metre private pool anchors the outdoor spaces, extending the living experience into the garden.</p></figcaption>
-      </figure>
     </div>
   </section>
 
@@ -437,7 +409,7 @@
       <div class="gx-fp-tabs reveal" role="tablist" aria-label="Floor plans">
         <button class="gx-fp-tab" id="fp-tab-b" role="tab" aria-selected="false" aria-controls="fp-rooms-b" data-level="b">
           <span class="t-lvl">Level −1</span>
-          <span class="t-name">Arrival, Garage &amp; Service</span>
+          <span class="t-name">Garage &amp; Service</span>
         </button>
         <button class="gx-fp-tab is-active" id="fp-tab-g" role="tab" aria-selected="true" aria-controls="fp-rooms-g" data-level="g">
           <span class="t-lvl">Level 0</span>
@@ -445,7 +417,7 @@
         </button>
         <button class="gx-fp-tab" id="fp-tab-f" role="tab" aria-selected="false" aria-controls="fp-rooms-f" data-level="f">
           <span class="t-lvl">Level +1</span>
-          <span class="t-name">Private Bedroom Suites</span>
+          <span class="t-name">Private Suites &amp; Terraces</span>
         </button>
       </div>
 
@@ -529,45 +501,23 @@
     </div>
   </section>
 
-  <!-- ============== 08 MATERIALS & CRAFT ============== -->
+  <!-- ============== 08 MATERIALS & CRAFT ==============
+       Specification list, deliberately without photographs (Natalie's refinement
+       2026-08-30): the photography stays in the essay below; the names are the proof. -->
   <section id="details" class="max-w-7xl mx-auto px-6 lg:px-12 py-28 lg:py-44">
     <h2 class="gd-title reveal">Materials &amp; Craft</h2>
-    <div class="grid grid-cols-2 lg:grid-cols-12 gap-x-6 lg:gap-x-10 gap-y-12 lg:gap-y-16 mt-14 lg:mt-20">
-      <figure class="gd-mat lg:col-span-4 reveal">
-        <div class="gd-frame aspect-[3/4]"><img src="assets/photos/gandarinha/full/g06.jpg" alt="The kitchen island in the living room" class="reveal-img" width="1280" height="1920" loading="lazy" /></div>
-        <figcaption><p class="gd-label">Bespoke kitchens</p><p class="gd-spec">Leiken</p></figcaption>
-      </figure>
-      <figure class="gd-mat lg:col-span-4 reveal" style="--reveal-delay: 80ms;">
-        <div class="gd-frame aspect-[3/4]"><img src="assets/photos/gandarinha/full/g21.jpg" alt="Bathroom with a window to the garden" class="reveal-img" width="1280" height="1920" loading="lazy" /></div>
-        <figcaption><p class="gd-label">Natural stone</p><p class="gd-spec">Dolomiti · Sochi Blanco · Liem Black</p></figcaption>
-      </figure>
-      <figure class="gd-mat lg:col-span-4 reveal" style="--reveal-delay: 160ms;">
-        <div class="gd-frame aspect-[3/4]"><img src="assets/photos/gandarinha/full/g22.jpg" alt="The bathtub" class="reveal-img" width="1920" height="1280" loading="lazy" /></div>
-        <figcaption><p class="gd-label">Bathrooms</p><p class="gd-spec">Villeroy &amp; Boch · Hansgrohe</p></figcaption>
-      </figure>
-      <figure class="gd-mat col-span-2 lg:col-span-6 reveal">
-        <div class="gd-frame aspect-[3/2]"><img src="assets/photos/gandarinha/full/g17.jpg" alt="The upstairs hallway in solid oak" class="reveal-img" width="1920" height="1280" loading="lazy" /></div>
-        <figcaption><p class="gd-label">Natural oak</p><p class="gd-spec">Pur Natur white-varnished solid oak flooring</p></figcaption>
-      </figure>
-      <figure class="gd-mat col-span-2 lg:col-span-6 reveal" style="--reveal-delay: 80ms;">
-        <div class="gd-frame aspect-[3/2]"><img src="assets/photos/gandarinha/full/g18.jpg" alt="The private lift in the hall" class="reveal-img" width="1920" height="1280" loading="lazy" /></div>
-        <figcaption><p class="gd-label">Private lift</p><p class="gd-spec">Liftech Homelift</p></figcaption>
-      </figure>
-      <figure class="gd-mat lg:col-span-3 reveal">
-        <div class="gd-frame aspect-[3/4]"><img src="assets/photos/gandarinha/full/g04.jpg" alt="Glass railing on the landing above the living hall" class="reveal-img" width="1280" height="1920" loading="lazy" /></div>
-        <figcaption><p class="gd-label">Glasswork</p><p class="gd-spec">Double-laminated tempered glass railings</p></figcaption>
-      </figure>
-      <div class="gd-mat-text aspect-[3/4] lg:col-span-3 reveal" style="--reveal-delay: 80ms;">
-        <p class="gd-label">Climate</p><p class="gd-spec">Underfloor heating · central air conditioning</p>
-      </div>
-      <div class="gd-mat-text aspect-[3/4] lg:col-span-3 reveal" style="--reveal-delay: 160ms;">
-        <p class="gd-label">Security</p><p class="gd-spec">Integrated indoor security sensors and window monitoring</p>
-      </div>
-      <figure class="gd-mat lg:col-span-3 reveal" style="--reveal-delay: 240ms;">
-        <div class="gd-frame aspect-[3/4]"><img src="assets/photos/gandarinha/full/g10.jpg" alt="The pool, lined in turquoise mosaic" class="reveal-img" width="1280" height="1920" loading="lazy" /></div>
-        <figcaption><p class="gd-label">Pool</p><p class="gd-spec">Niebla Turquoise mosaic</p></figcaption>
-      </figure>
-    </div>
+    <p class="gd-lead mt-8 reveal">A considered palette of natural materials, refined finishes and carefully integrated systems.</p>
+    <dl class="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-10 lg:gap-x-14 gap-y-12 lg:gap-y-16 mt-14 lg:mt-20 reveal">
+      <div class="gd-spec-row"><dt class="gd-label">Bespoke kitchens</dt><dd class="gd-spec">Leiken</dd></div>
+      <div class="gd-spec-row"><dt class="gd-label">Natural stone</dt><dd class="gd-spec">Dolomiti · Sochi Blanco · Liem Black</dd></div>
+      <div class="gd-spec-row"><dt class="gd-label">Bathrooms</dt><dd class="gd-spec">Villeroy &amp; Boch · Hansgrohe</dd></div>
+      <div class="gd-spec-row"><dt class="gd-label">Natural oak</dt><dd class="gd-spec">Pur Natur white-varnished solid oak flooring</dd></div>
+      <div class="gd-spec-row"><dt class="gd-label">Private lift</dt><dd class="gd-spec">Liftech Homelift</dd></div>
+      <div class="gd-spec-row"><dt class="gd-label">Glasswork</dt><dd class="gd-spec">Double-laminated tempered glass railings</dd></div>
+      <div class="gd-spec-row"><dt class="gd-label">Climate</dt><dd class="gd-spec">Underfloor heating · central air conditioning</dd></div>
+      <div class="gd-spec-row"><dt class="gd-label">Security</dt><dd class="gd-spec">Integrated indoor security sensors and window monitoring</dd></div>
+      <div class="gd-spec-row"><dt class="gd-label">Pool</dt><dd class="gd-spec">Niebla Turquoise mosaic</dd></div>
+    </dl>
   </section>
 
   <!-- ============== 09 INSIDE THE RESIDENCE: editorial photo essay ==============
@@ -606,7 +556,7 @@
           <div class="gd-frame col-span-12 sm:col-span-6 aspect-[3/2] reveal"><img src="assets/photos/gandarinha/thumb/g15.jpg" data-full="assets/photos/gandarinha/full/g15.jpg" alt="The garage" class="reveal-img" width="720" height="480" loading="lazy" tabindex="0" /></div>
         </div>
       </div>
-      <p class="gd-caption mt-8 reveal">Select any photograph to view it full screen. The complete documentation is shared at the viewing.</p>
+      <p class="gd-caption mt-8 reveal">Select any photograph to view it full screen. Further technical documentation is available privately upon request.</p>
 
       <!-- Property film. Desktop/tablet get the reel trimmed past its rotate-your-phone
            intro and rotated to true landscape; phones get the original portrait cut.
@@ -916,9 +866,9 @@
       if (!tabs.length || !halos) return;
 
       var LEVEL_DESCS = {
-        b: ['Level −1 · Arrival, Garage & Service', 'Garage, staff accommodation, flexible rooms, laundry and technical facilities.'],
+        b: ['Level −1 · Garage & Service', 'Garage, staff accommodation, flexible rooms, laundry and technical facilities.'],
         g: ['Level 0 · Living & Entertaining', 'High glass doors connect the principal living spaces directly with the gardens, limestone terraces and pool.'],
-        f: ['Level +1 · Private Bedroom Suites', 'A dedicated private level centred around the principal suite, additional bedroom suites, office space and panoramic terraces.']
+        f: ['Level +1 · Private Suites & Terraces', 'A dedicated private level centred around the principal suite, additional bedroom suites, office space and panoramic terraces.']
       };
       var current = 'g', activeRoom = null, pinned = false;
 
