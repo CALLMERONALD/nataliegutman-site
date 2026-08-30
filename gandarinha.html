@@ -2,8 +2,9 @@
 <!--
   ══════════════════════════════════════════════════════════════════════════
   THE GANDARINHA ESTATE, private digital dossier (rebuilt 2026-08-30 to
-  Natalie's 62-section brief: no price anywhere, no email gate, exact copy,
-  editorial sequence 01-15).
+  Natalie's 62-section brief: no price anywhere, no email gate; pass 3 on
+  2026-08-31: scroll indicator, emotional copy on verified facts only, one
+  closing "Private Access" section, no sticky bar).
   ══════════════════════════════════════════════════════════════════════════
   Unlisted page, shared by private link only. Keep: noindex meta, no sitemap
   entry, no robots.txt entry, no links from public pages, the AMI +
@@ -109,15 +110,10 @@
     }
     .gd-btn:hover { background: var(--olive); border-color: var(--olive); color: var(--ivory); }
     .gd-btn:active { transform: translateY(1px); }
-    .gd-btn-light { background: var(--ivory); border-color: var(--ivory); color: var(--charcoal); }
-    .gd-btn-light:hover { background: var(--olive); border-color: var(--olive); color: var(--ivory); }
-    .gd-btn-ghost { background: transparent; border-color: rgba(255,255,255,.55); color: #fff; }
-    .gd-btn-ghost:hover { background: rgba(255,255,255,.96); border-color: rgba(255,255,255,.96); color: var(--charcoal); }
-    .gd-btn:focus-visible, .gd-navlink:focus-visible, .gd-room:focus-visible, .gx-fp-tab:focus-visible,
+    .gd-btn-outline { background: transparent; color: var(--charcoal); }
+    .gd-btn:focus-visible, .gd-navlink:focus-visible, .gd-hero-link:focus-visible, .gd-room:focus-visible, .gx-fp-tab:focus-visible,
     .gx-pin:focus-visible, .gx-lm:focus-visible, .gd-field:focus-visible, #gd-menu-btn:focus-visible, #gd-menu-close:focus-visible,
     #gallery img:focus-visible { outline: 2px solid var(--olive); outline-offset: 3px; }
-    .gd-arrow { display: inline-block; transition: transform .4s var(--ease); }
-    .gd-btn:hover .gd-arrow { transform: translateY(3px); }
 
     /* Hairline text links */
     .gd-link { color: inherit; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.22em; text-decoration-color: currentColor; transition: text-decoration-color .35s var(--ease); }
@@ -131,19 +127,14 @@
     .gd-nav.is-solid .gd-logo-light { display: none; }
     .gd-navlink { font-size: 0.6875rem; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; opacity: .82; transition: opacity .25s; }
     .gd-navlink:hover { opacity: 1; }
-    .gd-navlink.is-cta { opacity: 1; border: 1px solid currentColor; padding: .7rem 1.15rem; transition: background .3s var(--ease), color .3s var(--ease), border-color .3s var(--ease); }
-    .gd-nav.is-solid .gd-navlink.is-cta { background: var(--charcoal); color: var(--ivory); border-color: var(--charcoal); }
-    .gd-navlink.is-cta:hover { background: var(--olive); border-color: var(--olive); color: var(--ivory); }
     #gd-menu-btn { font-size: 0.6875rem; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; background: none; border: 0; color: inherit; cursor: pointer; padding: .5rem 0; }
     #gd-menu { position: fixed; inset: 0; z-index: 40; background: var(--ivory); color: var(--charcoal); display: flex; flex-direction: column; padding: 1.25rem 1.5rem 2.5rem; }
     #gd-menu a.gd-menu-item { font-family: 'Cormorant Garamond', ui-serif, Georgia, serif; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; font-size: 2rem; line-height: 1.15; color: var(--charcoal); padding: .55rem 0; border-bottom: 1px solid var(--line); }
     #gd-menu a.gd-menu-item.is-cta { color: var(--olive); }
     #gd-menu-close { font-size: 0.6875rem; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; background: none; border: 0; color: var(--charcoal); cursor: pointer; padding: .5rem 0; }
 
-    /* Sticky mobile CTA (brief §40): slim, below the fold only, never over the hero or the form */
-    #gd-sticky { position: fixed; left: 0; right: 0; bottom: 0; z-index: 25; display: flex; justify-content: center; align-items: center; height: 3.25rem; padding-bottom: env(safe-area-inset-bottom); background: var(--charcoal); color: var(--ivory); font-size: 0.6875rem; font-weight: 500; letter-spacing: 0.24em; text-transform: uppercase; transform: translateY(100%); transition: transform .45s var(--ease); }
-    #gd-sticky.is-on { transform: none; }
-    @media (min-width: 1024px) { #gd-sticky { display: none; } } /* the ID rule above outranks Tailwind's lg:hidden */
+    /* No sticky or floating buttons anywhere on this page (Natalie, pass 3):
+       the only fixed element is the navigation bar. */
 
     /* ── Hero (scroll-scrubbed walkthrough) ─────────────────────────────── */
     @keyframes riseIn { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
@@ -153,12 +144,24 @@
     .wt-viewport { height: 100vh; height: 100dvh; }
     .wt-caption { opacity: 0; transform: translateY(18px); will-change: opacity, transform; }
     .wt-scrim { background: linear-gradient(to top, rgba(22, 22, 20, .74) 0%, rgba(22, 22, 20, .28) 45%, rgba(22, 22, 20, .18) 100%); }
-    /* Closing CTA: the copy sits over bright rooftops, so its scrim is heavier. */
-    .gd-scrim-heavy { background: linear-gradient(to top, rgba(22, 22, 20, .86) 0%, rgba(22, 22, 20, .62) 40%, rgba(22, 22, 20, .22) 100%); }
     .wt-caption h1, .wt-caption p, .wt-caption a, #wt-hint { text-shadow: 0 1px 12px rgba(0, 0, 0, .45); }
+    /* First impression: the aerial settles from a slight zoom, a hairline draws
+       in, then the cover copy rises line by line. */
+    #wt-canvas { transform-origin: center; animation: wtSettle 3.2s var(--ease) both; }
+    @keyframes wtSettle { from { transform: scale(1.07); } to { transform: none; } }
+    .gd-hero-rule { display: block; width: 3.5rem; height: 1px; background: rgba(255,255,255,.75); transform-origin: left; animation: ruleIn 1.4s var(--ease) both; }
+    @keyframes ruleIn { from { transform: scaleX(0); } to { transform: none; } }
+    .gd-hero-link { display: inline-block; font-size: 0.6875rem; font-weight: 500; letter-spacing: 0.24em; text-transform: uppercase; color: rgba(255,255,255,.92); padding-bottom: .4rem; border-bottom: 1px solid rgba(255,255,255,.45); transition: border-color .35s var(--ease); }
+    .gd-hero-link:hover { border-color: #fff; }
+    /* Scroll indicator: a hairline with a light travelling down it. Visible at
+       rest and through the walk (JS fades it before the walk ends). */
     #wt-hint { opacity: 0; will-change: opacity; }
-    .wt-chevron { animation: wtBounce 1.8s ease-in-out infinite; }
-    @keyframes wtBounce { 0%, 100% { transform: translateY(0); opacity: .7; } 50% { transform: translateY(5px); opacity: 1; } }
+    .wt-line { position: relative; display: block; width: 1px; height: 3.25rem; background: rgba(255,255,255,.28); overflow: hidden; }
+    .wt-line::after { content: ''; position: absolute; left: 0; top: 0; width: 100%; height: 45%; background: #fff; animation: wtDrop 2.4s cubic-bezier(.65, 0, .35, 1) infinite; }
+    @keyframes wtDrop { from { transform: translateY(-100%); } to { transform: translateY(230%); } }
+    /* End of the walk: the last frames dissolve into the page ivory so the
+       story begins without a hard cut. */
+    #wt-fade { background: var(--ivory); opacity: 0; will-change: opacity; }
     .gd-hero-title { font-family: 'Cormorant Garamond', ui-serif, Georgia, serif; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; line-height: 1.02; color: #fff; font-size: clamp(2.6rem, 7.2vw, 6.4rem); }
     .gd-hero-eyebrow { font-size: 0.6875rem; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(255,255,255,.8); }
 
@@ -232,7 +235,8 @@
     .gd-field { width: 100%; background: var(--paper); border: 1px solid var(--line); color: var(--charcoal); padding: .95rem 1rem; font-size: .9375rem; font-family: inherit; font-weight: 400; transition: border-color .25s; }
     .gd-field:focus { border-color: var(--charcoal); outline: none; }
     .gd-field::placeholder { color: var(--mist); }
-    select.gd-field { appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236A675F' stroke-width='1.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 1rem center; padding-right: 2.5rem; }
+    .gd-or { display: flex; align-items: center; gap: 1.25rem; }
+    .gd-or::before, .gd-or::after { content: ''; flex: 1; height: 1px; background: var(--line); }
 
     /* Gallery lightbox backdrop */
     #gallery-lightbox::backdrop { background: rgba(14, 14, 12, 0.94); }
@@ -241,7 +245,7 @@
     /* prefers-reduced-motion: the sitewide rule in tailwind.css collapses every
        animation/transition to ~0ms; the pulse/bounce keyframes above are
        additionally gated on no-preference where they loop. */
-    @media (prefers-reduced-motion: reduce) { .wt-chevron, .gx-halo { animation: none !important; } }
+    @media (prefers-reduced-motion: reduce) { .wt-line::after, .gx-halo, #wt-canvas, .gd-hero-rule { animation: none !important; } }
   </style>
   <script>
     // Same calm scroll-reveal contract as the rest of the site.
@@ -266,7 +270,7 @@
         <li><a href="#architecture" class="gd-navlink">Architecture</a></li>
         <li><a href="#details" class="gd-navlink">Details</a></li>
         <li><a href="#location" class="gd-navlink">Location</a></li>
-        <li><a href="#private-viewing" class="gd-navlink is-cta">Private viewing</a></li>
+        <li><a href="#private-access" class="gd-navlink">Private access</a></li>
       </ul>
       <button type="button" id="gd-menu-btn" class="lg:hidden rise" aria-expanded="false" aria-controls="gd-menu" style="--rise-delay: 200ms;">Menu</button>
     </nav>
@@ -282,11 +286,10 @@
       <a href="#architecture" class="gd-menu-item">Architecture</a>
       <a href="#details" class="gd-menu-item">Details</a>
       <a href="#location" class="gd-menu-item">Location</a>
-      <a href="#private-viewing" class="gd-menu-item is-cta">Private viewing</a>
+      <a href="#private-access" class="gd-menu-item is-cta">Private access</a>
     </nav>
     <p class="gd-caption mt-auto pt-10">The Gandarinha Estate · Cascais, Portugal</p>
   </div>
-  <a href="#private-viewing" id="gd-sticky" class="lg:hidden" aria-label="Request a private viewing">Private viewing</a>
 
   <!-- ============== 01 HERO: private digital dossier ==============
        The walkthrough video is pre-exploded into JPEG frames
@@ -302,28 +305,32 @@
       <noscript><img src="assets/walkthrough/gandarinha/f_001.jpg" alt="Aerial view of the estate above the Cascais coastline and the Atlantic" class="absolute inset-0 w-full h-full object-cover" /></noscript>
       <div class="wt-scrim absolute inset-0 pointer-events-none"></div>
 
-      <!-- Cover (brief §6, exact copy). Fades out as the walk begins. -->
+      <!-- Cover: rests on the first aerial frame and fades as the walk begins.
+           The only call to action here is a hairline link (pass 3: minimal). -->
       <div class="absolute inset-x-0 bottom-0 z-[5]">
-        <div class="max-w-7xl mx-auto px-6 lg:px-12 pb-16 sm:pb-20 lg:pb-24">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 pb-32 lg:pb-24">
           <div class="wt-caption" data-at="0">
-            <p class="gd-hero-eyebrow rise">Private Digital Dossier</p>
-            <h1 class="gd-hero-title mt-5 rise" style="--rise-delay: 120ms;">The Gandarinha Estate</h1>
-            <p class="font-montserrat text-white/85 text-sm sm:text-base tracking-[0.18em] uppercase mt-6 rise" style="--rise-delay: 240ms;">Cascais · Portugal</p>
-            <p class="font-montserrat font-light text-white/90 text-base sm:text-lg leading-relaxed max-w-xl mt-5 rise" style="--rise-delay: 320ms;">A rare private residence in one of Cascais’ most sought-after residential enclaves.</p>
-            <a href="#overview" class="gd-btn gd-btn-ghost mt-9 rise pointer-events-auto" style="--rise-delay: 440ms;">Explore the Estate <span class="gd-arrow" aria-hidden="true">↓</span></a>
+            <span class="gd-hero-rule" aria-hidden="true"></span>
+            <p class="gd-hero-eyebrow mt-6 rise" style="--rise-delay: 260ms;">Private Digital Dossier</p>
+            <h1 class="gd-hero-title mt-5 rise" style="--rise-delay: 380ms;">The Gandarinha Estate</h1>
+            <p class="font-montserrat text-white/85 text-sm sm:text-base tracking-[0.18em] uppercase mt-6 rise" style="--rise-delay: 500ms;">Cascais · Portugal</p>
+            <p class="font-montserrat font-light text-white/90 text-base sm:text-lg leading-relaxed max-w-xl mt-5 rise" style="--rise-delay: 580ms;">A private sanctuary of light and space, moments from the Atlantic, Cascais Marina and the historic town.</p>
+            <a href="#private-access" class="gd-hero-link mt-9 rise pointer-events-auto" style="--rise-delay: 700ms;">Confidential enquiries</a>
           </div>
         </div>
       </div>
 
-      <!-- Walk hint (Michael 2026-08-27 wants visitors to understand they can scroll
-           through the house). Rest state shows the cover's CTA instead; the hint
-           fades in once the walk starts and out as it ends. -->
-      <div id="wt-hint" class="absolute inset-x-0 bottom-8 z-[5] flex justify-center px-6 pointer-events-none">
-        <div class="inline-flex flex-col items-center gap-1.5">
-          <p class="font-montserrat text-white text-xs sm:text-sm font-medium tracking-[0.14em] uppercase text-center">Scroll to move through the house</p>
-          <svg class="wt-chevron w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></svg>
+      <!-- Scroll indicator (pass 3): visible at rest, stays through the walk so
+           visitors know the entrance is scroll-driven, yields before the fade. -->
+      <div id="wt-hint" class="absolute inset-x-0 bottom-7 lg:bottom-24 z-[5] pointer-events-none">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 flex justify-center lg:justify-end">
+          <div class="inline-flex flex-col items-center gap-3">
+            <p class="font-montserrat text-white/90 text-[0.6875rem] font-medium tracking-[0.24em] uppercase text-center">Scroll to explore the estate</p>
+            <span class="wt-line" aria-hidden="true"></span>
+          </div>
         </div>
       </div>
+      <div id="wt-fade" class="absolute inset-0 z-[6] pointer-events-none"></div>
       <p id="wt-loading" class="absolute bottom-5 right-6 z-10 text-white/60 text-xs tracking-widest uppercase">Loading the walkthrough…</p>
     </div>
     <!-- NOTE 2026-08-04: the visible AI-walkthrough disclosure was REMOVED at Michael's
@@ -334,10 +341,10 @@
 
   <!-- ============== 02 SPACE. LIGHT. PRIVACY. ============== -->
   <section id="overview" class="max-w-7xl mx-auto px-6 lg:px-12 pt-28 lg:pt-44 pb-24 lg:pb-36">
-    <h2 class="gd-title gd-title-lg reveal">Space. Light. Privacy.</h2>
+    <h2 class="gd-title gd-title-lg reveal">A Sanctuary of Light and Space</h2>
     <div class="grid lg:grid-cols-12 gap-10 lg:gap-16 mt-14 lg:mt-20">
-      <p class="gd-lead lg:col-span-5 lg:col-start-2 reveal">Set within Gandarinha, the residence brings together generous architecture, refined materials and an effortless relationship between indoor and outdoor living.</p>
-      <p class="gd-lead lg:col-span-5 lg:col-start-7 lg:mt-24 reveal" style="--reveal-delay: 120ms;">Quiet and discreet, yet moments from the Atlantic, Cascais Marina and the historic centre, the estate offers a rare combination of privacy, scale and proximity.</p>
+      <p class="gd-lead lg:col-span-5 lg:col-start-2 reveal">Within Gandarinha, the days keep a quieter rhythm. Light moves through generous rooms, high glass opens the living spaces onto gardens, terraces and the pool, and the line between indoors and outdoors gently disappears.</p>
+      <p class="gd-lead lg:col-span-5 lg:col-start-7 lg:mt-24 reveal" style="--reveal-delay: 120ms;">Quiet and discreet, yet moments from the Atlantic, Cascais Marina and the historic centre, this is a home for those who want privacy without retreating from the world.</p>
     </div>
   </section>
 
@@ -368,9 +375,9 @@
         </div>
         <div class="lg:col-span-6 lg:col-start-7 reveal" style="--reveal-delay: 120ms;">
           <h2 class="gd-title">A Rare Address in Cascais</h2>
-          <p class="gd-body mt-10">Gandarinha occupies a particularly privileged position within Cascais: close enough to the town’s waterfront, marina and historic centre to make everyday life effortless, yet sufficiently discreet to preserve a sense of privacy.</p>
-          <p class="gd-body mt-6">Properties offering this combination of scale, privacy and proximity to the Atlantic are rarely offered to the market.</p>
-          <p class="gd-quote mt-14 lg:mt-20">Here, the address is not simply part of the residence. It is part of the opportunity.</p>
+          <p class="gd-body mt-10">Gandarinha holds a privileged position within Cascais. The waterfront, the marina and the historic centre are close enough to make everyday life effortless, yet the streets here are quiet and residential, and home feels a world apart.</p>
+          <p class="gd-body mt-6">Homes that combine this scale, this privacy and this proximity to the Atlantic rarely reach the market. When they do, they are shown quietly, and to a few.</p>
+          <p class="gd-quote mt-14 lg:mt-20">Here, the address is not simply part of the residence. It is part of the life it offers.</p>
         </div>
       </div>
     </div>
@@ -385,10 +392,10 @@
       <div class="grid lg:grid-cols-12 gap-10 lg:gap-16 mt-16 lg:mt-24">
         <h2 class="gd-title lg:col-span-4 reveal">The Residence</h2>
         <div class="lg:col-span-7 lg:col-start-6 reveal" style="--reveal-delay: 120ms;">
-          <p class="gd-lead">Set within one of Cascais’ most sought-after residential enclaves, the residence is conceived around space, light and an effortless relationship between architecture and landscape.</p>
-          <p class="gd-body mt-6">Generous living areas open directly towards the gardens, terraces and pool, creating a natural flow between quiet private moments and larger gatherings.</p>
-          <p class="gd-body mt-6">Across three levels, the residence balances entertaining spaces, private bedroom suites and discreet service areas, while a private lift connects the home throughout.</p>
-          <p class="gd-body mt-6">The result is a residence that feels substantial without becoming formal, private without feeling isolated.</p>
+          <p class="gd-quote">Where indoor and outdoor living merge seamlessly.</p>
+          <p class="gd-lead mt-10">The residence is conceived around space, light and an effortless dialogue between architecture and landscape. Generous living areas open directly to the gardens, the limestone terraces and the pool, so a morning coffee, a long lunch or an evening with friends drifts outside without a second thought.</p>
+          <p class="gd-body mt-6">Across three levels, entertaining spaces, private bedroom suites and discreet service areas each have their place, and a private lift links the whole house quietly.</p>
+          <p class="gd-body mt-6">The result is a home that feels substantial without becoming formal, and private without ever feeling isolated.</p>
         </div>
       </div>
     </div>
@@ -403,7 +410,7 @@
     <div class="max-w-7xl mx-auto px-6 lg:px-12 py-28 lg:py-44">
       <div class="grid lg:grid-cols-12 gap-8 lg:gap-16 mb-16 lg:mb-20">
         <h2 class="gd-title lg:col-span-5 reveal">Architectural Layout</h2>
-        <p class="gd-lead lg:col-span-6 lg:col-start-7 reveal" style="--reveal-delay: 120ms;">Designed for grand entertaining and private retreat, the residence is organised across three levels, connected by a private lift.</p>
+        <p class="gd-lead lg:col-span-6 lg:col-start-7 reveal" style="--reveal-delay: 120ms;">Grand entertaining on the garden level, private retreat above, and everything the house needs kept discreetly out of sight below: three levels, connected by a private lift.</p>
       </div>
 
       <div class="gx-fp-tabs reveal" role="tablist" aria-label="Floor plans">
@@ -527,6 +534,7 @@
   <section class="bg-[#E9E4D9]">
     <div class="max-w-7xl mx-auto px-6 lg:px-12 py-28 lg:py-44">
       <h2 class="gd-title reveal">Inside the Residence</h2>
+      <p class="gd-lead mt-8 reveal">From the arrival courtyard to the upper terraces, the residence as it is: open, light and quiet.</p>
       <div id="gallery" class="mt-14 lg:mt-20 space-y-16 lg:space-y-28">
         <div class="gd-frame aspect-[16/9] reveal"><img src="assets/photos/gandarinha-quarter.jpg" data-full="assets/photos/gandarinha-quarter.jpg" alt="Aerial view of the estate in Gandarinha with the Atlantic beyond" class="reveal-img" width="1920" height="1080" loading="lazy" tabindex="0" /></div>
         <div class="grid grid-cols-12 gap-6 lg:gap-10 items-start">
@@ -598,8 +606,8 @@
     <div class="grid lg:grid-cols-12 gap-10 lg:gap-16">
       <h2 class="gd-title lg:col-span-5 reveal">Everything Within Reach</h2>
       <div class="lg:col-span-6 lg:col-start-7 reveal" style="--reveal-delay: 120ms;">
-        <p class="gd-lead">An Atlantic setting with an unusually effortless connection to the town, the coastline and Lisbon.</p>
-        <p class="gd-body mt-6">Gandarinha offers a rare balance: the privacy and prestige expected of an exceptional residential enclave, combined with immediate access to Cascais’ waterfront, marina, historic centre and everyday amenities.</p>
+        <p class="gd-lead">Mornings on the Atlantic coast, lunch at the marina, an evening in the historic centre, and Lisbon thirty minutes away.</p>
+        <p class="gd-body mt-6">Gandarinha offers a rare balance: the calm of a private residential enclave, with the waterfront, the marina, the historic centre and everyday life close at hand. Guincho’s beaches and the dunes of Oitavos lie along the coast to the west, Estoril and Lisbon to the east.</p>
       </div>
     </div>
     <div class="gx-map grid lg:grid-cols-12 gap-10 lg:gap-16 items-center mt-16 lg:mt-24" id="lm-map">
@@ -634,101 +642,58 @@
     </div>
   </section>
 
-  <!-- ============== 11 PRIVATE LOCATION ============== -->
-  <section class="bg-[#E9E4D9]">
-    <div class="max-w-2xl mx-auto px-6 py-24 lg:py-32 text-center reveal">
-      <h2 class="gd-title">A Private Address</h2>
-      <p class="gd-lead mx-auto mt-6">The exact address is disclosed privately to qualified parties.</p>
+  <!-- ============== 11 PRIVATE ACCESS (the single closing section) ==============
+       Natalie's pass 3 (2026-08-31): the presenter, ONE WhatsApp route and ONE
+       three-field form, replacing the former A Private Address / Presented by /
+       Experience / Request a Viewing run. Same Sheets contract as every other
+       form on the site: nothing is sent until assets/form-endpoint.js carries a
+       SHEETS_URL; until then the honest "unavailable" fallback (WhatsApp + phone)
+       is shown. -->
+  <section id="private-access" class="bg-[#E9E4D9]">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12 py-28 lg:py-44">
+      <div class="grid lg:grid-cols-12 gap-14 lg:gap-16">
+        <div class="lg:col-span-4 reveal">
+          <div class="gd-frame aspect-[4/5] max-w-sm">
+            <img src="assets/natalie-1280.jpg" alt="Natalie Gutman" class="reveal-img" width="909" height="1280" loading="lazy" />
+          </div>
+          <img src="assets/logo-script.png" alt="" aria-hidden="true" class="h-9 w-auto mt-8" loading="lazy" />
+          <p class="gd-serif gd-ink text-2xl mt-3">Natalie Gutman</p>
+          <p class="gd-caption mt-1">eXp Realty · AMI 18470</p>
+        </div>
+        <div class="lg:col-span-7 lg:col-start-6 reveal" style="--reveal-delay: 120ms;">
+          <h2 class="gd-title gd-title-lg">Private Access</h2>
+          <p class="gd-lead mt-10">The Gandarinha Estate is shown by private appointment. Natalie arranges every viewing personally and discreetly, and the exact address is disclosed only to qualified parties.</p>
+          <p class="gd-body mt-6">For a conversation about the estate, message Natalie directly, or leave your details and she will contact you personally.</p>
+          <div class="mt-10 flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-8">
+            <a href="https://wa.me/351969227709" class="gd-btn">Message Natalie on WhatsApp</a>
+            <a href="tel:+351969227709" class="gd-link gd-ink text-sm">+351 969 227 709</a>
+          </div>
+          <p class="gd-or gd-label mt-14">or leave your details</p>
+          <form id="viewing-form" action="#" method="post" class="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-x-6 gap-y-7" novalidate>
+            <div>
+              <label for="v-name" class="block gd-label mb-3">Full name</label>
+              <input id="v-name" name="name" type="text" required autocomplete="name" class="gd-field" />
+            </div>
+            <div>
+              <label for="v-email" class="block gd-label mb-3">Email</label>
+              <input id="v-email" name="email" type="email" required autocomplete="email" class="gd-field" />
+            </div>
+            <div>
+              <label for="v-phone" class="block gd-label mb-3">Phone / WhatsApp</label>
+              <input id="v-phone" name="phone" type="tel" required autocomplete="tel" class="gd-field" />
+            </div>
+            <div class="sm:col-span-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 mt-2">
+              <p class="gd-caption max-w-xs">Your information will be handled confidentially. By sending, you agree to the <a href="/privacy" class="gd-link gd-ink">Privacy Policy</a>.</p>
+              <button type="submit" class="gd-btn gd-btn-outline">Send Private Enquiry</button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- ============== 12 PRESENTED PRIVATELY BY NATALIE GUTMAN ============== -->
-  <section class="max-w-7xl mx-auto px-6 lg:px-12 py-28 lg:py-44">
-    <div class="grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-      <div class="lg:col-span-4 reveal">
-        <div class="gd-frame aspect-[4/5] max-w-sm">
-          <img src="assets/natalie-1280.jpg" alt="Natalie Gutman" class="reveal-img" width="909" height="1280" loading="lazy" />
-        </div>
-      </div>
-      <div class="lg:col-span-7 lg:col-start-6 reveal" style="--reveal-delay: 120ms;">
-        <h2 class="gd-title">Presented Privately by<br class="hidden lg:block" /> Natalie Gutman</h2>
-        <p class="gd-lead mt-10">Natalie Gutman presents the Gandarinha Estate privately to buyers seeking exceptional residential opportunities in Cascais and the Lisbon coast.</p>
-        <p class="gd-body mt-6">Private viewings are arranged personally and discreetly.</p>
-        <p class="gd-caption mt-10">eXp Realty · AMI 18470</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============== 13 EXPERIENCE THE ESTATE PRIVATELY ============== -->
-  <section id="experience" class="relative overflow-hidden bg-ink text-white">
-    <img src="assets/photos/gandarinha-aerial.jpg" alt="" aria-hidden="true" class="absolute inset-0 w-full h-full object-cover" width="1600" height="900" loading="lazy" />
-    <div class="gd-scrim-heavy absolute inset-0 pointer-events-none"></div>
-    <div class="relative max-w-7xl mx-auto px-6 lg:px-12 min-h-[90vh] min-h-[90dvh] flex items-end pt-40 pb-20 lg:pb-28">
-      <div class="max-w-2xl reveal">
-        <h2 class="gd-title gd-title-lg" style="color: #fff;">Experience the Estate Privately.</h2>
-        <p class="gd-lead mt-8 text-white/90">The Gandarinha Estate is presented by private appointment.</p>
-        <p class="gd-body mt-4 text-white/85">For further information or to arrange a confidential viewing, contact Natalie directly.</p>
-        <div class="flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-10 mt-12">
-          <a href="#private-viewing" class="gd-btn gd-btn-light">Request a Private Viewing</a>
-          <a href="https://wa.me/351969227709" class="gd-link text-xs font-medium tracking-[0.2em] uppercase text-white/90">Contact Natalie directly on WhatsApp</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============== 14 REQUEST A PRIVATE VIEWING ==============
-       One form, same Sheets contract as every other form on the site: no request
-       is sent until assets/form-endpoint.js carries a SHEETS_URL; until then the
-       honest "unavailable" fallback with WhatsApp + phone routes is shown. -->
-  <section id="private-viewing" class="max-w-7xl mx-auto px-6 lg:px-12 py-28 lg:py-44">
-    <div class="grid lg:grid-cols-12 gap-12 lg:gap-16">
-      <div class="lg:col-span-4 reveal">
-        <h2 class="gd-title">Request a Private Viewing</h2>
-        <p class="gd-body mt-8">Natalie will contact you personally. All enquiries are handled discreetly.</p>
-        <div class="mt-10 space-y-2 text-sm">
-          <p><a href="https://wa.me/351969227709" class="gd-link gd-ink">WhatsApp</a></p>
-          <p><a href="tel:+351969227709" class="gd-link gd-ink">+351 969 227 709</a></p>
-        </div>
-      </div>
-      <form id="viewing-form" action="#" method="post" class="lg:col-span-7 lg:col-start-6 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-7 reveal" style="--reveal-delay: 120ms;" novalidate>
-        <div class="sm:col-span-2">
-          <label for="v-name" class="block gd-label mb-3">Full name</label>
-          <input id="v-name" name="name" type="text" required autocomplete="name" class="gd-field" />
-        </div>
-        <div>
-          <label for="v-email" class="block gd-label mb-3">Email</label>
-          <input id="v-email" name="email" type="email" required autocomplete="email" class="gd-field" />
-        </div>
-        <div>
-          <label for="v-phone" class="block gd-label mb-3">Phone / WhatsApp</label>
-          <input id="v-phone" name="phone" type="tel" required autocomplete="tel" class="gd-field" />
-        </div>
-        <div>
-          <label for="v-pref" class="block gd-label mb-3">Preferred contact</label>
-          <select id="v-pref" name="preferred" class="gd-field">
-            <option value="whatsapp">WhatsApp</option>
-            <option value="phone">Phone</option>
-            <option value="email">Email</option>
-          </select>
-        </div>
-        <div>
-          <label for="v-request" class="block gd-label mb-3">Enquiry</label>
-          <select id="v-request" name="request" class="gd-field">
-            <option value="viewing">Private viewing</option>
-            <option value="information">Additional information</option>
-            <option value="dossier">Property dossier</option>
-          </select>
-        </div>
-        <div class="sm:col-span-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 mt-2">
-          <p class="gd-caption max-w-xs">Your information will be handled confidentially. By sending, you agree to the <a href="/privacy" class="gd-link gd-ink">Privacy Policy</a>.</p>
-          <button type="submit" class="gd-btn">Send Private Enquiry</button>
-        </div>
-      </form>
-    </div>
-  </section>
-
-  <!-- ============== 15 FOOTER (legal stays verbatim, visually quiet) ============== -->
-  <footer class="bg-[#E9E4D9]">
+  <!-- ============== 12 FOOTER (legal stays verbatim, visually quiet) ============== -->
+  <footer class="bg-[#E9E4D9]" style="border-top: 1px solid var(--line);">
     <div class="max-w-7xl mx-auto px-6 lg:px-12 py-16 lg:py-20">
       <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-10 items-start">
         <div>
@@ -761,24 +726,17 @@
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // ── Navigation state, mobile menu, sticky CTA ─────────────────────────────
+    // ── Navigation state + mobile menu ────────────────────────────────────────
+    // The walkthrough loop below also turns the bar solid during the ivory
+    // fade at the end of the walk; this observer is the reduced-motion and
+    // scrolled-past baseline.
     (function () {
       var nav = document.getElementById('gd-nav');
-      var sticky = document.getElementById('gd-sticky');
       var hero = document.getElementById('walkthrough');
-      var viewing = document.getElementById('private-viewing');
-      var heroVisible = true, viewingVisible = false;
-      function sync() {
-        nav.classList.toggle('is-solid', !heroVisible);
-        if (sticky) sticky.classList.toggle('is-on', !heroVisible && !viewingVisible);
-      }
       if ('IntersectionObserver' in window) {
         new IntersectionObserver(function (entries) {
-          entries.forEach(function (en) { heroVisible = en.isIntersecting; }); sync();
+          entries.forEach(function (en) { nav.classList.toggle('is-solid', !en.isIntersecting); });
         }, { threshold: 0, rootMargin: '-72px 0px 0px 0px' }).observe(hero); // hero counts as gone once it is under the 68px bar
-        new IntersectionObserver(function (entries) {
-          entries.forEach(function (en) { viewingVisible = en.isIntersecting; }); sync();
-        }, { threshold: 0.1 }).observe(viewing);
       } else {
         nav.classList.add('is-solid');
       }
@@ -798,15 +756,14 @@
       document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !menu.hidden) setMenu(false); });
     })();
 
-    // ── Private viewing form: same contract as the contact page ──────────────
+    // ── Private enquiry form: same contract as the contact page ──────────────
     // Posts to the shared Google Sheets endpoint when configured. No third-party
-    // request is made until SHEETS_URL is set. The enquiry type travels inside
-    // the `property` field so the Apps Script needs no changes.
+    // request is made until SHEETS_URL is set. The property name travels in the
+    // `property` field so the Apps Script needs no changes.
     (function () {
       var SHEETS_URL = window.SHEETS_URL || '';
       var form = document.getElementById('viewing-form');
       if (!form) return;
-      var LABELS = { viewing: 'private viewing', information: 'additional information', dossier: 'property dossier' };
       form.addEventListener('submit', function (e) {
         e.preventDefault();
         var nameEl  = form.querySelector('#v-name');
@@ -816,11 +773,10 @@
         if (!emailEl || !emailEl.checkValidity()) { emailEl && emailEl.reportValidity(); return; }
         if (!phoneEl || !phoneEl.checkValidity()) { phoneEl && phoneEl.reportValidity(); return; }
         var name = nameEl.value;
-        var request = (form.querySelector('#v-request') || {}).value || 'viewing';
-        var property = 'The Gandarinha Estate, ' + (LABELS[request] || LABELS.viewing);
+        var property = 'The Gandarinha Estate, private enquiry';
 
         if (!SHEETS_URL) {
-          window.showFormUnavailable(form, 'sm:col-span-2 py-10');
+          window.showFormUnavailable(form, 'sm:col-span-3 py-6');
           return;
         }
 
@@ -833,11 +789,10 @@
             + '&name='      + encodeURIComponent(name)
             + '&email='     + encodeURIComponent(emailEl.value)
             + '&phone='     + encodeURIComponent(phoneEl.value)
-            + '&preferred=' + encodeURIComponent((form.querySelector('#v-pref') || {}).value || '')
         }).catch(function () {});
 
         var result = document.createElement('div');
-        result.className = 'sm:col-span-2 py-10';
+        result.className = 'sm:col-span-3 py-6';
         var heading = document.createElement('p');
         heading.className = 'gd-serif gd-ink text-3xl mb-3';
         heading.textContent = 'Enquiry received.';
@@ -1001,6 +956,9 @@
       var canvas = document.getElementById('wt-canvas');
       var loading = document.getElementById('wt-loading');
       var hint = document.getElementById('wt-hint');
+      var fade = document.getElementById('wt-fade');
+      var nav = document.getElementById('gd-nav');
+      var t0 = performance.now();
       var captions = Array.prototype.slice.call(document.querySelectorAll('.wt-caption'));
       if (!section || !canvas || !canvas.getContext) return;
       var ctx = canvas.getContext('2d');
@@ -1114,8 +1072,14 @@
           captions[c].style.transform = 'translateY(' + (18 * (1 - vis)) + 'px)';
           captions[c].style.pointerEvents = vis > 0.5 ? '' : 'none';
         }
-        // The hint appears once the cover has gone and yields before the walk ends.
-        if (hint) hint.style.opacity = clamp01((walk - 0.04) * 14) * clamp01((0.96 - walk) * 14);
+        // Scroll indicator: eases in after the cover copy, holds through the
+        // walk, and yields before the ivory fade takes over.
+        var intro = clamp01((performance.now() - t0 - 900) / 900);
+        if (hint) hint.style.opacity = intro * clamp01((0.9 - walk) * 12);
+        // Last 7% of the walk dissolves into the page ivory; the bar goes solid
+        // at the same time so white nav text never sits on ivory.
+        if (fade) fade.style.opacity = clamp01((walk - 0.93) / 0.07);
+        if (nav) nav.classList.toggle('is-solid', walk > 0.94);
         requestAnimationFrame(loop);
       }
 
