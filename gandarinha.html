@@ -4,7 +4,9 @@
   THE GANDARINHA ESTATE, private digital dossier (rebuilt 2026-08-30 to
   Natalie's 62-section brief: no price anywhere, no email gate; pass 3 on
   2026-08-31: scroll indicator, emotional copy on verified facts only, one
-  closing "Private Access" section, no sticky bar).
+  closing "Private Access" section, no sticky bar; pass 4 on 2026-08-31: prominent
+  click-to-play scroll prompt, her new titles/tagline, estate aerial at the top of
+  the overview, Essentials regrouped, Private Access note).
   ══════════════════════════════════════════════════════════════════════════
   Unlisted page, shared by private link only. Keep: noindex meta, no sitemap
   entry, no robots.txt entry, no links from public pages, the AMI +
@@ -151,14 +153,24 @@
     @keyframes wtSettle { from { transform: scale(1.07); } to { transform: none; } }
     .gd-hero-rule { display: block; width: 3.5rem; height: 1px; background: rgba(255,255,255,.75); transform-origin: left; animation: ruleIn 1.4s var(--ease) both; }
     @keyframes ruleIn { from { transform: scaleX(0); } to { transform: none; } }
+    .gd-hero-tagline { font-family: 'Cormorant Garamond', ui-serif, Georgia, serif; font-style: italic; font-weight: 400; font-size: clamp(1.35rem, 2.2vw, 1.9rem); line-height: 1.3; color: rgba(255,255,255,.94); max-width: 26em; text-wrap: balance; }
     .gd-hero-link { display: inline-block; font-size: 0.6875rem; font-weight: 500; letter-spacing: 0.24em; text-transform: uppercase; color: rgba(255,255,255,.92); padding-bottom: .4rem; border-bottom: 1px solid rgba(255,255,255,.45); transition: border-color .35s var(--ease); }
     .gd-hero-link:hover { border-color: #fff; }
-    /* Scroll indicator: a hairline with a light travelling down it. Visible at
-       rest and through the walk (JS fades it before the walk ends). */
+    /* Scroll prompt (pass 4: prominent): tracked caps line, a quieter sub line,
+       and a pulsing ring with a nudging chevron. It is a button: tapping it plays
+       the walkthrough once and lands on the overview (no loop, no snap). Visible
+       at rest and through the walk; JS fades it before the ivory dissolve. */
     #wt-hint { opacity: 0; will-change: opacity; }
-    .wt-line { position: relative; display: block; width: 1px; height: 3.25rem; background: rgba(255,255,255,.28); overflow: hidden; }
-    .wt-line::after { content: ''; position: absolute; left: 0; top: 0; width: 100%; height: 45%; background: #fff; animation: wtDrop 2.4s cubic-bezier(.65, 0, .35, 1) infinite; }
-    @keyframes wtDrop { from { transform: translateY(-100%); } to { transform: translateY(230%); } }
+    .wt-prompt { display: inline-flex; flex-direction: column; align-items: center; gap: .85rem; background: none; border: 0; padding: .5rem .25rem; color: #fff; cursor: pointer; text-align: center; font-family: 'Montserrat Variable', ui-sans-serif, system-ui, sans-serif; }
+    .wt-prompt-text { display: block; font-size: .8125rem; font-weight: 500; letter-spacing: .26em; text-transform: uppercase; }
+    .wt-prompt-sub { display: block; font-size: .6875rem; font-weight: 400; letter-spacing: .06em; color: rgba(255,255,255,.8); margin-top: -.35rem; }
+    .wt-ring { position: relative; display: flex; align-items: center; justify-content: center; width: 3.25rem; height: 3.25rem; border-radius: 9999px; border: 1px solid rgba(255,255,255,.85); background: rgba(22,22,20,.28); transition: background .3s var(--ease), color .3s var(--ease); }
+    .wt-ring::before { content: ''; position: absolute; inset: -1px; border-radius: 9999px; border: 1px solid rgba(255,255,255,.75); animation: wtPulse 2.4s ease-out infinite; }
+    @keyframes wtPulse { 0% { transform: scale(1); opacity: .85; } 100% { transform: scale(1.75); opacity: 0; } }
+    .wt-arrow { width: 1.15rem; height: 1.15rem; animation: wtNudge 1.8s ease-in-out infinite; }
+    @keyframes wtNudge { 0%, 100% { transform: translateY(-2px); } 50% { transform: translateY(3px); } }
+    .wt-prompt:hover .wt-ring { background: rgba(255,255,255,.96); color: var(--charcoal); }
+    .wt-prompt:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
     /* End of the walk: the last frames dissolve into the page ivory so the
        story begins without a hard cut. */
     #wt-fade { background: var(--ivory); opacity: 0; will-change: opacity; }
@@ -171,11 +183,11 @@
     .gd-frame { overflow: hidden; background: var(--stone); }
     .gd-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-    /* ── The Essentials ─────────────────────────────────────────────────── */
-    .gd-stat { padding-top: 1.5rem; border-top: 1px solid var(--line); }
-    .gd-stat-v { font-family: 'Cormorant Garamond', ui-serif, Georgia, serif; font-weight: 400; color: var(--charcoal); font-size: clamp(2.5rem, 4.2vw, 3.75rem); line-height: 1; margin-top: .9rem; letter-spacing: -0.01em; font-variant-numeric: lining-nums; }
-    .gd-stat-v.is-text { font-size: clamp(1.5rem, 2.1vw, 2rem); line-height: 1.2; }
-    .gd-stat-s { display: block; font-family: 'Montserrat Variable', ui-sans-serif, system-ui, sans-serif; font-size: .8125rem; color: var(--grey); margin-top: .6rem; letter-spacing: 0; }
+    /* ── The Essentials: four categories, each a short serif list ──────────── */
+    .gd-ess { padding-top: 1.5rem; border-top: 1px solid var(--charcoal); }
+    .gd-ess-list { margin-top: .9rem; }
+    .gd-ess-list li { font-family: 'Cormorant Garamond', ui-serif, Georgia, serif; font-size: clamp(1.4rem, 1.9vw, 1.85rem); line-height: 1.25; color: var(--charcoal); padding: .6rem 0; border-bottom: 1px solid var(--line); font-variant-numeric: lining-nums; text-wrap: balance; }
+    .gd-ess-list li:last-child { border-bottom: 0; }
 
     /* ── Floor-plan viewer (function kept, presentation rebuilt) ───────── */
     .gx-fp-tabs { display: flex; flex-wrap: wrap; gap: 0 2.5rem; border-bottom: 1px solid var(--line); }
@@ -245,7 +257,7 @@
     /* prefers-reduced-motion: the sitewide rule in tailwind.css collapses every
        animation/transition to ~0ms; the pulse/bounce keyframes above are
        additionally gated on no-preference where they loop. */
-    @media (prefers-reduced-motion: reduce) { .wt-line::after, .gx-halo, #wt-canvas, .gd-hero-rule { animation: none !important; } }
+    @media (prefers-reduced-motion: reduce) { .wt-ring::before, .wt-arrow, .gx-halo, #wt-canvas, .gd-hero-rule { animation: none !important; } }
   </style>
   <script>
     // Same calm scroll-reveal contract as the rest of the site.
@@ -308,26 +320,27 @@
       <!-- Cover: rests on the first aerial frame and fades as the walk begins.
            The only call to action here is a hairline link (pass 3: minimal). -->
       <div class="absolute inset-x-0 bottom-0 z-[5]">
-        <div class="max-w-7xl mx-auto px-6 lg:px-12 pb-32 lg:pb-24">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 pb-44 lg:pb-24">
           <div class="wt-caption" data-at="0">
             <span class="gd-hero-rule" aria-hidden="true"></span>
             <p class="gd-hero-eyebrow mt-6 rise" style="--rise-delay: 260ms;">Private Digital Dossier</p>
             <h1 class="gd-hero-title mt-5 rise" style="--rise-delay: 380ms;">The Gandarinha Estate</h1>
             <p class="font-montserrat text-white/85 text-sm sm:text-base tracking-[0.18em] uppercase mt-6 rise" style="--rise-delay: 500ms;">Cascais · Portugal</p>
-            <p class="font-montserrat font-light text-white/90 text-base sm:text-lg leading-relaxed max-w-xl mt-5 rise" style="--rise-delay: 580ms;">A private sanctuary of light and space, moments from the Atlantic, Cascais Marina and the historic town.</p>
+            <p class="gd-hero-tagline mt-6 rise" style="--rise-delay: 580ms;">An Architectural Masterpiece in the Heart of Gandarinha, Cascais</p>
             <a href="#private-access" class="gd-hero-link mt-9 rise pointer-events-auto" style="--rise-delay: 700ms;">Confidential enquiries</a>
           </div>
         </div>
       </div>
 
-      <!-- Scroll indicator (pass 3): visible at rest, stays through the walk so
-           visitors know the entrance is scroll-driven, yields before the fade. -->
-      <div id="wt-hint" class="absolute inset-x-0 bottom-7 lg:bottom-24 z-[5] pointer-events-none">
+      <!-- Scroll prompt (pass 4): prominent, visible at rest, stays through the walk.
+           Tap/click plays the walkthrough once and lands on the overview. -->
+      <div id="wt-hint" class="absolute inset-x-0 bottom-6 lg:bottom-24 z-[5]">
         <div class="max-w-7xl mx-auto px-6 lg:px-12 flex justify-center lg:justify-end">
-          <div class="inline-flex flex-col items-center gap-3">
-            <p class="font-montserrat text-white/90 text-[0.6875rem] font-medium tracking-[0.24em] uppercase text-center">Scroll to explore the estate</p>
-            <span class="wt-line" aria-hidden="true"></span>
-          </div>
+          <button type="button" id="wt-play" class="wt-prompt" aria-label="Scroll to explore the estate. Activate to play the walkthrough and continue to the overview.">
+            <span class="wt-prompt-text">Scroll to explore the estate</span>
+            <span class="wt-prompt-sub">Scroll down, or tap here, to enter the walkthrough</span>
+            <span class="wt-ring" aria-hidden="true"><svg class="wt-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></svg></span>
+          </button>
         </div>
       </div>
       <div id="wt-fade" class="absolute inset-0 z-[6] pointer-events-none"></div>
@@ -339,28 +352,46 @@
          Do not re-add without asking him. -->
   </section>
 
-  <!-- ============== 02 SPACE. LIGHT. PRIVACY. ============== -->
-  <section id="overview" class="max-w-7xl mx-auto px-6 lg:px-12 pt-28 lg:pt-44 pb-24 lg:pb-36">
-    <h2 class="gd-title gd-title-lg reveal">A Sanctuary of Light and Space</h2>
-    <div class="grid lg:grid-cols-12 gap-10 lg:gap-16 mt-14 lg:mt-20">
-      <p class="gd-lead lg:col-span-5 lg:col-start-2 reveal">Within Gandarinha, the days keep a quieter rhythm. Light moves through generous rooms, high glass opens the living spaces onto gardens, terraces and the pool, and the line between indoors and outdoors gently disappears.</p>
-      <p class="gd-lead lg:col-span-5 lg:col-start-7 lg:mt-24 reveal" style="--reveal-delay: 120ms;">Quiet and discreet, yet moments from the Atlantic, Cascais Marina and the historic centre, this is a home for those who want privacy without retreating from the world.</p>
+  <!-- ============== 02 OVERVIEW: the estate aerial + her opening copy ==============
+       gandarinha-estate-aerial.jpg is a 4:5 crop of the DJI master (metadata
+       stripped): the residence, its pool, gardens and walls with the Atlantic
+       beyond. The neighbourhood-scale aerial moved down to A Rare Address. -->
+  <section id="overview" class="max-w-7xl mx-auto px-6 lg:px-12 pt-16 lg:pt-24 pb-24 lg:pb-36">
+    <div class="grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+      <div class="lg:col-span-6 reveal">
+        <div class="gd-frame aspect-[4/5]">
+          <img src="assets/photos/gandarinha-estate-aerial.jpg" alt="Aerial view of the estate: the residence, its pool, gardens and boundary walls, with Gandarinha and the Atlantic beyond" class="reveal-img" width="1600" height="2000" loading="lazy" />
+        </div>
+      </div>
+      <div class="lg:col-span-5 lg:col-start-8 reveal" style="--reveal-delay: 120ms;">
+        <h2 class="gd-title">Where Architecture Meets Coastal Serenity</h2>
+        <p class="gd-lead mt-10">The Gandarinha Estate is more than a residence; it is a refined private sanctuary. Within its gates, light moves through generous rooms, high glass opens living spaces seamlessly onto gardens, terraces, and the pool, and the line between indoors and outdoors disappears. Quiet and discreet, yet moments from the Atlantic and Cascais Marina.</p>
+      </div>
     </div>
   </section>
 
   <!-- ============== 03 THE ESSENTIALS ============== -->
   <section class="max-w-7xl mx-auto px-6 lg:px-12 pb-28 lg:pb-44">
     <h2 class="gd-title reveal">The Essentials</h2>
-    <dl class="grid grid-cols-2 lg:grid-cols-4 gap-x-8 lg:gap-x-12 gap-y-14 lg:gap-y-20 mt-12 lg:mt-16 reveal">
-      <div class="gd-stat"><dt class="gd-label">Private grounds</dt><dd class="gd-stat-v">2,438 m²</dd></div>
-      <div class="gd-stat"><dt class="gd-label">Built area</dt><dd class="gd-stat-v">1,020 m²</dd></div>
-      <div class="gd-stat"><dt class="gd-label">Bedroom suites</dt><dd class="gd-stat-v">6<span class="gd-stat-s">+ staff accommodation</span></dd></div>
-      <div class="gd-stat"><dt class="gd-label">Levels</dt><dd class="gd-stat-v">3</dd></div>
-      <div class="gd-stat"><dt class="gd-label">Private lift</dt><dd class="gd-stat-v is-text">All three levels</dd></div>
-      <div class="gd-stat"><dt class="gd-label">Swimming pool</dt><dd class="gd-stat-v">15.5 × 5 m</dd></div>
-      <!-- Energy class is MANDATORY in every PT property ad (DL 101-D/2020). Class A confirmed by Michael 2026-08-04. -->
-      <div class="gd-stat"><dt class="gd-label">Energy rating</dt><dd class="gd-stat-v">A</dd></div>
-      <div class="gd-stat"><dt class="gd-label">Integrated home systems</dt><dd class="gd-stat-v is-text">Climate · security · lift</dd></div>
+    <dl class="grid sm:grid-cols-2 gap-x-10 lg:gap-x-16 gap-y-12 lg:gap-y-16 mt-12 lg:mt-16 reveal">
+      <div class="gd-ess">
+        <dt class="gd-label">Plot &amp; living area</dt>
+        <dd><ul class="gd-ess-list"><li>Plot 2,438 m²</li><li>Built area 1,020 m²</li><li>3 levels</li></ul></dd>
+      </div>
+      <div class="gd-ess">
+        <dt class="gd-label">Accommodation</dt>
+        <dd><ul class="gd-ess-list"><li>6 en-suite bedrooms</li><li>Independent staff quarters</li></ul></dd>
+      </div>
+      <div class="gd-ess">
+        <dt class="gd-label">Outdoor &amp; amenities</dt>
+        <!-- "heated" is Natalie's claim (pass 4 prompt); not in the brochure, on the sourcing-email list. -->
+        <dd><ul class="gd-ess-list"><li>15.5 × 5 m heated pool</li><li>Landscaped gardens &amp; limestone terraces</li></ul></dd>
+      </div>
+      <div class="gd-ess">
+        <dt class="gd-label">Infrastructure</dt>
+        <!-- Energy class is MANDATORY in every PT property ad (DL 101-D/2020). Class A confirmed by Michael 2026-08-04. -->
+        <dd><ul class="gd-ess-list"><li>Private homelift, serving all 3 levels</li><li>Garage &amp; security systems</li><li>Energy rating A</li></ul></dd>
+      </div>
     </dl>
   </section>
 
@@ -368,12 +399,12 @@
   <section class="bg-[#E9E4D9]">
     <div class="max-w-7xl mx-auto px-6 lg:px-12 py-28 lg:py-44">
       <div class="grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-        <div class="lg:col-span-5 reveal">
-          <div class="gd-frame aspect-[3/4] lg:aspect-[4/5]">
-            <img src="assets/photos/gandarinha-aerial-portrait.jpg" alt="Aerial view of the estate within Gandarinha, the Cascais coastline and the Atlantic beyond" class="reveal-img" width="1400" height="2489" loading="lazy" />
+        <div class="lg:col-span-6 lg:order-2 reveal">
+          <div class="gd-frame aspect-[3/2]">
+            <img src="assets/photos/gandarinha-aerial.jpg" alt="Aerial view over Gandarinha and the Cascais coastline, the Atlantic beyond" class="reveal-img" width="1600" height="900" loading="lazy" />
           </div>
         </div>
-        <div class="lg:col-span-6 lg:col-start-7 reveal" style="--reveal-delay: 120ms;">
+        <div class="lg:col-span-5 lg:order-1 reveal" style="--reveal-delay: 120ms;">
           <h2 class="gd-title">A Rare Address in Cascais</h2>
           <p class="gd-body mt-10">Gandarinha holds a privileged position within Cascais. The waterfront, the marina and the historic centre are close enough to make everyday life effortless, yet the streets here are quiet and residential, and home feels a world apart.</p>
           <p class="gd-body mt-6">Homes that combine this scale, this privacy and this proximity to the Atlantic rarely reach the market. When they do, they are shown quietly, and to a few.</p>
@@ -512,7 +543,7 @@
        Specification list, deliberately without photographs (Natalie's refinement
        2026-08-30): the photography stays in the essay below; the names are the proof. -->
   <section id="details" class="max-w-7xl mx-auto px-6 lg:px-12 py-28 lg:py-44">
-    <h2 class="gd-title reveal">Materials &amp; Craft</h2>
+    <h2 class="gd-title reveal">Uncompromised Craftsmanship</h2>
     <p class="gd-lead mt-8 reveal">A considered palette of natural materials, refined finishes and carefully integrated systems.</p>
     <dl class="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-10 lg:gap-x-14 gap-y-12 lg:gap-y-16 mt-14 lg:mt-20 reveal">
       <div class="gd-spec-row"><dt class="gd-label">Bespoke kitchens</dt><dd class="gd-spec">Leiken</dd></div>
@@ -604,7 +635,7 @@
        is "Lisboa 30 min."; no other drive times are claimed. -->
   <section id="location" class="max-w-7xl mx-auto px-6 lg:px-12 py-28 lg:py-44">
     <div class="grid lg:grid-cols-12 gap-10 lg:gap-16">
-      <h2 class="gd-title lg:col-span-5 reveal">Everything Within Reach</h2>
+      <h2 class="gd-title lg:col-span-5 reveal">Cascais’ Most Coveted Enclave</h2>
       <div class="lg:col-span-6 lg:col-start-7 reveal" style="--reveal-delay: 120ms;">
         <p class="gd-lead">Mornings on the Atlantic coast, lunch at the marina, an evening in the historic centre, and Lisbon thirty minutes away.</p>
         <p class="gd-body mt-6">Gandarinha offers a rare balance: the calm of a private residential enclave, with the waterfront, the marina, the historic centre and everyday life close at hand. Guincho’s beaches and the dunes of Oitavos lie along the coast to the west, Estoril and Lisbon to the east.</p>
@@ -662,8 +693,8 @@
         </div>
         <div class="lg:col-span-7 lg:col-start-6 reveal" style="--reveal-delay: 120ms;">
           <h2 class="gd-title gd-title-lg">Private Access</h2>
-          <p class="gd-lead mt-10">The Gandarinha Estate is shown by private appointment. Natalie arranges every viewing personally and discreetly, and the exact address is disclosed only to qualified parties.</p>
-          <p class="gd-body mt-6">For a conversation about the estate, message Natalie directly, or leave your details and she will contact you personally.</p>
+          <p class="gd-lead mt-10">The Gandarinha Estate is shown by private appointment. Natalie arranges every viewing personally and discreetly.</p>
+          <p class="gd-body mt-6">Due to the exclusive nature of The Gandarinha Estate, full technical architectural drawings, exact location details, and comprehensive private video walkthroughs are available exclusively upon verified enquiry.</p>
           <div class="mt-10 flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-8">
             <a href="https://wa.me/351969227709" class="gd-btn">Message Natalie on WhatsApp</a>
             <a href="tel:+351969227709" class="gd-link gd-ink text-sm">+351 969 227 709</a>
@@ -956,6 +987,8 @@
       var canvas = document.getElementById('wt-canvas');
       var loading = document.getElementById('wt-loading');
       var hint = document.getElementById('wt-hint');
+      var play = document.getElementById('wt-play');
+      var overview = document.getElementById('overview');
       var fade = document.getElementById('wt-fade');
       var nav = document.getElementById('gd-nav');
       var t0 = performance.now();
@@ -1019,7 +1052,7 @@
           else { resize(); draw(0); }
         });
         if (captions[0]) { captions[0].style.opacity = 1; captions[0].style.transform = 'none'; }
-        if (hint) hint.remove(); // nothing to scroll through in this mode
+        if (hint) hint.remove(); // nothing to scroll through in this mode; the nav reaches the overview
         if (loading) loading.remove();
         window.addEventListener('resize', function () { resize(); draw(0); });
         return;
@@ -1086,6 +1119,36 @@
       resize();
       readScroll();
       requestAnimationFrame(loop);
+
+      // Tap/click on the prompt plays the walk ONCE: a 7.5 s eased scroll from
+      // wherever the visitor is to the overview (aerial under the bar). Any
+      // wheel / touch / key / pointer input hands control straight back; it
+      // never restarts by itself. html has scroll-behavior:smooth sitewide, so
+      // it is switched off for the duration or every step would re-animate.
+      var auto = null, html = document.documentElement;
+      function stopAuto() { if (auto) { cancelAnimationFrame(auto); auto = null; html.style.scrollBehavior = ''; } }
+      // Only the tap that starts the play is exempt (pointer/touch on the button
+      // itself); keys and wheel always cancel, even while the button has focus.
+      ['wheel', 'touchstart', 'keydown', 'pointerdown'].forEach(function (ev) {
+        window.addEventListener(ev, function (e) {
+          var onButton = (ev === 'pointerdown' || ev === 'touchstart') && play && play.contains(e.target);
+          if (auto && !onButton) stopAuto();
+        }, { passive: true });
+      });
+      if (play && overview) play.addEventListener('click', function () {
+        stopAuto();
+        var start = window.scrollY;
+        var end = overview.getBoundingClientRect().top + start - 68;
+        var t0 = performance.now(), dur = 7500;
+        html.style.scrollBehavior = 'auto';
+        function step(now) {
+          var t = Math.min(1, (now - t0) / dur);
+          var e = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+          window.scrollTo(0, start + (end - start) * e);
+          if (t < 1) { auto = requestAnimationFrame(step); } else { auto = null; html.style.scrollBehavior = ''; }
+        }
+        auto = requestAnimationFrame(step);
+      });
     })();
 
     // ── Gallery lightbox: native <dialog>, arrows + keyboard, scroll lock ────
