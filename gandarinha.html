@@ -1,33 +1,29 @@
 <!doctype html>
 <!--
   ══════════════════════════════════════════════════════════════════════════
-  THE GANDARINHA ESTATE, private digital dossier (rebuilt 2026-08-30 to
-  Natalie's 62-section brief: no price anywhere, no email gate; pass 3 on
-  2026-08-31: scroll indicator, emotional copy on verified facts only, one
-  closing "Private Access" section, no sticky bar; pass 4 on 2026-08-31: prominent
-  click-to-play scroll prompt, her new titles/tagline, estate aerial at the top of
-  the overview, Essentials regrouped, Private Access note).
+  EXCLUSIVE LISTING TEMPLATE (first instance: Villa Gandarinha)
   ══════════════════════════════════════════════════════════════════════════
-  Unlisted page, shared by private link only. Keep: noindex meta, no sitemap
-  entry, no robots.txt entry, no links from public pages, the AMI +
-  disclaimer footer, the energy class (mandatory in every PT property ad,
-  DL 101-D/2020, fail-closed rule). Rebuild CSS (npm run build:css) and run
-  backend/check-nav.mjs after edits.
-
-  PRICE: deliberately absent from this entire page, its metadata, alt text
-  and image names (Natalie's brief §2, Michael 2026-08-13). Do not re-add,
-  not even "on request".
-
-  Facts come from the brochure program sheets (gandarinha-work/pdf/) and
-  Natalie's brief; anything not sourced there is flagged in
-  docs/gandarinha-redesign-2026-08-30.md rather than invented.
+  One file per exclusive property, shared by private link only.
+  To create a new exclusive listing page:
+    1. Copy this file to <slug>.html (URL becomes nataliegutman.com/<slug>).
+    2. Replace every property-specific value:
+       name, location line, intro statement, specs, price, energy class,
+       section copy, photo paths, alt texts.
+    3. Drop the property's photos in assets/photos/<slug>/ and point the
+       <img> tags at them (LOCAL files only: the site has a strict
+       zero-third-party-requests rule).
+    4. Keep: noindex meta, no sitemap entry, no robots.txt entry, no links
+       from public pages, the AMI + disclaimer footer, the energy class line
+       (mandatory in every PT property ad, DL 101-D/2020, fail-closed rule).
+    5. Rebuild CSS (npm run build:css) and run backend/check-nav.mjs.
+  ══════════════════════════════════════════════════════════════════════════
 -->
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>The Gandarinha Estate | Private Residence in Cascais</title>
-  <meta name="description" content="A private digital presentation of The Gandarinha Estate, an exceptional residence in Gandarinha, Cascais, combining architectural scale, privacy and an extraordinary Atlantic setting." />
+  <title>The Gandarinha Estate · Cascais · Natalie Gutman</title>
+  <meta name="description" content="The Gandarinha Estate: an architectural masterpiece on 2,438 m² of private land in the noble quarter of Cascais. Presented by Natalie Gutman." />
   <!-- Unlisted page: shared by private link only. noindex, no canonical, not in
        the sitemap, deliberately NOT in robots.txt, no public page links here. -->
   <meta name="robots" content="noindex,nofollow" />
@@ -35,8 +31,8 @@
   <!-- Open Graph: the link preview IS the first impression when Natalie sends it -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Natalie Gutman" />
-  <meta property="og:title" content="The Gandarinha Estate | Private Residence in Cascais" />
-  <meta property="og:description" content="A private digital presentation of The Gandarinha Estate, an exceptional residence in Gandarinha, Cascais, combining architectural scale, privacy and an extraordinary Atlantic setting." />
+  <meta property="og:title" content="The Gandarinha Estate · Cascais" />
+  <meta property="og:description" content="Cascais' finest architectural residence. By private appointment only." />
   <meta property="og:image" content="https://nataliegutman.com/assets/photos/gandarinha-aerial.jpg" />
   <meta property="og:locale" content="en_US" />
 
@@ -51,213 +47,174 @@
   <style>
     [hidden] { display: none !important; }
 
-    /* ── Design system for THIS page (Natalie's brief §41-44) ─────────────
-       European architectural luxury: warm ivory ground, soft stone bands,
-       charcoal type, muted grey secondary, one muted olive accent used only
-       for states. No gold, no gradients as decoration, no glass, sharp
-       corners throughout. Page-local on purpose: input.css is shared by all
-       public pages and this page must not inherit the site's gold accent. */
-    :root {
-      --ivory: #F5F2EB;
-      --paper: #FBFAF6;
-      --stone: #E9E4D9;
-      --line: #DAD4C7;
-      --charcoal: #24231F;
-      --text: #3A3934;
-      --grey: #605D56;
-      --mist: #9C978C;
-      --olive: #6F7257;
-      --ease: cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    html { scroll-padding-top: 4.25rem; } /* = nav height, so a jumped-to section starts flush under the bar */
-    body {
-      background: var(--ivory);
-      color: var(--text);
-      font-family: 'Montserrat Variable', ui-sans-serif, system-ui, sans-serif;
-      font-weight: 300;
-      line-height: 1.8;
-    }
-    strong { font-weight: 500; }
-    ::selection { background: var(--stone); color: var(--charcoal); }
+    /* ── Page typography (Natalie's brief, 2026-08-13) ───────────────────
+       All non-heading text on THIS page is Montserrat; headings stay
+       Cormorant Garamond (the brief's named alternative — Cinzel is not
+       self-hosted and the site has a strict zero-third-party-requests rule)
+       in estate gold: #9A7330 on light grounds (AA large-text contrast on
+       both white and the F6F4F0 surface; the lighter #B8893C fails on
+       surface), #D3A55B on dark. Page-local on purpose: the brief covers
+       the Gandarinha page only, input.css is shared by all 11 pages. */
+    body, .label { font-family: 'Montserrat Variable', ui-sans-serif, system-ui, sans-serif; }
 
-    /* Type */
-    .gd-serif { font-family: 'Cormorant Garamond', ui-serif, Georgia, serif; font-weight: 400; }
-    .gd-title {
-      font-family: 'Cormorant Garamond', ui-serif, Georgia, serif; font-weight: 500;
-      text-transform: uppercase; letter-spacing: 0.06em; line-height: 1.05; color: var(--charcoal);
-      font-size: clamp(2rem, 4.2vw, 3.5rem);
-    }
-    .gd-title-lg { font-size: clamp(2.4rem, 6vw, 5.25rem); letter-spacing: 0.05em; }
-    .gd-lead { font-size: clamp(1.05rem, 1.35vw, 1.2rem); line-height: 1.9; max-width: 34em; }
-    .gd-body { font-size: 1rem; line-height: 1.9; max-width: 36em; }
-    .gd-quote {
-      font-family: 'Cormorant Garamond', ui-serif, Georgia, serif; font-weight: 400; font-style: italic;
-      font-size: clamp(1.75rem, 3.6vw, 3rem); line-height: 1.25; color: var(--charcoal); text-wrap: balance;
-    }
-    .gd-label {
-      font-family: 'Montserrat Variable', ui-sans-serif, system-ui, sans-serif;
-      font-size: 0.6875rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.24em; color: var(--grey);
-    }
-    .gd-caption { font-size: 0.8125rem; color: var(--grey); line-height: 1.7; }
-    .gd-muted { color: var(--grey); }
-    .gd-ink { color: var(--charcoal); }
+    /* ── Cinematic layer (template-owned, no external libs) ─────────────── */
+    /* Hero text: staggered rise on load (above the fold, so not IO-driven). */
+    @keyframes riseIn { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
+    .rise { animation: riseIn 1.1s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: var(--rise-delay, 0ms); }
 
-    /* Buttons: sharp, tracked caps, one hover behaviour everywhere */
-    .gd-btn {
-      display: inline-flex; align-items: center; justify-content: center; gap: .75rem;
-      font-family: 'Montserrat Variable', ui-sans-serif, system-ui, sans-serif;
-      font-size: 0.75rem; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase;
-      padding: 1.1rem 2.1rem; border: 1px solid var(--charcoal); background: var(--charcoal); color: var(--ivory);
-      white-space: nowrap; cursor: pointer; transition: background .3s var(--ease), color .3s var(--ease), border-color .3s var(--ease), transform .2s var(--ease);
-    }
-    .gd-btn:hover { background: var(--olive); border-color: var(--olive); color: var(--ivory); }
-    .gd-btn:active { transform: translateY(1px); }
-    .gd-btn-outline { background: transparent; color: var(--charcoal); }
-    .gd-btn:focus-visible, .gd-navlink:focus-visible, .gd-hero-link:focus-visible, .gd-room:focus-visible, .gx-fp-tab:focus-visible,
-    .gx-pin:focus-visible, .gx-lm:focus-visible, .gd-field:focus-visible, #gd-menu-btn:focus-visible, #gd-menu-close:focus-visible,
-    #gallery img:focus-visible { outline: 2px solid var(--olive); outline-offset: 3px; }
-
-    /* Hairline text links */
-    .gd-link { color: inherit; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.22em; text-decoration-color: currentColor; transition: text-decoration-color .35s var(--ease); }
-    .gd-link:hover { text-decoration-color: transparent; }
-
-    /* ── Navigation: transparent over the hero, ivory once the hero is passed ── */
-    .gd-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 30; height: 4.25rem; color: #fff; transition: background .45s var(--ease), color .45s var(--ease), box-shadow .45s var(--ease); }
-    .gd-nav.is-solid { background: rgba(245, 242, 235, .97); color: var(--charcoal); box-shadow: 0 1px 0 var(--line); }
-    .gd-nav .gd-logo-dark { display: none; }
-    .gd-nav.is-solid .gd-logo-dark { display: block; }
-    .gd-nav.is-solid .gd-logo-light { display: none; }
-    .gd-navlink { font-size: 0.6875rem; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; opacity: .82; transition: opacity .25s; }
-    .gd-navlink:hover { opacity: 1; }
-    #gd-menu-btn { font-size: 0.6875rem; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; background: none; border: 0; color: inherit; cursor: pointer; padding: .5rem 0; }
-    #gd-menu { position: fixed; inset: 0; z-index: 40; background: var(--ivory); color: var(--charcoal); display: flex; flex-direction: column; padding: 1.25rem 1.5rem 2.5rem; }
-    #gd-menu a.gd-menu-item { font-family: 'Cormorant Garamond', ui-serif, Georgia, serif; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; font-size: 2rem; line-height: 1.15; color: var(--charcoal); padding: .55rem 0; border-bottom: 1px solid var(--line); }
-    #gd-menu a.gd-menu-item.is-cta { color: var(--olive); }
-    #gd-menu-close { font-size: 0.6875rem; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; background: none; border: 0; color: var(--charcoal); cursor: pointer; padding: .5rem 0; }
-
-    /* No sticky or floating buttons anywhere on this page (Natalie, pass 3):
-       the only fixed element is the navigation bar. */
-
-    /* ── Hero (scroll-scrubbed walkthrough) ─────────────────────────────── */
-    @keyframes riseIn { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
-    .rise { animation: riseIn 1.2s var(--ease) both; animation-delay: var(--rise-delay, 0ms); }
+    /* Scroll-scrubbed walkthrough: captions are positioned/faded from JS. */
     /* vh first = fallback for Safari <15.4 (no dvh): without it this sticky
-       wrapper has no height and the whole 400vh hero renders blank. */
+       wrapper has no height and the whole 850vh hero renders blank. */
     .wt-viewport { height: 100vh; height: 100dvh; }
     .wt-caption { opacity: 0; transform: translateY(18px); will-change: opacity, transform; }
-    .wt-scrim { background: linear-gradient(to top, rgba(22, 22, 20, .74) 0%, rgba(22, 22, 20, .28) 45%, rgba(22, 22, 20, .18) 100%); }
-    .wt-caption h1, .wt-caption p, .wt-caption a, #wt-hint { text-shadow: 0 1px 12px rgba(0, 0, 0, .45); }
-    /* First impression: the aerial settles from a slight zoom, a hairline draws
-       in, then the cover copy rises line by line. */
-    #wt-canvas { transform-origin: center; animation: wtSettle 3.2s var(--ease) both; }
-    @keyframes wtSettle { from { transform: scale(1.07); } to { transform: none; } }
-    .gd-hero-rule { display: block; width: 3.5rem; height: 1px; background: rgba(255,255,255,.75); transform-origin: left; animation: ruleIn 1.4s var(--ease) both; }
-    @keyframes ruleIn { from { transform: scaleX(0); } to { transform: none; } }
-    .gd-hero-tagline { font-family: 'Cormorant Garamond', ui-serif, Georgia, serif; font-style: italic; font-weight: 400; font-size: clamp(1.35rem, 2.2vw, 1.9rem); line-height: 1.3; color: rgba(255,255,255,.94); max-width: 26em; text-wrap: balance; }
-    .gd-hero-link { display: inline-block; font-size: 0.6875rem; font-weight: 500; letter-spacing: 0.24em; text-transform: uppercase; color: rgba(255,255,255,.92); padding-bottom: .4rem; border-bottom: 1px solid rgba(255,255,255,.45); transition: border-color .35s var(--ease); }
-    .gd-hero-link:hover { border-color: #fff; }
-    /* Scroll prompt (pass 4: prominent): tracked caps line, a quieter sub line,
-       and a pulsing ring with a nudging chevron. It is a button: tapping it plays
-       the walkthrough once and lands on the overview (no loop, no snap). Visible
-       at rest and through the walk; JS fades it before the ivory dissolve. */
-    #wt-hint { opacity: 0; will-change: opacity; }
-    .wt-prompt { display: inline-flex; flex-direction: column; align-items: center; gap: .85rem; background: none; border: 0; padding: .5rem .25rem; color: #fff; cursor: pointer; text-align: center; font-family: 'Montserrat Variable', ui-sans-serif, system-ui, sans-serif; }
-    .wt-prompt-text { display: block; font-size: .8125rem; font-weight: 500; letter-spacing: .26em; text-transform: uppercase; }
-    .wt-prompt-sub { display: block; font-size: .6875rem; font-weight: 400; letter-spacing: .06em; color: rgba(255,255,255,.8); margin-top: -.35rem; }
-    .wt-ring { position: relative; display: flex; align-items: center; justify-content: center; width: 3.25rem; height: 3.25rem; border-radius: 9999px; border: 1px solid rgba(255,255,255,.85); background: rgba(22,22,20,.28); transition: background .3s var(--ease), color .3s var(--ease); }
-    .wt-ring::before { content: ''; position: absolute; inset: -1px; border-radius: 9999px; border: 1px solid rgba(255,255,255,.75); animation: wtPulse 2.4s ease-out infinite; }
-    @keyframes wtPulse { 0% { transform: scale(1); opacity: .85; } 100% { transform: scale(1.75); opacity: 0; } }
-    .wt-arrow { width: 1.15rem; height: 1.15rem; animation: wtNudge 1.8s ease-in-out infinite; }
-    @keyframes wtNudge { 0%, 100% { transform: translateY(-2px); } 50% { transform: translateY(3px); } }
-    .wt-prompt:hover .wt-ring { background: rgba(255,255,255,.96); color: var(--charcoal); }
-    .wt-prompt:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
-    /* End of the walk: the last frames dissolve into the page ivory so the
-       story begins without a hard cut. */
-    #wt-fade { background: var(--ivory); opacity: 0; will-change: opacity; }
-    .gd-hero-title { font-family: 'Cormorant Garamond', ui-serif, Georgia, serif; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; line-height: 1.02; color: #fff; font-size: clamp(2.6rem, 7.2vw, 6.4rem); }
-    .gd-hero-eyebrow { font-size: 0.6875rem; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(255,255,255,.8); }
-
-    /* Full-bleed imagery gets a gentle scale-settle when revealed. */
-    .reveal-img { transition: transform 1.6s var(--ease); transform: scale(1.05); }
-    .is-in .reveal-img, .reveal-img.is-in { transform: scale(1); }
-    .gd-frame { overflow: hidden; background: var(--stone); }
-    .gd-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-    /* ── The Essentials: four categories, each a short serif list ──────────── */
-    .gd-ess { padding-top: 1.5rem; border-top: 1px solid var(--charcoal); }
-    .gd-ess-list { margin-top: .9rem; }
-    .gd-ess-list li { font-family: 'Cormorant Garamond', ui-serif, Georgia, serif; font-size: clamp(1.4rem, 1.9vw, 1.85rem); line-height: 1.25; color: var(--charcoal); padding: .6rem 0; border-bottom: 1px solid var(--line); font-variant-numeric: lining-nums; text-wrap: balance; }
-    .gd-ess-list li:last-child { border-bottom: 0; }
-
-    /* ── Floor-plan viewer (function kept, presentation rebuilt) ───────── */
-    .gx-fp-tabs { display: flex; flex-wrap: wrap; gap: 0 2.5rem; border-bottom: 1px solid var(--line); }
-    .gx-fp-tab { position: relative; cursor: pointer; background: none; border: 0; padding: 0 0 1rem; text-align: left; color: var(--grey); transition: color .25s; }
-    .gx-fp-tab::after { content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 1px; background: var(--charcoal); transform: scaleX(0); transform-origin: left; transition: transform .45s var(--ease); }
-    .gx-fp-tab .t-lvl { display: block; font-size: .6875rem; font-weight: 500; text-transform: uppercase; letter-spacing: .22em; margin-bottom: .35rem; }
-    .gx-fp-tab .t-name { display: block; font-family: 'Cormorant Garamond', ui-serif, Georgia, serif; font-size: 1.5rem; line-height: 1.15; color: inherit; }
-    .gx-fp-tab:hover { color: var(--charcoal); }
-    .gx-fp-tab.is-active { color: var(--charcoal); }
-    .gx-fp-tab.is-active::after { transform: scaleX(1); }
-
-    .gx-fp-grid { display: grid; gap: 2.5rem; margin-top: 3rem; }
-    @media (min-width: 1024px) { .gx-fp-grid { grid-template-columns: 7fr 5fr; gap: 4rem; align-items: start; } }
-    .gx-fp-scroller { background: var(--paper); border: 1px solid var(--line); overflow-x: auto; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; }
-    .gx-fp-canvas { position: relative; aspect-ratio: 1600 / 1210; }
-    @media (max-width: 639px) { .gx-fp-canvas { width: 220%; } } /* phones: pan the plan sideways */
-    .gx-fp-plan { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0; transition: opacity .6s var(--ease); }
-    .gx-fp-plan.is-active { opacity: 1; }
-    .gx-halo { position: absolute; left: var(--x); top: var(--y); width: 5.2%; aspect-ratio: 1; transform: translate(-50%, -50%); border-radius: 9999px; pointer-events: none; border: 1.5px solid var(--olive); background: rgba(111, 114, 87, .14); box-shadow: 0 0 0 5px rgba(111, 114, 87, .12); }
-    @media (prefers-reduced-motion: no-preference) {
-      .gx-halo { animation: gxPulse 2.6s ease-in-out infinite; }
-      @keyframes gxPulse { 0%, 100% { box-shadow: 0 0 0 4px rgba(111, 114, 87, .14); } 50% { box-shadow: 0 0 0 14px rgba(111, 114, 87, .03); } }
-    }
-    .gx-fp-desc { min-height: 4.6rem; padding: 1.1rem 0 0; border-top: 1px solid var(--line); margin-top: 1rem; }
-    .gx-fp-desc .d-room { display: block; font-family: 'Cormorant Garamond', ui-serif, Georgia, serif; font-size: 1.35rem; color: var(--charcoal); line-height: 1.2; margin-bottom: .2rem; }
-    .gd-room { display: flex; align-items: baseline; justify-content: space-between; gap: 1.5rem; width: 100%; padding: 1rem 0; border: 0; border-bottom: 1px solid var(--line); background: none; cursor: pointer; text-align: left; color: var(--text); transition: color .2s; }
-    .gd-room .r-name { font-family: 'Cormorant Garamond', ui-serif, Georgia, serif; font-size: 1.35rem; line-height: 1.2; color: var(--charcoal); transition: transform .35s var(--ease); display: inline-block; }
-    .gd-room .r-area { font-size: .8125rem; color: var(--grey); white-space: nowrap; font-variant-numeric: lining-nums; }
-    .gd-room:hover .r-name, .gd-room.is-active .r-name { transform: translateX(.35rem); }
-    .gd-room.is-active .r-name { color: var(--olive); }
-
-    /* ── Location diagram (brochure map, simplified to the priority points) ──
-       The map file carries its own printed legend on the left; the stage
-       CSS-crops that margin out of view. Crop: left 24% hidden → visible 76%. */
-    .gx-map-stage { position: relative; overflow: hidden; aspect-ratio: 2414 / 2223; background: #FEFEFD; border: 1px solid var(--line); }
-    .gx-map-img { position: absolute; top: 0; left: -31.58%; width: 131.58%; height: 100%; max-width: none; }
-    /* The printed legend's second column extends past the crop line over open
-       ocean; a soft white patch washes the residue out. Pins sit above it. */
-    .gx-map-stage::before { content: ''; position: absolute; top: 13%; height: 30%; left: -3%; width: 18%; background: #FEFEFD; filter: blur(7px); z-index: 1; pointer-events: none; }
-    .gx-pin { position: absolute; z-index: 2; left: var(--x); top: var(--y); transform: translate(-50%,-50%); width: clamp(24px, 2.7vw, 34px); aspect-ratio: 1; border-radius: 9999px; padding: 0; background: var(--charcoal); color: #fff; border: 1.5px solid rgba(255,255,255,.9); font-family: 'Montserrat Variable', ui-sans-serif, system-ui, sans-serif; font-size: .6875rem; font-weight: 500; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: transform .2s, background .2s, opacity .2s; }
-    .gx-pin::before { content: ''; position: absolute; inset: -8px; border-radius: 9999px; } /* touch target */
-    .gx-pin:hover { transform: translate(-50%,-50%) scale(1.12); }
-    .gx-pin.is-active { background: var(--olive); transform: translate(-50%,-50%) scale(1.2); }
-    .gx-map.has-active .gx-pin:not(.is-active) { opacity: .4; }
-    .gx-map-ring { position: absolute; z-index: 2; left: var(--x); top: var(--y); width: 3.4rem; aspect-ratio: 1; transform: translate(-50%,-50%); border-radius: 9999px; border: 1.5px solid var(--olive); pointer-events: none; }
-    .gx-lm { display: flex; align-items: baseline; gap: 1rem; width: 100%; padding: .85rem 0; background: none; border: 0; border-bottom: 1px solid var(--line); color: var(--text); cursor: pointer; text-align: left; transition: color .2s; }
-    .gx-lm .n { font-size: .65rem; letter-spacing: .1em; color: var(--grey); min-width: 1.4rem; font-variant-numeric: lining-nums; }
-    .gx-lm .t { flex: 1; font-family: 'Cormorant Garamond', ui-serif, Georgia, serif; font-size: 1.35rem; line-height: 1.2; color: var(--charcoal); }
-    .gx-lm .d { font-size: .75rem; color: var(--grey); white-space: nowrap; }
-    .gx-lm:hover .t, .gx-lm.is-active .t { color: var(--olive); }
-
-    /* ── Materials & Craft: specification list ───────────────────────────── */
-    .gd-spec-row { padding-top: 1.25rem; border-top: 1px solid var(--line); }
-    .gd-spec { font-family: 'Cormorant Garamond', ui-serif, Georgia, serif; font-size: 1.5rem; line-height: 1.3; color: var(--charcoal); margin-top: .65rem; text-wrap: balance; }
-
-    /* ── Form ───────────────────────────────────────────────────────────── */
-    .gd-field { width: 100%; background: var(--paper); border: 1px solid var(--line); color: var(--charcoal); padding: .95rem 1rem; font-size: .9375rem; font-family: inherit; font-weight: 400; transition: border-color .25s; }
-    .gd-field:focus { border-color: var(--charcoal); outline: none; }
-    .gd-field::placeholder { color: var(--mist); }
-    .gd-or { display: flex; align-items: center; gap: 1.25rem; }
-    .gd-or::before, .gd-or::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+    /* Captions sit over bright frames (sky, pool): a soft shadow keeps them legible. */
+    .wt-caption h1, .wt-caption p, #wt-hint { text-shadow: 0 1px 10px rgba(0, 0, 0, 0.6); }
+    .wt-chevron { animation: wtBounce 1.6s ease-in-out infinite; }
+    @keyframes wtBounce { 0%, 100% { transform: translateY(0); opacity: .75; } 50% { transform: translateY(6px); opacity: 1; } }
 
     /* Gallery lightbox backdrop */
-    #gallery-lightbox::backdrop { background: rgba(14, 14, 12, 0.94); }
-    #gallery img { cursor: zoom-in; }
+    #gallery-lightbox::backdrop { background: rgba(12, 12, 14, 0.94); }
 
-    /* prefers-reduced-motion: the sitewide rule in tailwind.css collapses every
-       animation/transition to ~0ms; the pulse/bounce keyframes above are
-       additionally gated on no-preference where they loop. */
-    @media (prefers-reduced-motion: reduce) { .wt-ring::before, .wt-arrow, .gx-halo, #wt-canvas, .gd-hero-rule { animation: none !important; } }
+    /* Full-bleed imagery gets a gentle scale-settle when revealed. */
+    .reveal-img { transition: transform 1.4s cubic-bezier(0.16, 1, 0.3, 1); transform: scale(1.06); }
+    .is-in .reveal-img, .reveal-img.is-in { transform: scale(1); }
+
+    /* ══ gx-: page-local components (kept OUT of tailwind.css deliberately —
+       another working session owns that file; these styles are template-scoped
+       and use the site's tokens: ink #1A1A1A, surface #F6F4F0, hairline #E6E3DD,
+       accent #B8893C on light / #D3A55B on dark). ══ */
+
+    /* ── Floor-plan viewer ─────────────────────────────────────────────── */
+    .gx-fp-tabs { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.6rem; }
+    .gx-fp-tab {
+      cursor: pointer; background: #fff; border: 1px solid #E6E3DD; padding: 0.8rem 1.3rem;
+      text-align: left; min-width: 12rem; transition: border-color .2s, background .2s;
+    }
+    .gx-fp-tab .t-lvl { font-family: 'Montserrat Variable', ui-sans-serif, system-ui, sans-serif; font-size: .6875rem; text-transform: uppercase; letter-spacing: .22em; color: #6E6A63; display: block; margin-bottom: .2rem; }
+    .gx-fp-tab .t-name { font-family: 'Montserrat Variable', ui-sans-serif, system-ui, sans-serif; font-size: 1rem; font-weight: 500; line-height: 1.2; color: #1A1A1A; display: block; }
+    .gx-fp-tab .t-area { font-family: 'Montserrat Variable', ui-sans-serif, system-ui, sans-serif; font-size: .75rem; color: #5C5C5C; }
+    .gx-fp-tab:hover { border-color: #B8893C; }
+    .gx-fp-tab.is-active { border-color: #B8893C; background: #F6F4F0; box-shadow: inset 0 3px 0 #B8893C; }
+    .gx-fp-tab:focus-visible, .gx-room:focus-visible, .gx-pin:focus-visible, .gx-lm:focus-visible, .gx-pill:focus-visible, .gx-modal-x:focus-visible { outline: 2px solid #B8893C; outline-offset: 2px; }
+
+    .gx-fp-grid { display: grid; gap: 2rem; margin-top: 2.5rem; }
+    @media (min-width: 1024px) { .gx-fp-grid { grid-template-columns: 7fr 5fr; gap: 3rem; align-items: start; } }
+
+    .gx-fp-scroller { border: 1px solid #E6E3DD; background: #fff; overflow-x: auto; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; }
+    .gx-fp-canvas { position: relative; aspect-ratio: 1600 / 1210; }
+    @media (max-width: 639px) { .gx-fp-canvas { width: 220%; } } /* phones: pan the plan sideways */
+    .gx-fp-plan { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0; transition: opacity .55s cubic-bezier(.16,1,.3,1); }
+    .gx-fp-plan.is-active { opacity: 1; }
+
+    .gx-halo {
+      position: absolute; left: var(--x); top: var(--y); width: 5.2%; aspect-ratio: 1;
+      transform: translate(-50%, -50%); border-radius: 9999px; pointer-events: none;
+      border: 2px solid #B8893C; background: rgba(184, 137, 60, .13);
+      box-shadow: 0 0 0 5px rgba(184, 137, 60, .14);
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .gx-halo { animation: gxPulse 2.4s ease-in-out infinite; }
+      @keyframes gxPulse {
+        0%, 100% { box-shadow: 0 0 0 4px rgba(184, 137, 60, .16); }
+        50%      { box-shadow: 0 0 0 14px rgba(184, 137, 60, .04); }
+      }
+    }
+
+    .gx-fp-desc { min-height: 4.4rem; padding: 1rem 1.1rem; background: #F6F4F0; border: 1px solid #E6E3DD; border-top: 0; }
+    .gx-fp-desc .d-room { font-family: 'Montserrat Variable', ui-sans-serif, system-ui, sans-serif; font-size: .9375rem; font-weight: 600; color: #1A1A1A; display: block; margin-bottom: .15rem; }
+
+    .gx-fp-kicker { margin-bottom: 1rem; }
+    .gx-room {
+      display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; width: 100%;
+      padding: .8rem .75rem; border: 0; border-bottom: 1px solid #E6E3DD; background: none;
+      cursor: pointer; text-align: left; transition: background .18s;
+    }
+    .gx-room:first-of-type { border-top: 1px solid #E6E3DD; }
+    .gx-room .r-name { color: #1A1A1A; font-size: .9375rem; }
+    .gx-room .r-area { font-family: 'Montserrat Variable', ui-sans-serif, system-ui, sans-serif; font-size: .875rem; font-weight: 500; color: #1A1A1A; white-space: nowrap; }
+    .gx-room:hover, .gx-room.is-active { background: #F6F4F0; }
+    .gx-room.is-active .r-name { font-weight: 600; }
+
+    /* ── Interactive landmark map (on the ink section) ─────────────────── */
+    /* The brochure map (licensed, page 3) carries its own printed legend on the
+       left; the stage CSS-crops that margin out of view — the image file itself
+       stays untouched. Crop: left 24% hidden → visible 76% of 3177px width. */
+    .gx-map-stage { position: relative; overflow: hidden; aspect-ratio: 2414 / 2223; background: #FEFEFD; border: 1px solid #E6E3DD; }
+    .gx-map-img { position: absolute; top: 0; left: -31.58%; width: 131.58%; height: 100%; max-width: none; }
+    /* The printed legend's second column extends past the crop line over open
+       ocean (stage x 0–14%, y 18–37%) — wash the residue out with a soft white
+       patch; the blur feathers every edge so it reads as ocean. Pins sit above. */
+    .gx-map-stage::before { content: ''; position: absolute; top: 13%; height: 30%; left: -3%; width: 18%; background: #FEFEFD; filter: blur(7px); z-index: 1; pointer-events: none; }
+    .gx-pin { z-index: 2; }
+    .gx-map-ring { z-index: 2; }
+    .gx-pin {
+      position: absolute; left: var(--x); top: var(--y); transform: translate(-50%,-50%);
+      width: clamp(21px, 2.4vw, 30px); aspect-ratio: 1; border-radius: 9999px; padding: 0;
+      background: #1A1A1A; color: #fff; border: 1.5px solid rgba(255,255,255,.9);
+      font-family: 'Montserrat Variable', ui-sans-serif, system-ui, sans-serif; font-size: .6875rem; font-weight: 600;
+      display: flex; align-items: center; justify-content: center; cursor: pointer;
+      transition: transform .18s, background .18s, opacity .18s;
+    }
+    .gx-pin::before { content: ''; position: absolute; inset: -8px; border-radius: 9999px; } /* touch target */
+    .gx-pin:hover { transform: translate(-50%,-50%) scale(1.18); }
+    .gx-pin.is-active { background: #B8893C; transform: translate(-50%,-50%) scale(1.3); z-index: 2; }
+    .gx-pin.is-active::after { content: ''; position: absolute; inset: -7px; border-radius: 9999px; border: 1.5px solid rgba(211,165,91,.85); }
+    @media (prefers-reduced-motion: no-preference) {
+      .gx-pin.is-active::after { animation: gxPing 1.8s ease-out infinite; }
+      @keyframes gxPing { 0% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1.8); } }
+    }
+    .gx-map.has-active .gx-pin:not(.is-active) { opacity: .42; }
+    .gx-map-ring { position: absolute; left: var(--x); top: var(--y); width: 3.2rem; aspect-ratio: 1; transform: translate(-50%,-50%); border-radius: 9999px; border: 2px solid rgba(184,137,60,.9); pointer-events: none; }
+
+    .gx-lm-group { margin-bottom: 1.4rem; }
+    .gx-lm {
+      display: flex; align-items: baseline; gap: .8rem; width: 100%; padding: .5rem .55rem;
+      background: none; border: 0; border-bottom: 1px solid #E6E3DD;
+      color: #5C5C5C; cursor: pointer; text-align: left; font-size: .875rem;
+      transition: background .18s, color .18s;
+    }
+    .gx-lm .n { font-family: 'Montserrat Variable', ui-sans-serif, system-ui, sans-serif; font-size: .65rem; letter-spacing: .08em; color: #B8893C; min-width: 1.3rem; }
+    .gx-lm .t { flex: 1; }
+    .gx-lm .d { font-size: .75rem; color: #6E6A63; white-space: nowrap; }
+    .gx-lm:hover, .gx-lm.is-active { background: #fff; color: #1A1A1A; }
+
+    /* ── Viewing modal + discrete floating trigger ──────────────────────── */
+    #viewing-modal { border: 0; padding: 0; background: #fff; width: min(640px, 92vw); max-height: 90vh; max-height: 90dvh; overflow: auto; margin: auto; }
+    #viewing-modal::backdrop { background: rgba(12, 12, 14, .58); }
+    @media (prefers-reduced-motion: no-preference) {
+      #viewing-modal[open] { animation: gxModalIn .45s cubic-bezier(.16,1,.3,1); }
+      @keyframes gxModalIn { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+    }
+    .gx-modal-x {
+      position: absolute; top: .9rem; right: .9rem; width: 2.6rem; height: 2.6rem; border-radius: 9999px;
+      border: 1px solid #E6E3DD; background: #fff; color: #1A1A1A; font-size: 1rem; line-height: 1;
+      cursor: pointer; transition: background .18s, color .18s;
+    }
+    .gx-modal-x:hover { background: #1A1A1A; color: #fff; }
+
+    .gx-pill {
+      position: fixed; right: 1.25rem; bottom: 1.25rem; z-index: 40;
+      display: inline-flex; align-items: center; gap: .55rem;
+      background: #1A1A1A; color: #fff; border: 0; border-radius: 9999px;
+      padding: .85rem 1.4rem; cursor: pointer;
+      font-family: 'Montserrat Variable', ui-sans-serif, system-ui, sans-serif; font-size: .8125rem; letter-spacing: .05em;
+      box-shadow: 0 12px 32px rgba(12, 12, 14, .22);
+      opacity: 0; pointer-events: none; transform: translateY(10px);
+      transition: opacity .3s, transform .3s, background .18s, color .18s;
+    }
+    .gx-pill .dot { width: .45rem; height: .45rem; border-radius: 9999px; background: #D3A55B; }
+    .gx-pill.is-on { opacity: 1; pointer-events: auto; transform: none; }
+    .gx-pill:hover { background: #B8893C; color: #1A1A1A; }
+
+    /* Finishes cards: quiet lift + growing accent rule on hover */
+    .gx-spec { position: relative; transition: transform .25s cubic-bezier(.16,1,.3,1); }
+    .gx-spec::before { content: ''; position: absolute; top: -1px; left: 0; height: 1px; width: 2rem; background: #B8893C; transition: width .45s cubic-bezier(.16,1,.3,1); }
+    .gx-spec:hover { transform: translateY(-3px); }
+    .gx-spec:hover::before { width: 100%; }
+
+    /* prefers-reduced-motion: the sitewide rule in tailwind.css already
+       collapses every animation/transition to ~0ms; the pulse/ping/modal
+       keyframes above are additionally gated on no-preference. */
   </style>
   <script>
     // Same calm scroll-reveal contract as the rest of the site.
@@ -267,343 +224,171 @@
   </script>
 </head>
 
-<body>
+<body class="bg-white text-muted">
 
-  <!-- ============== NAVIGATION (brief §39-40) ============== -->
-  <header class="gd-nav" id="gd-nav">
-    <nav class="max-w-7xl mx-auto px-6 lg:px-12 h-full flex items-center justify-between" aria-label="Dossier">
-      <a href="/" class="inline-block rise" aria-label="Natalie Gutman, home">
-        <img src="assets/logo-script-white.png" alt="Natalie Gutman" class="gd-logo-light h-8 w-auto" />
-        <img src="assets/logo-script.png" alt="Natalie Gutman" class="gd-logo-dark h-8 w-auto" />
-      </a>
-      <ul class="hidden lg:flex items-center gap-9">
-        <li><a href="#overview" class="gd-navlink">Overview</a></li>
-        <li><a href="#residence" class="gd-navlink">Residence</a></li>
-        <li><a href="#architecture" class="gd-navlink">Architecture</a></li>
-        <li><a href="#details" class="gd-navlink">Details</a></li>
-        <li><a href="#location" class="gd-navlink">Location</a></li>
-        <li><a href="#private-access" class="gd-navlink">Private access</a></li>
-      </ul>
-      <button type="button" id="gd-menu-btn" class="lg:hidden rise" aria-expanded="false" aria-controls="gd-menu" style="--rise-delay: 200ms;">Menu</button>
-    </nav>
-  </header>
-  <div id="gd-menu" hidden>
-    <div class="flex items-center justify-between h-10">
-      <img src="assets/logo-script.png" alt="Natalie Gutman" class="h-8 w-auto" />
-      <button type="button" id="gd-menu-close">Close</button>
+  <!-- ============== EMAIL ACCESS GATE ==============
+       Soft gate (courtesy, not security — the page is unlisted/noindex and this
+       is client-side only). First visit asks for an email; stored in
+       localStorage so returning visitors pass straight through, and POSTed to
+       the shared Sheets endpoint once assets/form-endpoint.js carries a
+       SHEETS_URL (type=gate — the Apps Script needs a matching branch when
+       connected). With JS disabled the gate stays hidden and the page loads. -->
+  <div id="gate" class="fixed inset-0 z-50 bg-ink items-center justify-center px-6" hidden>
+    <div class="max-w-md w-full text-center">
+      <p class="label !text-white/50 mb-4">Private listing</p>
+      <h2 class="font-garamond font-medium uppercase tracking-[0.1em] text-white text-3xl sm:text-4xl leading-[1.15] mb-4">The Gandarinha Estate</h2>
+      <p class="font-montserrat font-light text-white/75 text-sm leading-relaxed mb-8">Enter your email to view this private listing.</p>
+      <form id="gate-form" novalidate>
+        <label for="gate-email" class="sr-only">Email</label>
+        <input id="gate-email" type="email" required autocomplete="email" placeholder="you@example.com"
+               class="w-full bg-white/10 border border-white/25 text-white placeholder-white/40 px-4 py-3.5 text-sm text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent" />
+        <p id="gate-error" class="text-xs text-white/70 mt-2" hidden>Please enter a valid email address.</p>
+        <button type="submit" class="cursor-pointer w-full bg-white text-ink text-sm tracking-wide px-8 py-3.5 mt-3 hover:bg-white/90 transition-colors">View the estate</button>
+      </form>
+      <p class="text-xs text-white/40 mt-8 leading-relaxed">Your email is used only to manage access to this private listing.
+        <a href="/privacy" class="underline hover:text-white/70">Privacy Policy</a></p>
+      <img src="assets/logo-script-white.png" alt="Natalie Gutman" class="h-11 w-auto mx-auto mt-8" />
     </div>
-    <nav class="mt-14 flex flex-col" aria-label="Dossier sections">
-      <a href="#overview" class="gd-menu-item">Overview</a>
-      <a href="#residence" class="gd-menu-item">Residence</a>
-      <a href="#architecture" class="gd-menu-item">Architecture</a>
-      <a href="#details" class="gd-menu-item">Details</a>
-      <a href="#location" class="gd-menu-item">Location</a>
-      <a href="#private-access" class="gd-menu-item is-cta">Private access</a>
-    </nav>
-    <p class="gd-caption mt-auto pt-10">The Gandarinha Estate · Cascais, Portugal</p>
   </div>
+  <script>
+    (function () {
+      var gate = document.getElementById('gate');
+      var KEY = 'gandarinha-gate-email';
+      var has = false;
+      try { has = !!localStorage.getItem(KEY); } catch (e) {}
+      if (has) return;
+      gate.hidden = false;
+      gate.style.display = 'flex';
+      document.documentElement.style.overflow = 'hidden';
+      document.getElementById('gate-form').addEventListener('submit', function (ev) {
+        ev.preventDefault();
+        var input = document.getElementById('gate-email');
+        var err = document.getElementById('gate-error');
+        var email = (input.value || '').trim();
+        if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { err.hidden = false; input.focus(); return; }
+        err.hidden = true;
+        // Counsel 2026-08-13: store a flag, not the email — keeps the
+        // "strictly-necessary, no-personal-data storage" Lei 41/2004 position.
+        try { localStorage.setItem(KEY, '1'); } catch (e) {}
+        if (window.SHEETS_URL) {
+          var body = 'type=gate&property=' + encodeURIComponent('The Gandarinha Estate') + '&email=' + encodeURIComponent(email);
+          try {
+            fetch(window.SHEETS_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body }).catch(function () {});
+          } catch (e) {}
+        }
+        gate.style.display = 'none';
+        document.documentElement.style.overflow = '';
+      });
+    })();
+  </script>
 
-  <!-- ============== 01 HERO: private digital dossier ==============
+  <!-- ============== HERO: scroll-scrubbed AI walkthrough ==============
        The walkthrough video is pre-exploded into JPEG frames
        (assets/walkthrough/gandarinha/); the SEGMENTS list in the script below
-       picks the 96 that play (remade 2026-08-27: drone descent over the
-       Atlantic, AI bridge down to the front door, in through the door to the
-       pool window, AI bridge out through the glass wall to the pool). Frame 1
-       is the aerial the brief names as the preferred hero image. The cover
-       copy shows at rest; scrolling scrubs the camera and the cover fades. -->
+       picks the 96 that play (remade 2026-08-27: drone descent, AI bridge down
+       to the front door, in through the door to the pool window, AI bridge out
+       through the glass wall to the pool). Scrolling scrubs the camera; the
+       title shows at the start, the closing caption at the end, and the
+       "Scroll to move" hint stays up for the whole walkthrough. -->
   <section id="walkthrough" class="relative bg-ink" style="height: 400vh;">
     <div class="wt-viewport sticky top-0 overflow-hidden">
       <canvas id="wt-canvas" class="absolute inset-0 w-full h-full"></canvas>
-      <noscript><img src="assets/walkthrough/gandarinha/f_001.jpg" alt="Aerial view of the estate above the Cascais coastline and the Atlantic" class="absolute inset-0 w-full h-full object-cover" /></noscript>
-      <div class="wt-scrim absolute inset-0 pointer-events-none"></div>
+      <noscript><img src="assets/walkthrough/gandarinha/f_001.jpg" alt="Aerial view of Villa Gandarinha above the Cascais coastline" class="absolute inset-0 w-full h-full object-cover" /></noscript>
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/75 via-ink/25 to-ink/40 pointer-events-none"></div>
 
-      <!-- Cover: rests on the first aerial frame and fades as the walk begins.
-           The only call to action here is a hairline link (pass 3: minimal). -->
-      <div class="absolute inset-x-0 bottom-0 z-[5]">
-        <div class="max-w-7xl mx-auto px-6 lg:px-12 pb-44 lg:pb-24">
-          <div class="wt-caption" data-at="0">
-            <span class="gd-hero-rule" aria-hidden="true"></span>
-            <p class="gd-hero-eyebrow mt-6 rise" style="--rise-delay: 260ms;">Private Digital Dossier</p>
-            <h1 class="gd-hero-title mt-5 rise" style="--rise-delay: 380ms;">The Gandarinha Estate</h1>
-            <p class="font-montserrat text-white/85 text-sm sm:text-base tracking-[0.18em] uppercase mt-6 rise" style="--rise-delay: 500ms;">Cascais · Portugal</p>
-            <p class="gd-hero-tagline mt-6 rise" style="--rise-delay: 580ms;">An Architectural Masterpiece in the Heart of Gandarinha, Cascais</p>
-            <a href="#private-access" class="gd-hero-link mt-9 rise pointer-events-auto" style="--rise-delay: 700ms;">Confidential enquiries</a>
+      <!-- Minimal private header over the hero -->
+      <header class="absolute top-0 inset-x-0 z-10">
+        <div class="max-w-7xl mx-auto px-6 lg:px-10 h-20 flex items-center justify-between">
+          <a href="/" class="inline-block rise"><img src="assets/logo-script-white.png" alt="Natalie Gutman" class="h-9 w-auto" /></a>
+          <a href="#viewing" data-open-viewing class="label !text-white/90 hover:!text-white transition-colors rise" style="--rise-delay: 200ms;">Private viewing</a>
+        </div>
+      </header>
+
+      <!-- Walkthrough captions: room name big and bold + one feature line.
+           data-at = position on the walkthrough timeline (0..1, clip boundaries at n/9).
+           Captions are specific to this property. -->
+      <div class="absolute inset-x-0 bottom-0 z-[5] pointer-events-none">
+        <div class="max-w-7xl mx-auto px-6 lg:px-10 pb-14 lg:pb-20 relative">
+          <div class="wt-caption absolute inset-x-0 bottom-[52vh] text-center px-6" data-at="0">
+            <h1 class="font-garamond font-medium uppercase tracking-[0.1em] text-white text-4xl sm:text-6xl lg:text-7xl leading-[1.05]">The Gandarinha<br class="sm:hidden" /> Estate</h1>
           </div>
-        </div>
+          <div class="wt-caption absolute inset-x-0 bottom-14 lg:bottom-20 text-center px-6" data-at="1">
+            <p class="font-montserrat text-white/90 text-lg sm:text-xl tracking-wide mb-4">Where Atlantic Light Meets Architectural Mastery</p>
+            <p class="font-montserrat font-light text-white/80 text-base sm:text-lg leading-loose max-w-2xl mx-auto">A rare private residence on 2,438&nbsp;m² in Cascais' most exclusive enclave. Designed for grand scale, effortless entertaining, and absolute privacy.</p>
+          </div>        </div>
       </div>
 
-      <!-- Scroll prompt (pass 4): prominent, visible at rest, stays through the walk.
-           Tap/click plays the walkthrough once and lands on the overview. -->
-      <div id="wt-hint" class="absolute inset-x-0 bottom-6 lg:bottom-24 z-[5]">
-        <div class="max-w-7xl mx-auto px-6 lg:px-12 flex justify-center lg:justify-end">
-          <button type="button" id="wt-play" class="wt-prompt" aria-label="Scroll to explore the estate. Activate to play the walkthrough and continue to the overview.">
-            <span class="wt-prompt-text">Scroll to explore the estate</span>
-            <span class="wt-prompt-sub">Scroll down, or tap here, to enter the walkthrough</span>
-            <span class="wt-ring" aria-hidden="true"><svg class="wt-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></svg></span>
-          </button>
+      <!-- Persistent scroll hint (Michael 2026-08-27): sits right under the title (the title
+           caption is anchored at bottom:52vh, so top:48vh is its lower edge), stays visible for
+           the whole walkthrough and yields only to the closing caption in the last few percent. -->
+      <div id="wt-hint" class="absolute inset-x-0 z-[5] flex justify-center px-6 pointer-events-none" style="top: calc(48vh + 1.25rem);">
+        <div class="inline-flex flex-col items-center gap-1.5 rounded-full bg-ink/45 backdrop-blur-sm px-7 py-3">
+          <p class="font-montserrat text-white text-sm sm:text-lg font-medium tracking-wide text-center">Scroll to move through the house.</p>
+          <svg class="wt-chevron w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></svg>
         </div>
       </div>
-      <div id="wt-fade" class="absolute inset-0 z-[6] pointer-events-none"></div>
       <p id="wt-loading" class="absolute bottom-5 right-6 z-10 text-white/60 text-xs tracking-widest uppercase">Loading the walkthrough…</p>
     </div>
     <!-- NOTE 2026-08-04: the visible AI-walkthrough disclosure was REMOVED at Michael's
-         explicit instruction (twice). Counsel's position (2026-08-04) was that EU AI Act
-         art. 50(4) wants the disclosure "clear and distinguishable, at first exposure".
-         Do not re-add without asking him. -->
+         explicit instruction (twice). The remaining disclosure is the footer sentence only.
+         Counsel's position (2026-08-04) was that EU AI Act art. 50(4) wants the disclosure
+         "clear and distinguishable, at first exposure" — a footer line may not satisfy that.
+         Do not re-add without asking him; do not delete the footer sentence either. -->
   </section>
 
-  <!-- ============== 02 OVERVIEW: the estate aerial + her opening copy ==============
-       gandarinha-estate-aerial.jpg is a 4:5 crop of the DJI master (metadata
-       stripped): the residence, its pool, gardens and walls with the Atlantic
-       beyond. The neighbourhood-scale aerial moved down to A Rare Address. -->
-  <section id="overview" class="max-w-7xl mx-auto px-6 lg:px-12 pt-16 lg:pt-24 pb-24 lg:pb-36">
-    <div class="grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-      <div class="lg:col-span-6 reveal">
-        <div class="gd-frame aspect-[4/5]">
-          <img src="assets/photos/gandarinha-estate-aerial.jpg" alt="Aerial view of the estate: the residence, its pool, gardens and boundary walls, with Gandarinha and the Atlantic beyond" class="reveal-img" width="1600" height="2000" loading="lazy" />
-        </div>
-      </div>
-      <div class="lg:col-span-5 lg:col-start-8 reveal" style="--reveal-delay: 120ms;">
-        <h2 class="gd-title">Where Architecture Meets Coastal Serenity</h2>
-        <p class="gd-lead mt-10">The Gandarinha Estate is more than a residence; it is a refined private sanctuary. Within its gates, light moves through generous rooms, high glass opens living spaces seamlessly onto gardens, terraces, and the pool, and the line between indoors and outdoors disappears. Quiet and discreet, yet moments from the Atlantic and Cascais Marina.</p>
-      </div>
+  <!-- ============== KEY FACTS BAND ==============
+       (the intro-statement section was folded into the hero overlay 2026-08-12
+       per Natalie's brief — key metrics are defined ONCE here, then referenced
+       only inside their floor sections) -->
+  <section class="bg-surface">
+    <div class="max-w-6xl mx-auto px-6 lg:px-10 py-14 lg:py-20">
+      <dl class="grid grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-10 text-center reveal">
+        <!-- Price is deliberately absent from this entire page (Michael's instruction
+             2026-08-13: no price mention AT ALL, not even "on request"). Do not re-add. -->
+        <div><dt class="label text-faint mb-2">Location</dt><dd class="font-montserrat text-xl text-ink">Gandarinha · Cascais</dd></div>
+        <div><dt class="label text-faint mb-2">Private land</dt><dd class="font-montserrat text-xl text-ink">2,438 m²</dd></div>
+        <div><dt class="label text-faint mb-2">Construction</dt><dd class="font-montserrat text-xl text-ink">1,020 m²</dd></div>
+        <div><dt class="label text-faint mb-2">Levels</dt><dd class="font-montserrat text-xl text-ink">3 floors · private lift</dd></div>
+        <div><dt class="label text-faint mb-2">Bedrooms</dt><dd class="font-montserrat text-xl text-ink">6 en-suite + staff</dd></div>
+        <div><dt class="label text-faint mb-2">Pool</dt><dd class="font-montserrat text-xl text-ink">15.5 × 5 m</dd></div>
+        <div><dt class="label text-faint mb-2">Smart home</dt><dd class="font-montserrat text-xl text-ink">Climate, security &amp; lift</dd></div>
+        <!-- Energy class is MANDATORY in every PT property ad (DL 101-D/2020). -->
+        <div><dt class="label text-faint mb-2">Energy class</dt><dd class="font-montserrat text-xl text-ink">A</dd></div>
+      </dl>
     </div>
   </section>
 
-  <!-- ============== 03 THE ESSENTIALS ============== -->
-  <section class="max-w-7xl mx-auto px-6 lg:px-12 pb-28 lg:pb-44">
-    <h2 class="gd-title reveal">The Essentials</h2>
-    <dl class="grid sm:grid-cols-2 gap-x-10 lg:gap-x-16 gap-y-12 lg:gap-y-16 mt-12 lg:mt-16 reveal">
-      <div class="gd-ess">
-        <dt class="gd-label">Plot &amp; living area</dt>
-        <dd><ul class="gd-ess-list"><li>Plot 2,438 m²</li><li>Built area 1,020 m²</li><li>3 levels</li></ul></dd>
-      </div>
-      <div class="gd-ess">
-        <dt class="gd-label">Accommodation</dt>
-        <dd><ul class="gd-ess-list"><li>6 en-suite bedrooms</li><li>Independent staff quarters</li></ul></dd>
-      </div>
-      <div class="gd-ess">
-        <dt class="gd-label">Outdoor &amp; amenities</dt>
-        <!-- "heated" is Natalie's claim (pass 4 prompt); not in the brochure, on the sourcing-email list. -->
-        <dd><ul class="gd-ess-list"><li>15.5 × 5 m heated pool</li><li>Landscaped gardens &amp; limestone terraces</li></ul></dd>
-      </div>
-      <div class="gd-ess">
-        <dt class="gd-label">Infrastructure</dt>
-        <!-- Energy class is MANDATORY in every PT property ad (DL 101-D/2020). Class A confirmed by Michael 2026-08-04. -->
-        <dd><ul class="gd-ess-list"><li>Private homelift, serving all 3 levels</li><li>Garage &amp; security systems</li><li>Energy rating A</li></ul></dd>
-      </div>
-    </dl>
-  </section>
-
-  <!-- ============== 04 A RARE ADDRESS IN CASCAIS ============== -->
-  <section class="bg-[#E9E4D9]">
-    <div class="max-w-7xl mx-auto px-6 lg:px-12 py-28 lg:py-44">
-      <div class="grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-        <div class="lg:col-span-6 lg:order-2 reveal">
-          <div class="gd-frame aspect-[3/2]">
-            <img src="assets/photos/gandarinha-aerial.jpg" alt="Aerial view over Gandarinha and the Cascais coastline, the Atlantic beyond" class="reveal-img" width="1600" height="900" loading="lazy" />
-          </div>
+  <!-- ============== ARCHITECTURAL CONCEPT ============== -->
+  <section>
+    <div class="max-w-7xl mx-auto px-6 lg:px-10 pt-24 lg:pt-36 pb-14 lg:pb-20">
+      <div class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-stretch">
+        <div class="lg:col-span-6 reveal">
+          <h2 class="font-serif text-3xl sm:text-4xl text-accent-hover mb-6">A rare residence in the heart of Gandarinha</h2>
+          <p class="leading-relaxed mb-4">Set within Gandarinha, one of the most prestigious and sought-after residential enclaves in Cascais, this exceptional villa offers a rare sense of space, privacy, and effortless comfort.</p>
+          <p class="leading-relaxed mb-4">Properties of this calibre are seldom offered for sale in Gandarinha, making the location itself part of the home's appeal. Quiet and discreet, yet ideally positioned close to the centre of Cascais, the coastline, beaches, restaurants, and all essential amenities, it is a setting that offers both seclusion and convenience.</p>
+          <p class="leading-relaxed mb-4">The residence is defined by generous proportions and a refined sense of comfort. Expansive living spaces, carefully selected materials, elegant finishes, and a seamless relationship with the private gardens and impressive swimming pool create an atmosphere that feels both sophisticated and deeply inviting.</p>
+          <p class="leading-relaxed mb-4">Thoughtful features such as a private lift and underfloor heating add to the everyday experience, while the scale and quality of the property allow it to be enjoyed equally as a peaceful private home or as a place to gather and entertain.</p>
+          <p class="leading-relaxed">A truly uncommon opportunity to acquire a substantial private residence in one of Cascais' most tightly held addresses, where exceptional homes rarely come to market.</p>
         </div>
-        <div class="lg:col-span-5 lg:order-1 reveal" style="--reveal-delay: 120ms;">
-          <h2 class="gd-title">A Rare Address in Cascais</h2>
-          <p class="gd-body mt-10">Gandarinha holds a privileged position within Cascais. The waterfront, the marina and the historic centre are close enough to make everyday life effortless, yet the streets here are quiet and residential, and home feels a world apart.</p>
-          <p class="gd-body mt-6">Homes that combine this scale, this privacy and this proximity to the Atlantic rarely reach the market. When they do, they are shown quietly, and to a few.</p>
-          <p class="gd-quote mt-14 lg:mt-20">Here, the address is not simply part of the residence. It is part of the life it offers.</p>
+        <!-- lg: image is absolutely positioned so the column tracks the TEXT height —
+             the portrait aerial crops to exactly the text block, no vertical spillage -->
+        <div class="lg:col-span-6 relative overflow-hidden border border-hairline reveal" style="--reveal-delay: 120ms;">
+          <img src="assets/photos/gandarinha-aerial-portrait.jpg" alt="Aerial view of the estate within Gandarinha, the Cascais coastline and the Atlantic beyond" class="reveal-img w-full lg:absolute lg:inset-0 lg:h-full lg:object-cover" width="1400" height="2489" loading="lazy" />
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ============== 05 THE RESIDENCE ============== -->
-  <section id="residence" class="pt-28 lg:pt-44 pb-28 lg:pb-44">
-    <div class="max-w-7xl mx-auto px-6 lg:px-12">
-      <div class="gd-frame aspect-[16/9] lg:aspect-[21/9] reveal">
-        <img src="assets/photos/gandarinha/full/g11.jpg" alt="The residence seen from the garden, with the pool in the foreground" class="reveal-img" width="1920" height="1280" loading="lazy" />
-      </div>
-      <div class="grid lg:grid-cols-12 gap-10 lg:gap-16 mt-16 lg:mt-24">
-        <h2 class="gd-title lg:col-span-4 reveal">The Residence</h2>
-        <div class="lg:col-span-7 lg:col-start-6 reveal" style="--reveal-delay: 120ms;">
-          <p class="gd-quote">Where indoor and outdoor living merge seamlessly.</p>
-          <p class="gd-lead mt-10">The residence is conceived around space, light and an effortless dialogue between architecture and landscape. Generous living areas open directly to the gardens, the limestone terraces and the pool, so a morning coffee, a long lunch or an evening with friends drifts outside without a second thought.</p>
-          <p class="gd-body mt-6">Across three levels, entertaining spaces, private bedroom suites and discreet service areas each have their place, and a private lift links the whole house quietly.</p>
-          <p class="gd-body mt-6">The result is a home that feels substantial without becoming formal, and private without ever feeling isolated.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============== 07 ARCHITECTURAL LAYOUT: floor-plan viewer ==============
-       Levels, rooms and areas follow the brochure PROGRAM sheets
-       (gandarinha-work/pdf/brochure-p08 to p10). Pin positions are % coordinates
-       over the untouched plan images; the zone each pin sits on is recorded in
-       docs/gandarinha-redesign-2026-08-30.md. -->
-  <section id="architecture" class="bg-[#E9E4D9]">
-    <div class="max-w-7xl mx-auto px-6 lg:px-12 py-28 lg:py-44">
-      <div class="grid lg:grid-cols-12 gap-8 lg:gap-16 mb-16 lg:mb-20">
-        <h2 class="gd-title lg:col-span-5 reveal">Architectural Layout</h2>
-        <p class="gd-lead lg:col-span-6 lg:col-start-7 reveal" style="--reveal-delay: 120ms;">Grand entertaining on the garden level, private retreat above, and everything the house needs kept discreetly out of sight below: three levels, connected by a private lift.</p>
-      </div>
-
-      <div class="gx-fp-tabs reveal" role="tablist" aria-label="Floor plans">
-        <button class="gx-fp-tab" id="fp-tab-b" role="tab" aria-selected="false" aria-controls="fp-rooms-b" data-level="b">
-          <span class="t-lvl">Level −1</span>
-          <span class="t-name">Garage &amp; Service</span>
-        </button>
-        <button class="gx-fp-tab is-active" id="fp-tab-g" role="tab" aria-selected="true" aria-controls="fp-rooms-g" data-level="g">
-          <span class="t-lvl">Level 0</span>
-          <span class="t-name">Living &amp; Entertaining</span>
-        </button>
-        <button class="gx-fp-tab" id="fp-tab-f" role="tab" aria-selected="false" aria-controls="fp-rooms-f" data-level="f">
-          <span class="t-lvl">Level +1</span>
-          <span class="t-name">Private Suites &amp; Terraces</span>
-        </button>
-      </div>
-
-      <div class="gx-fp-grid">
-        <div class="reveal">
-          <div class="gx-fp-scroller">
-            <div class="gx-fp-canvas" id="fp-canvas">
-              <img class="gx-fp-plan" data-plan="b" src="assets/photos/gandarinha-plan-basement.png" alt="Floor plan of Level −1: garage, staff accommodation, flexible rooms, laundry and technical facilities" width="1600" height="1210" loading="lazy" />
-              <img class="gx-fp-plan is-active" data-plan="g" src="assets/photos/gandarinha-plan-ground.png" alt="Floor plan of Level 0: living hall, dining room, kitchen, media room, two suites, terraces and pool" width="1600" height="1210" loading="lazy" />
-              <img class="gx-fp-plan" data-plan="f" src="assets/photos/gandarinha-plan-first.png" alt="Floor plan of Level +1: principal suite, three further bedroom suites, central office and panoramic terraces" width="1600" height="1210" loading="lazy" />
-              <div id="fp-halos"></div>
-            </div>
-          </div>
-          <div class="gx-fp-desc" aria-live="polite">
-            <span class="d-room" id="fp-desc-room">Level 0 · Living &amp; Entertaining</span>
-            <p class="gd-caption" id="fp-desc-text">High glass doors connect the principal living spaces directly with the gardens, limestone terraces and pool.</p>
-          </div>
-          <p class="text-xs mt-6" style="color: var(--grey);">Architectural plans are indicative and for reference only; the finished property may differ.</p>
-        </div>
-
-        <div class="reveal" style="--reveal-delay: 120ms;">
-          <p class="gd-caption mb-4">Choose a level, then select a space to place it on the plan.</p>
-          <!-- Level 0 rooms -->
-          <div id="fp-rooms-g" role="tabpanel" aria-labelledby="fp-tab-g">
-            <button class="gd-room gx-room" data-pins="49.1,32.7" data-desc="Full-height glass opens the hall directly to the garden and pool.">
-              <span class="r-name">Grand living hall</span><span class="r-area">42 m²</span>
-            </button>
-            <button class="gd-room gx-room" data-pins="52.7,21.4" data-desc="Beside the kitchen, opening onto the terraces.">
-              <span class="r-name">Formal dining</span><span class="r-area">30 m²</span>
-            </button>
-            <button class="gd-room gx-room" data-pins="44.7,36.4" data-desc="A room for film, games or a quiet evening.">
-              <span class="r-name">Entertainment &amp; media room</span><span class="r-area">29 m²</span>
-            </button>
-            <button class="gd-room gx-room" data-pins="48.0,17.7;44.0,19.5" data-desc="Bespoke Leiken kitchen with a separate 7 m² pantry.">
-              <span class="r-name">Chef’s kitchen &amp; pantry</span><span class="r-area">28 m²</span>
-            </button>
-            <button class="gd-room gx-room" data-pins="36.9,36.2;35.5,39.4;38.8,39.4;40.3,22.1" data-desc="A 27 m² suite with walk-in closet and bathroom, and a second 15 m² en-suite bedroom.">
-              <span class="r-name">Two main-floor suites</span><span class="r-area">27 + 15 m²</span>
-            </button>
-            <button class="gd-room gx-room" data-pins="55.1,32.3;70.2,20.2;35.6,29.1" data-desc="Limestone terraces and the 15.5 × 5 m pool.">
-              <span class="r-name">Outdoor living &amp; pool deck</span><span class="r-area">171 m² + pool</span>
-            </button>
-          </div>
-
-          <!-- Level +1 rooms -->
-          <div id="fp-rooms-f" role="tabpanel" aria-labelledby="fp-tab-f" hidden>
-            <button class="gd-room gx-room" data-pins="51.8,21.7;46.5,19.2;44.1,19.8" data-desc="The principal bedroom with its dressing room and bathroom.">
-              <span class="r-name">Principal suite</span><span class="r-area">47 m²</span>
-            </button>
-            <button class="gd-room gx-room" data-pins="51.6,27.9;38.0,36.1;51.9,34.4" data-desc="Each with its own bathroom and closet.">
-              <span class="r-name">Three additional bedroom suites</span><span class="r-area">26-32 m²</span>
-            </button>
-            <button class="gd-room gx-room" data-pins="42.0,24.2" data-desc="A study at the centre of the private level.">
-              <span class="r-name">Central office / study</span><span class="r-area"></span>
-            </button>
-            <button class="gd-room gx-room" data-pins="34.3,35.9;38.8,22.0;55.1,33.8" data-desc="Three terraces off the upper level.">
-              <span class="r-name">Panoramic terraces</span><span class="r-area">3</span>
-            </button>
-          </div>
-
-          <!-- Level −1 rooms -->
-          <div id="fp-rooms-b" role="tabpanel" aria-labelledby="fp-tab-b" hidden>
-            <button class="gd-room gx-room" data-pins="46.4,24.4" data-desc="Space for several cars, beside the lift.">
-              <span class="r-name">Garage</span><span class="r-area">143 m²</span>
-            </button>
-            <button class="gd-room gx-room" data-pins="36.9,29.1;36.3,37.3;34.6,33.1" data-desc="An independent room with its own kitchen and bathroom.">
-              <span class="r-name">Staff accommodation</span><span class="r-area"></span>
-            </button>
-            <button class="gd-room gx-room" data-pins="27.8,28.3;39.6,30.3;40.6,39.1;44.9,39.1" data-desc="Four unassigned rooms, the largest of 39 m².">
-              <span class="r-name">Four flexible multi-purpose rooms</span><span class="r-area"></span>
-            </button>
-            <button class="gd-room gx-room" data-pins="53.3,34.7;49.3,34.7;81.5,20.0" data-desc="Technical areas and the utility rooms serving the house.">
-              <span class="r-name">Laundry, utility &amp; technical facilities</span><span class="r-area"></span>
-            </button>
-            <button class="gd-room gx-room" data-pins="77.2,20.4;81.0,25.5" data-desc="Bathrooms in the pool annex, serving the deck directly.">
-              <span class="r-name">Pool bathroom</span><span class="r-area"></span>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============== 08 MATERIALS & CRAFT ==============
-       Specification list, deliberately without photographs (Natalie's refinement
-       2026-08-30): the photography stays in the essay below; the names are the proof. -->
-  <section id="details" class="max-w-7xl mx-auto px-6 lg:px-12 py-28 lg:py-44">
-    <h2 class="gd-title reveal">Uncompromised Craftsmanship</h2>
-    <p class="gd-lead mt-8 reveal">A considered palette of natural materials, refined finishes and carefully integrated systems.</p>
-    <dl class="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-10 lg:gap-x-14 gap-y-12 lg:gap-y-16 mt-14 lg:mt-20 reveal">
-      <div class="gd-spec-row"><dt class="gd-label">Bespoke kitchens</dt><dd class="gd-spec">Leiken</dd></div>
-      <div class="gd-spec-row"><dt class="gd-label">Natural stone</dt><dd class="gd-spec">Dolomiti · Sochi Blanco · Liem Black</dd></div>
-      <div class="gd-spec-row"><dt class="gd-label">Bathrooms</dt><dd class="gd-spec">Villeroy &amp; Boch · Hansgrohe</dd></div>
-      <div class="gd-spec-row"><dt class="gd-label">Natural oak</dt><dd class="gd-spec">Pur Natur white-varnished solid oak flooring</dd></div>
-      <div class="gd-spec-row"><dt class="gd-label">Private lift</dt><dd class="gd-spec">Liftech Homelift</dd></div>
-      <div class="gd-spec-row"><dt class="gd-label">Glasswork</dt><dd class="gd-spec">Double-laminated tempered glass railings</dd></div>
-      <div class="gd-spec-row"><dt class="gd-label">Climate</dt><dd class="gd-spec">Underfloor heating · central air conditioning</dd></div>
-      <div class="gd-spec-row"><dt class="gd-label">Security</dt><dd class="gd-spec">Integrated indoor security sensors and window monitoring</dd></div>
-      <div class="gd-spec-row"><dt class="gd-label">Pool</dt><dd class="gd-spec">Niebla Turquoise mosaic</dd></div>
-    </dl>
-  </section>
-
-  <!-- ============== 09 INSIDE THE RESIDENCE: editorial photo essay ==============
-       Sequence per the brief §25 (aerial, arrival, architecture, living, indoor to
-       outdoor, pool, entertaining, bedroom, bathroom, terraces, garden, details,
-       garage last). Full-width, two-image spread, full-width... Tap opens the lightbox. -->
-  <section class="bg-[#E9E4D9]">
-    <div class="max-w-7xl mx-auto px-6 lg:px-12 py-28 lg:py-44">
-      <h2 class="gd-title reveal">Inside the Residence</h2>
-      <p class="gd-lead mt-8 reveal">From the arrival courtyard to the upper terraces, the residence as it is: open, light and quiet.</p>
-      <div id="gallery" class="mt-14 lg:mt-20 space-y-16 lg:space-y-28">
-        <div class="gd-frame aspect-[16/9] reveal"><img src="assets/photos/gandarinha-quarter.jpg" data-full="assets/photos/gandarinha-quarter.jpg" alt="Aerial view of the estate in Gandarinha with the Atlantic beyond" class="reveal-img" width="1920" height="1080" loading="lazy" tabindex="0" /></div>
-        <div class="grid grid-cols-12 gap-6 lg:gap-10 items-start">
-          <div class="gd-frame col-span-12 sm:col-span-7 aspect-[3/2] reveal"><img src="assets/photos/gandarinha/thumb/g07.jpg" data-full="assets/photos/gandarinha/full/g07.jpg" alt="The entrance courtyard with its olive tree" class="reveal-img" width="720" height="480" loading="lazy" tabindex="0" /></div>
-          <div class="gd-frame col-span-12 sm:col-span-5 sm:mt-24 aspect-[3/4] reveal" style="--reveal-delay: 120ms;"><img src="assets/photos/gandarinha/thumb/g08.jpg" data-full="assets/photos/gandarinha/full/g08.jpg" alt="The sculptural staircase behind glass" class="reveal-img" width="480" height="720" loading="lazy" tabindex="0" /></div>
-        </div>
-        <div class="grid grid-cols-12 gap-6 lg:gap-10 items-start">
-          <div class="gd-frame col-span-12 sm:col-span-6 aspect-[3/2] reveal"><img src="assets/photos/gandarinha/thumb/g01.jpg" data-full="assets/photos/gandarinha/full/g01.jpg" alt="The living hall behind the glass wall, framing the pool" class="reveal-img" width="720" height="480" loading="lazy" tabindex="0" /></div>
-          <div class="gd-frame col-span-12 sm:col-span-6 sm:mt-16 aspect-[3/2] reveal" style="--reveal-delay: 120ms;"><img src="assets/photos/gandarinha/thumb/g03.jpg" data-full="assets/photos/gandarinha/full/g03.jpg" alt="The living hall opening toward the garden" class="reveal-img" width="720" height="480" loading="lazy" tabindex="0" /></div>
-        </div>
-        <div class="gd-frame aspect-[16/9] lg:aspect-[21/9] reveal"><img src="assets/photos/gandarinha/full/g02.jpg" data-full="assets/photos/gandarinha/full/g02.jpg" alt="The pool, looking toward the house" class="reveal-img" width="1920" height="1280" loading="lazy" tabindex="0" /></div>
-        <div class="grid grid-cols-12 gap-6 lg:gap-10 items-start">
-          <div class="gd-frame col-span-12 sm:col-span-5 aspect-[3/2] sm:aspect-[4/5] reveal"><img src="assets/photos/gandarinha/thumb/g09.jpg" data-full="assets/photos/gandarinha/full/g09.jpg" alt="The kitchen and dining space" class="reveal-img" width="720" height="480" loading="lazy" tabindex="0" /></div>
-          <div class="gd-frame col-span-12 sm:col-span-7 sm:mt-20 aspect-[3/2] reveal" style="--reveal-delay: 120ms;"><img src="assets/photos/gandarinha/thumb/g14.jpg" data-full="assets/photos/gandarinha/full/g14.jpg" alt="A bedroom suite in oak" class="reveal-img" width="720" height="480" loading="lazy" tabindex="0" /></div>
-        </div>
-        <div class="gd-frame aspect-[16/9] reveal"><img src="assets/photos/gandarinha/full/g20.jpg" data-full="assets/photos/gandarinha/full/g20.jpg" alt="The bathroom with its oak vanity" class="reveal-img" width="1920" height="1280" loading="lazy" tabindex="0" /></div>
-        <div class="grid grid-cols-12 gap-6 lg:gap-10 items-start">
-          <div class="gd-frame col-span-12 sm:col-span-7 aspect-[3/2] reveal"><img src="assets/photos/gandarinha/thumb/g05.jpg" data-full="assets/photos/gandarinha/full/g05.jpg" alt="The main terrace" class="reveal-img" width="720" height="480" loading="lazy" tabindex="0" /></div>
-          <div class="gd-frame col-span-12 sm:col-span-5 sm:mt-24 aspect-[3/4] reveal" style="--reveal-delay: 120ms;"><img src="assets/photos/gandarinha/thumb/g13.jpg" data-full="assets/photos/gandarinha/full/g13.jpg" alt="The upper terrace" class="reveal-img" width="480" height="720" loading="lazy" tabindex="0" /></div>
-        </div>
-        <div class="gd-frame aspect-[16/9] reveal"><img src="assets/photos/gandarinha-facade.jpg" data-full="assets/photos/gandarinha-facade.jpg" alt="The house and its front garden" class="reveal-img" width="1600" height="900" loading="lazy" tabindex="0" /></div>
-        <div class="grid grid-cols-12 gap-6 lg:gap-10 items-start">
-          <div class="gd-frame col-span-12 sm:col-span-5 aspect-[3/4] reveal"><img src="assets/photos/gandarinha/thumb/g16.jpg" data-full="assets/photos/gandarinha/full/g16.jpg" alt="The wardrobe corridor in oak" class="reveal-img" width="480" height="720" loading="lazy" tabindex="0" /></div>
-          <div class="gd-frame col-span-12 sm:col-span-5 sm:col-start-8 sm:mt-24 aspect-[3/4] reveal" style="--reveal-delay: 120ms;"><img src="assets/photos/gandarinha/thumb/g19.jpg" data-full="assets/photos/gandarinha/full/g19.jpg" alt="A guest bathroom" class="reveal-img" width="480" height="720" loading="lazy" tabindex="0" /></div>
-        </div>
-        <div class="grid grid-cols-12 gap-6 lg:gap-10">
-          <div class="gd-frame col-span-12 sm:col-span-6 aspect-[3/2] reveal"><img src="assets/photos/gandarinha/thumb/g15.jpg" data-full="assets/photos/gandarinha/full/g15.jpg" alt="The garage" class="reveal-img" width="720" height="480" loading="lazy" tabindex="0" /></div>
-        </div>
-      </div>
-      <p class="gd-caption mt-8 reveal">Select any photograph to view it full screen. Further technical documentation is available privately upon request.</p>
-
-      <!-- Property film. Desktop/tablet get the reel trimmed past its rotate-your-phone
-           intro and rotated to true landscape; phones get the original portrait cut.
-           The source is picked ONCE at load. Master file (121 MB) lives untracked in
-           gandarinha-work/. -->
-      <div class="mt-24 lg:mt-36 reveal">
-        <video id="film-video" class="w-full" controls playsinline preload="metadata"></video>
-      </div>
+  <!-- ============== FILM: property reel ==============
+       (moved above the floor-plan section, heading removed — Michael 2026-08-13)
+       Desktop/tablet get the reel trimmed past its rotate-your-phone intro and
+       rotated to true landscape; phones get the original portrait cut whose
+       intro asks the viewer to rotate the phone. The source is picked ONCE at
+       load — no mid-playback swap if a phone rotates. Master file (121 MB,
+       over GitHub's 100 MB limit) lives untracked in gandarinha-work/. -->
+  <section>
+    <div class="max-w-7xl mx-auto px-6 lg:px-10">
+      <video id="film-video" class="w-full border border-hairline reveal" controls playsinline preload="metadata"></video>
     </div>
   </section>
   <script>
@@ -616,8 +401,205 @@
     })();
   </script>
 
+  <!-- ============== ARCHITECTURAL LAYOUT: dynamic floor-plan viewer ==============
+       Levels, room names and areas are the brochure PROGRAM sheets verbatim
+       (gandarinha-work/pdf/brochure-p08–p10). Halo positions are % coordinates
+       over the untouched plan images. -->
+  <section id="floorplans">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10 py-14 lg:py-20">
+      <div class="max-w-3xl mx-auto text-center mb-12 lg:mb-16">
+        <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl text-accent-hover mb-6 reveal">Architectural layout, floor by floor</h2>
+        <p class="leading-relaxed reveal">Designed for grand entertaining and private relaxation, the house is organised across three meticulously planned levels, all connected by a private lift.</p>
+        <p class="mt-3 text-sm text-faint reveal">Choose a level, then touch a space to place it on the plan.</p>
+      </div>
+
+      <div class="gx-fp-tabs reveal" role="tablist" aria-label="Floor plans">
+        <button class="gx-fp-tab" id="fp-tab-b" role="tab" aria-selected="false" aria-controls="fp-rooms-b" data-level="b">
+          <span class="t-lvl">Level −1 · Basement</span>
+          <span class="t-name">Service &amp; garage</span>
+          <span class="t-area">337.87 m²</span>
+        </button>
+        <button class="gx-fp-tab is-active" id="fp-tab-g" role="tab" aria-selected="true" aria-controls="fp-rooms-g" data-level="g">
+          <span class="t-lvl">Level 0 · Ground floor</span>
+          <span class="t-name">The social core</span>
+          <span class="t-area">383.30 m²</span>
+        </button>
+        <button class="gx-fp-tab" id="fp-tab-f" role="tab" aria-selected="false" aria-controls="fp-rooms-f" data-level="f">
+          <span class="t-lvl">Level 1 · First floor</span>
+          <span class="t-name">The private quarters</span>
+          <span class="t-area">299.04 m²</span>
+        </button>
+      </div>
+
+      <div class="gx-fp-grid">
+        <div class="reveal">
+          <div class="gx-fp-scroller">
+            <div class="gx-fp-canvas" id="fp-canvas">
+              <img class="gx-fp-plan" data-plan="b" src="assets/photos/gandarinha-plan-basement.png" alt="Floor plan of Level -1: garage, technical rooms, flexible multi-purpose rooms, laundry and staff quarters" width="1600" height="1210" loading="lazy" />
+              <img class="gx-fp-plan is-active" data-plan="g" src="assets/photos/gandarinha-plan-ground.png" alt="Floor plan of Level 0: living room, dining room, kitchen, studio, guest suite, terrace and pool" width="1600" height="1210" loading="lazy" />
+              <img class="gx-fp-plan" data-plan="f" src="assets/photos/gandarinha-plan-first.png" alt="Floor plan of Level 1: four bedroom suites with walk-in closets, central office and panoramic terraces" width="1600" height="1210" loading="lazy" />
+              <div id="fp-halos"></div>
+            </div>
+          </div>
+          <div class="gx-fp-desc" aria-live="polite">
+            <span class="d-room" id="fp-desc-room">Level 0 · The social &amp; entertaining core</span>
+            <p class="text-sm leading-relaxed" id="fp-desc-text">High glass doors open the living spaces directly to the garden, the limestone terraces and the pool.</p>
+          </div>
+          <p class="text-xs text-faint mt-4">Architectural plans are indicative and for reference only; the finished property may differ.</p>
+        </div>
+
+        <div class="reveal" style="--reveal-delay: 120ms;">
+          <!-- Level 0 rooms -->
+          <div id="fp-rooms-g" role="tabpanel" aria-labelledby="fp-tab-g">
+            <p class="label text-ink gx-fp-kicker">Level 0 — The social &amp; entertaining core</p>
+            <button class="gx-room" data-pins="49.1,32.7" data-desc="Framed by full-height glass walls looking out over the private garden and pool.">
+              <span class="r-name">Grand living hall</span><span class="r-area">42 m²</span>
+            </button>
+            <button class="gx-room" data-pins="52.7,21.4" data-desc="Designed for grand evening gatherings and seamless indoor-outdoor entertaining.">
+              <span class="r-name">Formal dining room</span><span class="r-area">30 m²</span>
+            </button>
+            <button class="gx-room" data-pins="44.7,36.4" data-desc="A dedicated space for relaxation, games, or a private home cinema.">
+              <span class="r-name">Entertainment &amp; media room</span><span class="r-area">29 m²</span>
+            </button>
+            <button class="gx-room" data-pins="48.0,17.7;44.0,19.5" data-desc="Custom-fitted by Leiken, with a separate private pantry of 7 m².">
+              <span class="r-name">Chef's kitchen &amp; pantry</span><span class="r-area">28 m²</span>
+            </button>
+            <button class="gx-room" data-pins="36.9,36.2;35.5,39.4;38.8,39.4;40.3,22.1" data-desc="A spacious guest suite of 27 m² with walk-in closet and private bathroom, plus a second en-suite bedroom of 15 m².">
+              <span class="r-name">Two main-floor suites</span><span class="r-area">27 + 15 m²</span>
+            </button>
+            <button class="gx-room" data-pins="44.1,23.1" data-desc="A discreet guest washroom off the main hall, beside the kitchen.">
+              <span class="r-name">Social WC</span><span class="r-area">—</span>
+            </button>
+            <button class="gx-room" data-pins="55.1,32.3;70.2,20.2;35.6,29.1" data-desc="Paved outdoor lounges, shaded limestone terraces, and the 15.5 m × 5 m private turquoise pool.">
+              <span class="r-name">Outdoor living &amp; pool deck</span><span class="r-area">171 m² + pool</span>
+            </button>
+          </div>
+
+          <!-- Level 1 rooms -->
+          <div id="fp-rooms-f" role="tabpanel" aria-labelledby="fp-tab-f" hidden>
+            <p class="label text-ink gx-fp-kicker">Level 1 — The executive living quarters</p>
+            <!-- RESOLVED by Michael 2026-08-13: primary suite = the zones 02-05 wing
+                 INCLUDING the central office (rows merged, 47 m² as instructed =
+                 the displayed 32 + 15; brochure sum for that wing is 29.87 + 15.33
+                 ≈ 45 — flagged in the sourcing-email ledger, item 5). Further
+                 suites = plan zones 06-15 (Rooms 08/13/15 = 30.04 / 25.62 /
+                 31.94 m² → range 26-32). -->
+            <button class="gx-room" data-pins="51.8,21.7;42.0,24.2;44.1,19.8;46.5,19.2" data-desc="An expansive private wing: the primary bedroom with walk-in dressing room and spa-inspired marble bathroom, together with the central private office.">
+              <span class="r-name">Primary executive suite</span><span class="r-area">47 m²</span>
+            </button>
+            <button class="gx-room" data-pins="51.6,27.9;38.0,36.1;51.9,34.4" data-desc="Each bedroom features its own en-suite bathroom, walk-in closet, and private terrace access.">
+              <span class="r-name">Three further bedroom suites</span><span class="r-area">26–32 m²</span>
+            </button>
+            <button class="gx-room" data-pins="34.3,35.9;38.8,22.0;55.1,33.8" data-desc="Three independent private balconies and terraces providing elevated outdoor spaces and coastal breezes.">
+              <span class="r-name">Panoramic upper terraces</span><span class="r-area">× 3</span>
+            </button>
+          </div>
+
+          <!-- Level −1 rooms -->
+          <div id="fp-rooms-b" role="tabpanel" aria-labelledby="fp-tab-b" hidden>
+            <p class="label text-ink gx-fp-kicker">Level −1 — Service &amp; technical discretion</p>
+            <button class="gx-room" data-pins="46.4,24.4" data-desc="Generous subterranean space for multiple executive vehicles.">
+              <span class="r-name">Garage</span><span class="r-area">143 m²</span>
+            </button>
+            <button class="gx-room" data-pins="36.9,29.1;36.3,37.3;34.6,33.1" data-desc="Independent staff suite with its own bedroom, kitchenette, and private bathroom.">
+              <span class="r-name">Private staff quarters</span><span class="r-area">suite</span>
+            </button>
+            <button class="gx-room" data-pins="27.8,28.3;44.9,39.1;40.6,39.1;39.6,30.3" data-desc="Four flexible rooms left unspecified for the buyer's custom use, the largest of 39 m².">
+              <span class="r-name">Flexible multi-purpose rooms</span><span class="r-area">× 4</span>
+            </button>
+            <button class="gx-room" data-pins="53.3,34.7;49.3,34.7;81.5,20.0;77.2,20.4" data-desc="Two further bathrooms, technical utility rooms, and a dedicated laundry facility.">
+              <span class="r-name">Utility &amp; facilities</span><span class="r-area">—</span>
+            </button>
+            <button class="gx-room" data-pins="81.0,25.5" data-desc="A dedicated washroom in the pool annex, serving the pool deck directly.">
+              <span class="r-name">Pool bathroom</span><span class="r-area">—</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== PREMIUM FINISHES, SYSTEMS & SECURITY ==============
+       (the standalone technical-specifications table was removed 2026-08-12 —
+       its numbers all live in the key-facts band and on the floor-plan tabs;
+       key metrics are stated once, per Natalie's brief) -->
+  <section>
+    <div class="max-w-7xl mx-auto px-6 lg:px-10 pt-14 lg:pt-20 pb-24 lg:pb-36">
+      <div class="max-w-3xl mx-auto text-center mb-14 lg:mb-20">
+        <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl text-accent-hover mb-6 reveal">Premium finishes, systems &amp; security</h2>
+        <p class="leading-relaxed reveal">Built with uncompromised quality, featuring leading international luxury brands.</p>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-14 reveal">
+        <div class="gx-spec border-t border-accent pt-6">
+          <h3 class="label text-ink mb-3">Custom kitchens</h3>
+          <p class="leading-relaxed">Bespoke luxury fitted kitchens by Leiken.</p>
+        </div>
+        <div class="gx-spec border-t border-accent pt-6">
+          <h3 class="label text-ink mb-3">Sanitaryware &amp; fixtures</h3>
+          <p class="leading-relaxed">Designer bathrooms equipped with premium Villeroy &amp; Boch and Hansgrohe fixtures.</p>
+        </div>
+        <div class="gx-spec border-t border-accent pt-6">
+          <h3 class="label text-ink mb-3">Hardwood flooring</h3>
+          <p class="leading-relaxed">Solid natural oak flooring protected with a refined white varnish from the Pur Natur series.</p>
+        </div>
+        <div class="gx-spec border-t border-accent pt-6">
+          <h3 class="label text-ink mb-3">Tile &amp; natural stone</h3>
+          <p class="leading-relaxed">High-end porcelain tiles by Porcelanosa paired with high-end marble — Dolomiti, Sochi Blanco and Liem Black — across bathrooms and feature walls.</p>
+        </div>
+        <div class="gx-spec border-t border-accent pt-6">
+          <h3 class="label text-ink mb-3">Climate &amp; comfort</h3>
+          <p class="leading-relaxed">Complete underfloor heating throughout the entire home; integrated central air conditioning and climate control.</p>
+        </div>
+        <div class="gx-spec border-t border-accent pt-6">
+          <h3 class="label text-ink mb-3">Advanced security</h3>
+          <p class="leading-relaxed">Integrated indoor security sensors and window monitoring; pre-installation for external perimeter security cameras and surveillance systems.</p>
+        </div>
+        <div class="gx-spec border-t border-accent pt-6">
+          <h3 class="label text-ink mb-3">Vertical mobility</h3>
+          <p class="leading-relaxed">A private Liftech Homelift seamlessly serving all three levels.</p>
+        </div>
+        <div class="gx-spec border-t border-accent pt-6">
+          <h3 class="label text-ink mb-3">Balconies &amp; glasswork</h3>
+          <p class="leading-relaxed">Double-laminated tempered glass railings (SGG Stadip Securit) for uninterrupted views. Pool lined with Niebla Turquoise mosaic tiles.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== GALLERY: full photography (masonry + lightbox) ============== -->
+  <section class="bg-surface">
+    <div class="py-24 lg:py-36">
+      <div class="max-w-7xl mx-auto px-6 lg:px-10 mb-10 reveal">
+        <h2 class="font-serif text-3xl sm:text-4xl text-accent-hover">The house in photographs</h2>
+        <p class="mt-3 text-sm text-faint">Tap any photograph to view it full screen.</p>
+      </div>
+      <div id="gallery" class="max-w-7xl mx-auto px-6 lg:px-10">
+        <div class="columns-1 sm:columns-2 lg:columns-3 gap-4">
+          <img src="assets/photos/gandarinha/thumb/g04.jpg" data-full="assets/photos/gandarinha/full/g04.jpg" alt="The landing above the living hall" width="480" height="720" loading="lazy" class="w-full mb-4 break-inside-avoid cursor-zoom-in" />
+          <img src="assets/photos/gandarinha/thumb/g01.jpg" data-full="assets/photos/gandarinha/full/g01.jpg" alt="The living hall behind the glass wall" width="720" height="480" loading="lazy" class="w-full mb-4 break-inside-avoid cursor-zoom-in" />
+          <img src="assets/photos/gandarinha/thumb/g06.jpg" data-full="assets/photos/gandarinha/full/g06.jpg" alt="The living room" width="480" height="720" loading="lazy" class="w-full mb-4 break-inside-avoid cursor-zoom-in" />
+          <img src="assets/photos/gandarinha/thumb/g02.jpg" data-full="assets/photos/gandarinha/full/g02.jpg" alt="The pool axis toward the house" width="720" height="480" loading="lazy" class="w-full mb-4 break-inside-avoid cursor-zoom-in" />
+          <img src="assets/photos/gandarinha/thumb/g08.jpg" data-full="assets/photos/gandarinha/full/g08.jpg" alt="The sculptural staircase" width="480" height="720" loading="lazy" class="w-full mb-4 break-inside-avoid cursor-zoom-in" />
+          <img src="assets/photos/gandarinha/thumb/g10.jpg" data-full="assets/photos/gandarinha/full/g10.jpg" alt="The pool" width="480" height="720" loading="lazy" class="w-full mb-4 break-inside-avoid cursor-zoom-in" />
+          <img src="assets/photos/gandarinha/thumb/g03.jpg" data-full="assets/photos/gandarinha/full/g03.jpg" alt="The living hall toward the garden" width="720" height="480" loading="lazy" class="w-full mb-4 break-inside-avoid cursor-zoom-in" />
+          <img src="assets/photos/gandarinha/thumb/g07.jpg" data-full="assets/photos/gandarinha/full/g07.jpg" alt="The entrance courtyard" width="720" height="480" loading="lazy" class="w-full mb-4 break-inside-avoid cursor-zoom-in" />
+          <img src="assets/photos/gandarinha/thumb/g13.jpg" data-full="assets/photos/gandarinha/full/g13.jpg" alt="The upper terrace" width="480" height="720" loading="lazy" class="w-full mb-4 break-inside-avoid cursor-zoom-in" />
+          <img src="assets/photos/gandarinha/thumb/g11.jpg" data-full="assets/photos/gandarinha/full/g11.jpg" alt="The house from the garden" width="720" height="480" loading="lazy" class="w-full mb-4 break-inside-avoid cursor-zoom-in" />
+          <img src="assets/photos/gandarinha/thumb/g12.jpg" data-full="assets/photos/gandarinha/full/g12.jpg" alt="The living room toward the garden" width="720" height="480" loading="lazy" class="w-full mb-4 break-inside-avoid cursor-zoom-in" />
+          <img src="assets/photos/gandarinha/thumb/g16.jpg" data-full="assets/photos/gandarinha/full/g16.jpg" alt="The wardrobe corridor" width="480" height="720" loading="lazy" class="w-full mb-4 break-inside-avoid cursor-zoom-in" />
+          <img src="assets/photos/gandarinha/thumb/g14.jpg" data-full="assets/photos/gandarinha/full/g14.jpg" alt="A bedroom suite in oak" width="720" height="480" loading="lazy" class="w-full mb-4 break-inside-avoid cursor-zoom-in" />
+          <img src="assets/photos/gandarinha/thumb/g15.jpg" data-full="assets/photos/gandarinha/full/g15.jpg" alt="The garage" width="720" height="480" loading="lazy" class="w-full mb-4 break-inside-avoid cursor-zoom-in" />
+          <img src="assets/photos/gandarinha/thumb/g19.jpg" data-full="assets/photos/gandarinha/full/g19.jpg" alt="A guest bathroom" width="480" height="720" loading="lazy" class="w-full mb-4 break-inside-avoid cursor-zoom-in" />
+          <img src="assets/photos/gandarinha/thumb/g17.jpg" data-full="assets/photos/gandarinha/full/g17.jpg" alt="The upstairs hallway" width="720" height="480" loading="lazy" class="w-full mb-4 break-inside-avoid cursor-zoom-in" />
+          <img src="assets/photos/gandarinha/thumb/g20.jpg" data-full="assets/photos/gandarinha/full/g20.jpg" alt="The marble bathroom" width="720" height="480" loading="lazy" class="w-full mb-4 break-inside-avoid cursor-zoom-in" />
+        </div>
+      </div>
+      <p class="max-w-7xl mx-auto px-6 lg:px-10 mt-6 text-sm text-faint reveal">The complete documentation kit is shared at the viewing.</p>
+    </div>
+  </section>
+
   <!-- Fullscreen lightbox for the gallery (native dialog, no libraries) -->
-  <dialog id="gallery-lightbox" class="p-0 m-auto w-[100vw] h-[100dvh] max-w-none max-h-none" style="background: rgba(14, 14, 12, 0.96);">
+  <dialog id="gallery-lightbox" class="p-0 m-auto w-[100vw] h-[100dvh] max-w-none max-h-none" style="background: rgba(12, 12, 14, 0.96);">
     <div id="gl-stage" class="relative w-full h-full flex items-center justify-center">
       <img id="gl-img" src="" alt="" class="max-w-[94vw] max-h-[88dvh] object-contain select-none" />
       <button id="gl-prev" type="button" aria-label="Previous photograph" class="absolute left-3 lg:left-6 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/10 hover:bg-white/25 text-white text-2xl leading-none transition-colors cursor-pointer">&#8249;</button>
@@ -627,129 +609,210 @@
     </div>
   </dialog>
 
-  <!-- ============== 10 EVERYTHING WITHIN REACH ==============
-       Map from the property presentation (page 3), same licensed brochure source
-       as the photos and plans. gandarinha-map-simplified.png is a derived copy
-       with the printed markers outside the priority list painted out
-       (original file untouched on disk). The only distance the brochure states
-       is "Lisboa 30 min."; no other drive times are claimed. -->
-  <section id="location" class="max-w-7xl mx-auto px-6 lg:px-12 py-28 lg:py-44">
-    <div class="grid lg:grid-cols-12 gap-10 lg:gap-16">
-      <h2 class="gd-title lg:col-span-5 reveal">Cascais’ Most Coveted Enclave</h2>
-      <div class="lg:col-span-6 lg:col-start-7 reveal" style="--reveal-delay: 120ms;">
-        <p class="gd-lead">Mornings on the Atlantic coast, lunch at the marina, an evening in the historic centre, and Lisbon thirty minutes away.</p>
-        <p class="gd-body mt-6">Gandarinha offers a rare balance: the calm of a private residential enclave, with the waterfront, the marina, the historic centre and everyday life close at hand. Guincho’s beaches and the dunes of Oitavos lie along the coast to the west, Estoril and Lisbon to the east.</p>
+  <!-- ============== LIFESTYLE: CASCAIS ============== -->
+  <section>
+    <div class="max-w-7xl mx-auto px-6 lg:px-10 py-24 lg:py-36">
+      <div class="max-w-4xl mx-auto text-center mb-14 lg:mb-20">
+        <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl sm:whitespace-nowrap text-accent-hover mb-6 reveal">Where the sea meets a refined way of life</h2>
+        <p class="max-w-3xl mx-auto leading-relaxed text-balance reveal">Cascais offers a rare balance of coastal beauty, understated elegance and an exceptional quality of life. Just 30 minutes from Lisbon, the town combines the ease of seaside living with excellent dining, culture, golf and nature, all within easy reach.</p>
       </div>
-    </div>
-    <div class="gx-map grid lg:grid-cols-12 gap-10 lg:gap-16 items-center mt-16 lg:mt-24" id="lm-map">
-      <div class="lg:col-span-7 reveal">
-        <div class="gx-map-stage">
-          <img class="gx-map-img"
-               src="assets/photos/gandarinha-map-simplified.png"
-               alt="Map of the Cascais coastline marking Cascais Marina, Cascais Bay, historic Cascais, Guincho Beach, Quinta da Marinha, Oitavos Dunes and Estoril, with Lisbon thirty minutes to the east"
-               width="3177" height="2223" loading="lazy" />
-          <button class="gx-pin" data-lm="1" style="--x:64.7%; --y:80.2%" aria-label="Cascais Marina, marker 1"><span aria-hidden="true">1</span></button>
-          <button class="gx-pin" data-lm="2" style="--x:65.8%; --y:72.6%" aria-label="Cascais Bay, marker 2"><span aria-hidden="true">2</span></button>
-          <!-- Marker 3 is our overlay (not printed on the brochure map), placed on the
-               town centre beside the bay, where the map prints "Cascais". -->
-          <button class="gx-pin" data-lm="3" style="--x:56.8%; --y:73.2%" aria-label="Historic Cascais, marker 3"><span aria-hidden="true">3</span></button>
-          <button class="gx-pin" data-lm="4" style="--x:21.4%; --y:30.9%" aria-label="Guincho Beach, marker 4"><span aria-hidden="true">4</span></button>
-          <button class="gx-pin" data-lm="5" style="--x:34.7%; --y:65.3%" aria-label="Quinta da Marinha, marker 5"><span aria-hidden="true">5</span></button>
-          <button class="gx-pin" data-lm="6" style="--x:26.6%; --y:69.1%" aria-label="Oitavos Dunes, marker 6"><span aria-hidden="true">6</span></button>
-          <button class="gx-pin" data-lm="7" style="--x:85.3%; --y:60.3%" aria-label="Estoril, marker 7"><span aria-hidden="true">7</span></button>
-          <div class="gx-map-ring" data-ring="lisboa" style="--x:86%; --y:91%" hidden></div>
+      <div class="grid md:grid-cols-3 gap-10 lg:gap-14 reveal">
+        <div class="gx-spec border-t border-accent pt-6">
+          <h3 class="label text-ink mb-3">World-class golf</h3>
+          <p class="leading-relaxed">Some of Portugal's finest golf courses are close by, including Quinta da Marinha and Oitavos Dunes, offering exceptional courses set among the Atlantic landscape.</p>
         </div>
-      </div>
-      <div class="lg:col-span-4 lg:col-start-9 reveal" style="--reveal-delay: 120ms;">
-        <button class="gx-lm" data-lm="1"><span class="n">1</span><span class="t">Cascais Marina</span></button>
-        <button class="gx-lm" data-lm="2"><span class="n">2</span><span class="t">Cascais Bay</span></button>
-        <button class="gx-lm" data-lm="3"><span class="n">3</span><span class="t">Historic Cascais</span></button>
-        <button class="gx-lm" data-lm="4"><span class="n">4</span><span class="t">Guincho Beach</span></button>
-        <button class="gx-lm" data-lm="5"><span class="n">5</span><span class="t">Quinta da Marinha</span></button>
-        <button class="gx-lm" data-lm="6"><span class="n">6</span><span class="t">Oitavos Dunes</span></button>
-        <button class="gx-lm" data-lm="7"><span class="n">7</span><span class="t">Estoril</span></button>
-        <button class="gx-lm" data-lm="lisboa"><span class="n">→</span><span class="t">Lisbon</span><span class="d">30 min</span></button>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============== 11 PRIVATE ACCESS (the single closing section) ==============
-       Natalie's pass 3 (2026-08-31): the presenter, ONE WhatsApp route and ONE
-       three-field form, replacing the former A Private Address / Presented by /
-       Experience / Request a Viewing run. Same Sheets contract as every other
-       form on the site: nothing is sent until assets/form-endpoint.js carries a
-       SHEETS_URL; until then the honest "unavailable" fallback (WhatsApp + phone)
-       is shown. -->
-  <section id="private-access" class="bg-[#E9E4D9]">
-    <div class="max-w-7xl mx-auto px-6 lg:px-12 py-28 lg:py-44">
-      <div class="grid lg:grid-cols-12 gap-14 lg:gap-16">
-        <div class="lg:col-span-4 reveal">
-          <div class="gd-frame aspect-[4/5] max-w-sm">
-            <img src="assets/natalie-1280.jpg" alt="Natalie Gutman" class="reveal-img" width="909" height="1280" loading="lazy" />
-          </div>
-          <img src="assets/logo-script.png" alt="" aria-hidden="true" class="h-9 w-auto mt-8" loading="lazy" />
-          <p class="gd-serif gd-ink text-2xl mt-3">Natalie Gutman</p>
-          <p class="gd-caption mt-1">eXp Realty · AMI 18470</p>
+        <div class="gx-spec border-t border-accent pt-6">
+          <h3 class="label text-ink mb-3">Dining &amp; culture</h3>
+          <p class="leading-relaxed">From refined seafood and acclaimed restaurants to galleries, museums and a vibrant cultural scene, Cascais offers an effortless blend of gastronomy, art and local character.</p>
         </div>
-        <div class="lg:col-span-7 lg:col-start-6 reveal" style="--reveal-delay: 120ms;">
-          <h2 class="gd-title gd-title-lg">Private Access</h2>
-          <p class="gd-lead mt-10">The Gandarinha Estate is shown by private appointment. Natalie arranges every viewing personally and discreetly.</p>
-          <p class="gd-body mt-6">Due to the exclusive nature of The Gandarinha Estate, full technical architectural drawings, exact location details, and comprehensive private video walkthroughs are available exclusively upon verified enquiry.</p>
-          <div class="mt-10 flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-8">
-            <a href="https://wa.me/351969227709" class="gd-btn">Message Natalie on WhatsApp</a>
-            <a href="tel:+351969227709" class="gd-link gd-ink text-sm">+351 969 227 709</a>
-          </div>
-          <p class="gd-or gd-label mt-14">or leave your details</p>
-          <form id="viewing-form" action="#" method="post" class="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-x-6 gap-y-7" novalidate>
-            <div>
-              <label for="v-name" class="block gd-label mb-3">Full name</label>
-              <input id="v-name" name="name" type="text" required autocomplete="name" class="gd-field" />
-            </div>
-            <div>
-              <label for="v-email" class="block gd-label mb-3">Email</label>
-              <input id="v-email" name="email" type="email" required autocomplete="email" class="gd-field" />
-            </div>
-            <div>
-              <label for="v-phone" class="block gd-label mb-3">Phone / WhatsApp</label>
-              <input id="v-phone" name="phone" type="tel" required autocomplete="tel" class="gd-field" />
-            </div>
-            <div class="sm:col-span-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 mt-2">
-              <p class="gd-caption max-w-xs">Your information will be handled confidentially. By sending, you agree to the <a href="/privacy" class="gd-link gd-ink">Privacy Policy</a>.</p>
-              <button type="submit" class="gd-btn gd-btn-outline">Send Private Enquiry</button>
-            </div>
-          </form>
+        <div class="gx-spec border-t border-accent pt-6">
+          <h3 class="label text-ink mb-3">Life by the Atlantic</h3>
+          <p class="leading-relaxed">The coastline is part of everyday life. Scenic cycling and walking routes, dramatic Atlantic landscapes and beaches such as Guincho are all within easy reach, offering a natural extension of the Cascais lifestyle.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ============== 12 FOOTER (legal stays verbatim, visually quiet) ============== -->
-  <footer class="bg-[#E9E4D9]" style="border-top: 1px solid var(--line);">
-    <div class="max-w-7xl mx-auto px-6 lg:px-12 py-16 lg:py-20">
-      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-10 items-start">
-        <div>
-          <p class="gd-serif gd-ink text-xl tracking-[0.06em] uppercase">The Gandarinha Estate</p>
-          <p class="gd-caption mt-2">Private presentation · Cascais, Portugal</p>
+  <!-- ============== THE SURROUNDINGS: interactive landmark map ==============
+       (the "Cascais' most coveted address / Gandarinha" full-bleed banner was
+       removed 2026-08-13 at Michael's instruction)
+       Map from the property presentation (page 3), same licensed brochure
+       source as the photos and floor plans. Local asset, untouched — the
+       printed legend margin is cropped out with CSS; the interactive pins sit
+       exactly over the map's own printed markers. The only distance the
+       brochure states is "Lisboa 30 min." — no other drive times are claimed
+       (unverified estimates were removed at the 2026-08-10 lawyer gate).
+       NOTE 2026-08-13: the brochure's own printed legend is defective — its
+       entry 4 reads "Casino / Casino" (production error) while printed pin 4
+       sits on the marina breakwater, and its "6 Marina" is geographically
+       impossible (that pin is on the Guincho dune coast). Labels here follow
+       the real geography (Michael-confirmed for 4): 4 = Cascais Marina,
+       6 = Praia da Cresmina. Natalie to confirm 6. -->
+  <section class="bg-surface">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10 pt-24 lg:pt-36 pb-12 lg:pb-16">
+      <div class="max-w-3xl mb-12 lg:mb-16 reveal">
+        <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl text-accent-hover mb-5">Prime location &amp; surroundings</h2>
+        <p class="leading-relaxed">Beaches, the marina, the golf courses and Cabo da Roca surround the estate — with Lisbon thirty minutes away via the coast road. Touch a landmark to place it on the coast.</p>
+      </div>
+      <div class="gx-map grid lg:grid-cols-12 gap-10 lg:gap-14 items-center" id="lm-map">
+        <div class="lg:col-span-7 reveal">
+          <div class="gx-map-stage">
+            <img class="gx-map-img"
+                 src="assets/photos/gandarinha-map.png"
+                 alt="Map of the Cascais coastline marking fourteen landmarks around the estate: Estoril Casino, Tamariz Beach, Cascais Bay, Cascais Marina, the Hippodrome, Praia da Cresmina, Guincho Beach, Quinta da Marinha and Oitavos Dunes golf courses, Estoril Golf and Tennis Clubs, Cabo Raso lighthouse, Cabo da Roca and Casa das Histórias Paula Rego, with Lisbon thirty minutes to the east"
+                 width="3177" height="2223" loading="lazy" />
+            <button class="gx-pin" data-lm="1"  style="--x:85.3%; --y:60.3%" aria-label="Estoril Casino, marker 1"><span aria-hidden="true">1</span></button>
+            <button class="gx-pin" data-lm="2"  style="--x:83.3%; --y:65.5%" aria-label="Tamariz Beach, marker 2"><span aria-hidden="true">2</span></button>
+            <button class="gx-pin" data-lm="3"  style="--x:65.8%; --y:72.6%" aria-label="Cascais Bay, marker 3"><span aria-hidden="true">3</span></button>
+            <button class="gx-pin" data-lm="4"  style="--x:64.7%; --y:80.2%" aria-label="Cascais Marina, marker 4"><span aria-hidden="true">4</span></button>
+            <button class="gx-pin" data-lm="5"  style="--x:46.3%; --y:74.9%" aria-label="Hippodrome, marker 5"><span aria-hidden="true">5</span></button>
+            <button class="gx-pin" data-lm="6"  style="--x:18.8%; --y:40.9%" aria-label="Praia da Cresmina, marker 6"><span aria-hidden="true">6</span></button>
+            <button class="gx-pin" data-lm="7"  style="--x:21.4%; --y:30.9%" aria-label="Guincho Beach, marker 7"><span aria-hidden="true">7</span></button>
+            <button class="gx-pin" data-lm="8"  style="--x:34.7%; --y:65.3%" aria-label="Quinta da Marinha Golf Course, marker 8"><span aria-hidden="true">8</span></button>
+            <button class="gx-pin" data-lm="9"  style="--x:26.6%; --y:69.1%" aria-label="Oitavos Dunes Golf Course, marker 9"><span aria-hidden="true">9</span></button>
+            <button class="gx-pin" data-lm="10" style="--x:85.9%; --y:46.2%" aria-label="Estoril Golf Club, marker 10"><span aria-hidden="true">10</span></button>
+            <button class="gx-pin" data-lm="11" style="--x:89.7%; --y:52.1%" aria-label="Estoril Tennis Club, marker 11"><span aria-hidden="true">11</span></button>
+            <button class="gx-pin" data-lm="12" style="--x:11.3%; --y:58.8%" aria-label="Cabo Raso Lighthouse, marker 12"><span aria-hidden="true">12</span></button>
+            <button class="gx-pin" data-lm="13" style="--x:11.8%; --y:9.1%"  aria-label="Cabo da Roca, marker 13"><span aria-hidden="true">13</span></button>
+            <!-- Marker 14 is OUR overlay addition (requested by Natalie 2026-08-13) — it is
+                 NOT printed on the brochure map. Placed from real geography: central
+                 Cascais, beside the bay. Flag to counsel with the brochure-p3 licence check. -->
+            <button class="gx-pin" data-lm="14" style="--x:56.8%; --y:73.2%" aria-label="Casa das Histórias Paula Rego, marker 14"><span aria-hidden="true">14</span></button>
+            <div class="gx-map-ring" data-ring="lisboa" style="--x:86%; --y:91%" hidden></div>
+          </div>
         </div>
-        <div>
-          <p class="gd-ink text-sm">Natalie Gutman</p>
-          <p class="gd-caption mt-2">eXp Realty · AMI 18470</p>
+        <div class="lg:col-span-5 reveal" style="--reveal-delay: 120ms;">
+          <div class="gx-lm-group">
+            <p class="label mb-3">Coast &amp; leisure</p>
+            <button class="gx-lm" data-lm="4"><span class="n">4</span><span class="t">Cascais Marina</span></button>
+            <button class="gx-lm" data-lm="6"><span class="n">6</span><span class="t">Praia da Cresmina</span></button>
+            <button class="gx-lm" data-lm="7"><span class="n">7</span><span class="t">Guincho Beach</span></button>
+            <button class="gx-lm" data-lm="3"><span class="n">3</span><span class="t">Cascais Bay</span></button>
+            <button class="gx-lm" data-lm="2"><span class="n">2</span><span class="t">Tamariz Beach</span></button>
+          </div>
+          <div class="gx-lm-group">
+            <p class="label mb-3">Golf &amp; sport</p>
+            <button class="gx-lm" data-lm="8"><span class="n">8</span><span class="t">Quinta da Marinha Golf</span></button>
+            <button class="gx-lm" data-lm="9"><span class="n">9</span><span class="t">Oitavos Dunes Golf</span></button>
+            <button class="gx-lm" data-lm="10"><span class="n">10</span><span class="t">Estoril Golf Club</span></button>
+            <button class="gx-lm" data-lm="11"><span class="n">11</span><span class="t">Estoril Tennis Club</span></button>
+            <button class="gx-lm" data-lm="5"><span class="n">5</span><span class="t">Hippodrome</span></button>
+          </div>
+          <div class="gx-lm-group">
+            <p class="label mb-3">Landmarks</p>
+            <button class="gx-lm" data-lm="14"><span class="n">14</span><span class="t">Casa das Histórias Paula Rego</span></button>
+            <button class="gx-lm" data-lm="1"><span class="n">1</span><span class="t">Estoril Casino</span></button>
+                        <button class="gx-lm" data-lm="12"><span class="n">12</span><span class="t">Cabo Raso Lighthouse</span></button>
+            <button class="gx-lm" data-lm="13"><span class="n">13</span><span class="t">Cabo da Roca</span></button>
+            <button class="gx-lm" data-lm="lisboa"><span class="n">→</span><span class="t">Lisbon</span><span class="d">30 min via the coast road</span></button>
+          </div>
+          <p class="text-xs mt-6 text-faint">The estate's exact location within Gandarinha is shared privately at the viewing.</p>
         </div>
-        <ul class="flex items-center gap-x-6 gd-label lg:justify-end">
-          <li><a href="/privacy" class="gd-link">Privacy</a></li>
-          <li><a href="/terms" class="gd-link">Terms</a></li>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== PRIVATE VIEWING CTA ============== -->
+  <section id="viewing" class="bg-surface">
+    <div class="max-w-2xl mx-auto px-6 lg:px-10 pt-12 lg:pt-16 pb-24 lg:pb-36 text-center">
+      <p class="max-w-xl mx-auto leading-relaxed reveal">Contact Natalie directly to schedule a private visit</p>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10 reveal">
+        <button type="button" data-open-viewing data-request="viewing"
+                class="cursor-pointer bg-ink text-white text-sm px-8 py-3.5 rounded-full hover:bg-accent hover:text-ink transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 whitespace-nowrap">
+          Click to schedule
+        </button>
+      </div>
+      <div class="flex flex-wrap items-center justify-center gap-6 mt-12 reveal">
+        <a href="https://wa.me/351969227709" class="link-underline text-ink">WhatsApp</a>
+        <a href="tel:+351969227709" class="link-underline text-ink">+351 969 227 709</a>
+      </div>
+      <img src="assets/logo-script.png" alt="Natalie Gutman" class="h-12 w-auto mx-auto mt-10 reveal" loading="lazy" />
+    </div>
+  </section>
+
+  <!-- Viewing request modal (native dialog; one shared form, same Sheets
+       contract as every other form on the site — no request is sent until
+       assets/form-endpoint.js carries a SHEETS_URL) -->
+  <dialog id="viewing-modal" aria-labelledby="vm-title">
+    <div class="relative px-6 py-10 sm:px-10">
+      <button type="button" class="gx-modal-x" data-close-viewing aria-label="Close">&#10005;</button>
+      <p class="label text-faint mb-2">The Gandarinha Estate</p>
+      <h3 id="vm-title" class="font-serif text-3xl text-accent-hover mb-2">Request a private viewing</h3>
+      <p class="text-sm text-muted mb-8">Natalie will contact you personally. Discretion is assured.</p>
+      <form id="viewing-form" action="#" method="post" class="grid grid-cols-1 sm:grid-cols-2 gap-5" novalidate>
+        <div class="sm:col-span-1">
+          <label for="v-name" class="block label mb-2">Name</label>
+          <input id="v-name" name="name" type="text" required autocomplete="name"
+                 class="w-full border border-hairline bg-white px-4 py-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent" />
+        </div>
+        <div class="sm:col-span-1">
+          <label for="v-email" class="block label mb-2">Email</label>
+          <input id="v-email" name="email" type="email" required autocomplete="email"
+                 class="w-full border border-hairline bg-white px-4 py-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent" />
+        </div>
+        <div class="sm:col-span-1">
+          <label for="v-phone" class="block label mb-2">Phone number</label>
+          <input id="v-phone" name="phone" type="tel" required autocomplete="tel"
+                 class="w-full border border-hairline bg-white px-4 py-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent" />
+        </div>
+        <div class="sm:col-span-1">
+          <label for="v-pref" class="block label mb-2">Preferred contact</label>
+          <select id="v-pref" name="preferred"
+                  class="w-full border border-hairline bg-white px-4 py-3 text-sm text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent">
+            <option value="whatsapp">WhatsApp</option>
+            <option value="call">Call</option>
+          </select>
+        </div>
+        <div class="sm:col-span-2">
+          <label for="v-request" class="block label mb-2">I would like</label>
+          <select id="v-request" name="request"
+                  class="w-full border border-hairline bg-white px-4 py-3 text-sm text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent">
+            <option value="viewing">A private viewing</option>
+            <option value="kit">The confidential documentation kit</option>
+            <option value="both">Both</option>
+          </select>
+        </div>
+        <div class="sm:col-span-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mt-2">
+          <p class="text-xs text-muted">By sending, you agree to the <a href="/privacy" class="link-underline text-ink">Privacy Policy</a>.</p>
+          <button type="submit"
+                  class="cursor-pointer bg-ink text-white text-sm px-8 py-3.5 rounded-full hover:bg-accent hover:text-ink transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 whitespace-nowrap">
+            Send request
+          </button>
+        </div>
+      </form>
+      <div class="flex flex-wrap items-center gap-6 mt-8 pt-6 border-t border-hairline">
+        <span class="text-xs text-faint">Or reach Natalie directly:</span>
+        <a href="https://wa.me/351969227709" class="link-underline text-ink text-sm">WhatsApp</a>
+        <a href="tel:+351969227709" class="link-underline text-ink text-sm">+351 969 227 709</a>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Discrete floating trigger (appears once the hero has been scrolled past) -->
+  <button type="button" id="viewing-pill" class="gx-pill" data-open-viewing aria-label="Request a private viewing">
+    <span class="dot" aria-hidden="true"></span>Private viewing
+  </button>
+
+  <!-- ============== SLIM FOOTER (legal stays verbatim) ============== -->
+  <footer class="bg-surface">
+    <div class="max-w-6xl mx-auto px-6 lg:px-10 py-14 lg:py-16">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-8">
+        <ul class="flex flex-wrap items-center gap-x-6 gap-y-2 label text-faint">
+          <li><a href="/" class="hover:text-ink transition-colors">nataliegutman.com</a></li>
+          <li><a href="/privacy" class="hover:text-ink transition-colors">Privacy</a></li>
+          <li><a href="/terms" class="hover:text-ink transition-colors">Terms</a></li>
         </ul>
       </div>
       <!-- Advertising disclaimer + AMI attribution (Lei 15/2013): every listing page carries the
-           licence holder. No prices are shown anywhere on this page, by design. -->
-      <p class="text-xs leading-relaxed max-w-3xl mt-14 pt-8 border-t" style="color: var(--grey); border-color: var(--line);">
+           licence holder. "prices" dropped from the boilerplate 2026-08-13 (none are shown). -->
+      <p class="text-xs text-faint leading-relaxed max-w-3xl mt-10 pt-8 border-t border-hairline">
         All listing details, measurements and availability are indicative, provided in good faith
         and subject to change or prior sale. They do not form part of any offer or contract, and should be
         independently verified before you commit to a purchase. Energy performance class is stated as
         required by Decreto-Lei n.º 101-D/2020. Property mediation is provided through eXp Realty,
         a licensed brokerage (AMI 18470).
       </p>
-      <p class="text-xs mt-6" style="color: var(--grey);">&copy; <span id="year"></span> Natalie Gutman. All rights reserved.</p>
+      <p class="text-xs text-faint mt-6">&copy; <span id="year"></span> Natalie Gutman. All rights reserved.</p>
     </div>
   </footer>
 
@@ -757,40 +820,49 @@
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // ── Navigation state + mobile menu ────────────────────────────────────────
-    // The walkthrough loop below also turns the bar solid during the ivory
-    // fade at the end of the walk; this observer is the reduced-motion and
-    // scrolled-past baseline.
+    // ── Viewing modal: native <dialog>, shared by every trigger ───────────────
     (function () {
-      var nav = document.getElementById('gd-nav');
-      var hero = document.getElementById('walkthrough');
-      if ('IntersectionObserver' in window) {
-        new IntersectionObserver(function (entries) {
-          entries.forEach(function (en) { nav.classList.toggle('is-solid', !en.isIntersecting); });
-        }, { threshold: 0, rootMargin: '-72px 0px 0px 0px' }).observe(hero); // hero counts as gone once it is under the 68px bar
-      } else {
-        nav.classList.add('is-solid');
-      }
+      var modal = document.getElementById('viewing-modal');
+      var pill = document.getElementById('viewing-pill');
+      if (!modal || !modal.showModal) return;
 
-      var btn = document.getElementById('gd-menu-btn');
-      var menu = document.getElementById('gd-menu');
-      var close = document.getElementById('gd-menu-close');
-      function setMenu(open) {
-        menu.hidden = !open;
-        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-        document.documentElement.style.overflow = open ? 'hidden' : '';
-        if (open) close.focus(); else btn.focus();
+      function openModal(requestType) {
+        var sel = document.getElementById('v-request');
+        if (sel && requestType) sel.value = requestType;
+        modal.showModal();
+        document.body.style.overflow = 'hidden';
       }
-      btn.addEventListener('click', function () { setMenu(menu.hidden); });
-      close.addEventListener('click', function () { setMenu(false); });
-      menu.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { setMenu(false); }); });
-      document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !menu.hidden) setMenu(false); });
+      document.querySelectorAll('[data-open-viewing]').forEach(function (el) {
+        el.addEventListener('click', function (e) {
+          e.preventDefault();
+          openModal(el.getAttribute('data-request') || '');
+        });
+      });
+      modal.addEventListener('close', function () { document.body.style.overflow = ''; });
+      modal.querySelector('[data-close-viewing]').addEventListener('click', function () { modal.close(); });
+      modal.addEventListener('click', function (e) { if (e.target === modal) modal.close(); });
+      // bfcache: never leave the page scroll-locked after back-navigation
+      window.addEventListener('pageshow', function () { if (!modal.open) document.body.style.overflow = ''; });
+
+      // The pill shows between the hero and the CTA section (and never over the modal).
+      var hero = document.getElementById('walkthrough');
+      var viewing = document.getElementById('viewing');
+      var heroVisible = true, ctaVisible = false;
+      function sync() { pill.classList.toggle('is-on', !heroVisible && !ctaVisible); }
+      if ('IntersectionObserver' in window && pill) {
+        new IntersectionObserver(function (entries) {
+          entries.forEach(function (en) { heroVisible = en.isIntersecting; }); sync();
+        }, { threshold: 0 }).observe(hero);
+        new IntersectionObserver(function (entries) {
+          entries.forEach(function (en) { ctaVisible = en.isIntersecting; }); sync();
+        }, { threshold: 0.15 }).observe(viewing);
+      }
     })();
 
-    // ── Private enquiry form: same contract as the contact page ──────────────
+    // ── Viewing request form: same contract as the contact page ───────────────
     // Posts to the shared Google Sheets endpoint when configured. No third-party
-    // request is made until SHEETS_URL is set. The property name travels in the
-    // `property` field so the Apps Script needs no changes.
+    // request is made until SHEETS_URL is set. The viewing/kit choice travels
+    // inside the `property` field so the Apps Script needs no changes.
     (function () {
       var SHEETS_URL = window.SHEETS_URL || '';
       var form = document.getElementById('viewing-form');
@@ -804,10 +876,12 @@
         if (!emailEl || !emailEl.checkValidity()) { emailEl && emailEl.reportValidity(); return; }
         if (!phoneEl || !phoneEl.checkValidity()) { phoneEl && phoneEl.reportValidity(); return; }
         var name = nameEl.value;
-        var property = 'The Gandarinha Estate, private enquiry';
+        var request = (form.querySelector('#v-request') || {}).value || 'viewing';
+        var property = 'The Gandarinha Estate — ' +
+          (request === 'kit' ? 'confidential kit' : request === 'both' ? 'viewing + kit' : 'private viewing');
 
         if (!SHEETS_URL) {
-          window.showFormUnavailable(form, 'sm:col-span-3 py-6');
+          window.showFormUnavailable(form, 'sm:col-span-2 py-10 text-center');
           return;
         }
 
@@ -820,16 +894,17 @@
             + '&name='      + encodeURIComponent(name)
             + '&email='     + encodeURIComponent(emailEl.value)
             + '&phone='     + encodeURIComponent(phoneEl.value)
+            + '&preferred=' + encodeURIComponent((form.querySelector('#v-pref') || {}).value || '')
         }).catch(function () {});
 
         var result = document.createElement('div');
-        result.className = 'sm:col-span-3 py-6';
+        result.className = 'sm:col-span-2 py-10 text-center';
         var heading = document.createElement('p');
-        heading.className = 'gd-serif gd-ink text-3xl mb-3';
-        heading.textContent = 'Enquiry received.';
+        heading.className = 'font-serif text-3xl text-ink mb-3';
+        heading.textContent = 'Request received.';
         var detail = document.createElement('p');
-        detail.className = 'gd-body';
-        detail.textContent = 'Thank you' + (name.split(' ')[0] ? ', ' + name.split(' ')[0] : '') + '. Natalie will contact you personally.';
+        detail.className = 'text-muted';
+        detail.textContent = 'Thank you' + (name.split(' ')[0] ? ', ' + name.split(' ')[0] : '') + '. Natalie will contact you personally to arrange your private visit.';
         result.appendChild(heading);
         result.appendChild(detail);
         while (form.firstChild) form.removeChild(form.firstChild);
@@ -837,7 +912,7 @@
       });
     })();
 
-    // ── Floor-plan viewer: level tabs + room highlighting ─────────────────────
+    // ── Dynamic floor-plan viewer: level tabs + room highlighting ─────────────
     // Room rows carry data-pins="x,y;x,y" (% coordinates over the plan image)
     // and data-desc (the room's one-line description). Hover previews on fine
     // pointers; click/tap pins the highlight.
@@ -852,9 +927,9 @@
       if (!tabs.length || !halos) return;
 
       var LEVEL_DESCS = {
-        b: ['Level −1 · Garage & Service', 'Garage, staff accommodation, flexible rooms, laundry and technical facilities.'],
-        g: ['Level 0 · Living & Entertaining', 'High glass doors connect the principal living spaces directly with the gardens, limestone terraces and pool.'],
-        f: ['Level +1 · Private Suites & Terraces', 'A dedicated private level centred around the principal suite, additional bedroom suites, office space and panoramic terraces.']
+        b: ['Level −1 · Service & technical discretion', 'The back of house: garage, staff suite, flexible multi-purpose rooms and technical space, kept out of sight.'],
+        g: ['Level 0 · The social & entertaining core', 'High glass doors open the living spaces directly to the garden, the limestone terraces and the pool.'],
+        f: ['Level 1 · The executive living quarters', 'The executive master wing and three further private suites, each with terrace access and coastal light.']
       };
       var current = 'g', activeRoom = null, pinned = false;
 
@@ -874,7 +949,7 @@
         halos.innerHTML = '';
         if (activeRoom) activeRoom.classList.remove('is-active');
         activeRoom = null; pinned = false;
-        descRoom.textContent = LEVEL_DESCS[current][0];
+        descRoom.innerHTML = LEVEL_DESCS[current][0];
         descText.textContent = LEVEL_DESCS[current][1];
       }
 
@@ -895,7 +970,7 @@
         });
         descRoom.textContent = room.querySelector('.r-name').textContent;
         descText.textContent = room.getAttribute('data-desc') || '';
-        // Phones: the plan pans sideways, bring the first halo into view.
+        // Phones: the plan pans sideways — bring the first halo into view.
         if (scroller && first !== null && scroller.scrollWidth > scroller.clientWidth + 8) {
           scroller.scrollTo({ left: (first / 100) * scroller.scrollWidth - scroller.clientWidth / 2, behavior: 'smooth' });
         }
@@ -930,12 +1005,12 @@
           }
         });
         // Leaving the list un-pins nothing; a pinned room stays until re-clicked
-        // or the level changes, deliberate so touch users keep their halo.
+        // or the level changes — deliberate, so touch users keep their halo.
         panels[k].addEventListener('mouseleave', function () { if (!pinned) clearHighlight(); });
       });
     })();
 
-    // ── Location diagram: list ↔ pin sync ────────────────────────────────────
+    // ── Interactive landmark map: list ↔ pin sync ─────────────────────────────
     (function () {
       var map = document.getElementById('lm-map');
       if (!map) return;
@@ -944,24 +1019,30 @@
       var ring = map.querySelector('[data-ring="lisboa"]');
       var activeId = null;
 
-      function paint(id) {
-        map.classList.toggle('has-active', !!id && id !== 'lisboa');
-        pins.forEach(function (p) { p.classList.toggle('is-active', p.getAttribute('data-lm') === id); });
-        items.forEach(function (i) { i.classList.toggle('is-active', i.getAttribute('data-lm') === id); });
-        if (ring) ring.hidden = (id !== 'lisboa');
+      function setActive(id) {
+        activeId = (id === activeId) ? null : id;
+        map.classList.toggle('has-active', !!activeId && activeId !== 'lisboa');
+        pins.forEach(function (p) { p.classList.toggle('is-active', p.getAttribute('data-lm') === activeId); });
+        items.forEach(function (i) { i.classList.toggle('is-active', i.getAttribute('data-lm') === activeId); });
+        if (ring) ring.hidden = (activeId !== 'lisboa');
       }
       pins.concat(items).forEach(function (el) {
-        el.addEventListener('click', function () {
-          var id = el.getAttribute('data-lm');
-          activeId = (id === activeId) ? null : id;
-          paint(activeId);
-        });
+        el.addEventListener('click', function () { setActive(el.getAttribute('data-lm')); });
       });
       var finePointer = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
       if (finePointer) {
         items.forEach(function (el) {
-          el.addEventListener('mouseenter', function () { if (!activeId) paint(el.getAttribute('data-lm')); });
-          el.addEventListener('mouseleave', function () { if (!activeId) paint(null); });
+          el.addEventListener('mouseenter', function () { if (!activeId) {
+            var id = el.getAttribute('data-lm');
+            map.classList.toggle('has-active', id !== 'lisboa');
+            pins.forEach(function (p) { p.classList.toggle('is-active', p.getAttribute('data-lm') === id); });
+            if (ring) ring.hidden = (id !== 'lisboa');
+          }});
+          el.addEventListener('mouseleave', function () { if (!activeId) {
+            map.classList.remove('has-active');
+            pins.forEach(function (p) { p.classList.remove('is-active'); });
+            if (ring) ring.hidden = true;
+          }});
         });
       }
     })();
@@ -987,11 +1068,6 @@
       var canvas = document.getElementById('wt-canvas');
       var loading = document.getElementById('wt-loading');
       var hint = document.getElementById('wt-hint');
-      var play = document.getElementById('wt-play');
-      var overview = document.getElementById('overview');
-      var fade = document.getElementById('wt-fade');
-      var nav = document.getElementById('gd-nav');
-      var t0 = performance.now();
       var captions = Array.prototype.slice.call(document.querySelectorAll('.wt-caption'));
       if (!section || !canvas || !canvas.getContext) return;
       var ctx = canvas.getContext('2d');
@@ -1006,7 +1082,7 @@
         img.decoding = 'async';
         img.onload = function () { loadedCount++; if (onsettle) onsettle(); };
         // A failed frame must still settle (or one dropped cellular request
-        // stalls the loader forever): null marks it retryable by the fill pass.
+        // stalls the loader forever) — null marks it retryable by the fill pass.
         img.onerror = function () { frames[i] = null; if (onsettle) onsettle(); };
         img.src = FRAME_PATH(i);
         frames[i] = img;
@@ -1042,7 +1118,7 @@
         if (loading && skeletonReady) { loading.remove(); loading = null; }
       }
 
-      // Reduced motion: paint the first frame, show the cover, skip the scrub.
+      // Reduced motion: paint the first frame, show the title, skip the scrub.
       if (reduceMotion) {
         section.style.height = '100vh'; // fallback for pre-dvh Safari
         section.style.height = '100dvh';
@@ -1052,7 +1128,7 @@
           else { resize(); draw(0); }
         });
         if (captions[0]) { captions[0].style.opacity = 1; captions[0].style.transform = 'none'; }
-        if (hint) hint.remove(); // nothing to scroll through in this mode; the nav reaches the overview
+        if (hint) hint.remove(); // nothing to scroll through in this mode
         if (loading) loading.remove();
         window.addEventListener('resize', function () { resize(); draw(0); });
         return;
@@ -1066,7 +1142,7 @@
         skeletonLoaded++;
         if (!skeletonReady && skeletonLoaded >= skeletonTotal) {
           skeletonReady = true;
-          // Only drop the label once something actually drew: if every skeleton
+          // Only drop the label once something actually drew — if every skeleton
           // frame failed (dead network) "Loading…" staying up is the honest state.
           if (loading && loadedCount > 0) { var lbl = loading; loading = null; lbl.style.transition = 'opacity 0.6s'; lbl.style.opacity = 0; setTimeout(function () { lbl.remove(); }, 700); }
           var k = 0;
@@ -1078,6 +1154,26 @@
         }
       });
 
+      // Scroll pauses at each caption: dwell plateaus (camera holds, caption
+      // stays readable) joined by travel segments. 16% of the scroll length is
+      // spent holding, 84% walking (buffers cut 60% per Michael 2026-08-13 —
+      // long entry holds read as a broken page). Returns progress 0..1.
+      var ROOMS = captions.length;
+      var DWELL = 0.16 / ROOMS, TRAVEL = 0.84 / (ROOMS - 1);
+      function mapProgress(u) {
+        // With a single caption (room captions removed 2026-08-13) the dwell
+        // math divides by zero — scrub linearly instead.
+        if (ROOMS <= 1) return u;
+        for (var s = 0; s < ROOMS; s++) {
+          if (u < DWELL) return s / (ROOMS - 1);
+          u -= DWELL;
+          if (s === ROOMS - 1) break;
+          if (u < TRAVEL) return (s + u / TRAVEL) / (ROOMS - 1);
+          u -= TRAVEL;
+        }
+        return 1;
+      }
+
       var scrollTick = false, progress = 0;
       function readScroll() {
         var rect = section.getBoundingClientRect();
@@ -1087,68 +1183,32 @@
       window.addEventListener('scroll', function () { scrollTick = true; }, { passive: true });
       window.addEventListener('resize', function () { resize(); readScroll(); }, { passive: true });
 
-      function clamp01(v) { return Math.min(1, Math.max(0, v)); }
       var current = 0; // lerped frame position for glide feel
       function loop() {
         if (scrollTick) { readScroll(); scrollTick = false; }
-        var walk = progress; // single cover caption, so the scrub is linear
+        var walk = mapProgress(progress);
         var target = walk * (FRAME_COUNT - 1);
         current += (target - current) * 0.22;
         if (Math.abs(target - current) < 0.5) current = target;
         var idx = nearestLoaded(Math.round(current));
         if (idx >= 0) draw(idx);
 
+        var endVis = 0;
         for (var c = 0; c < captions.length; c++) {
           var at = parseFloat(captions[c].getAttribute('data-at'));
-          var vis = clamp01(1 - Math.abs(walk - at) * 12);
+          var vis = Math.min(1, Math.max(0, 1 - Math.abs(walk - at) * 12));
           captions[c].style.opacity = vis;
           captions[c].style.transform = 'translateY(' + (18 * (1 - vis)) + 'px)';
-          captions[c].style.pointerEvents = vis > 0.5 ? '' : 'none';
+          if (at === 1) endVis = vis;
         }
-        // Scroll indicator: eases in after the cover copy, holds through the
-        // walk, and yields before the ivory fade takes over.
-        var intro = clamp01((performance.now() - t0 - 900) / 900);
-        if (hint) hint.style.opacity = intro * clamp01((0.9 - walk) * 12);
-        // Last 7% of the walk dissolves into the page ivory; the bar goes solid
-        // at the same time so white nav text never sits on ivory.
-        if (fade) fade.style.opacity = clamp01((walk - 0.93) / 0.07);
-        if (nav) nav.classList.toggle('is-solid', walk > 0.94);
+        // The hint stays up for the whole walkthrough and hands over to the closing caption.
+        if (hint) hint.style.opacity = 1 - endVis;
         requestAnimationFrame(loop);
       }
 
       resize();
       readScroll();
       requestAnimationFrame(loop);
-
-      // Tap/click on the prompt plays the walk ONCE: a 7.5 s eased scroll from
-      // wherever the visitor is to the overview (aerial under the bar). Any
-      // wheel / touch / key / pointer input hands control straight back; it
-      // never restarts by itself. html has scroll-behavior:smooth sitewide, so
-      // it is switched off for the duration or every step would re-animate.
-      var auto = null, html = document.documentElement;
-      function stopAuto() { if (auto) { cancelAnimationFrame(auto); auto = null; html.style.scrollBehavior = ''; } }
-      // Only the tap that starts the play is exempt (pointer/touch on the button
-      // itself); keys and wheel always cancel, even while the button has focus.
-      ['wheel', 'touchstart', 'keydown', 'pointerdown'].forEach(function (ev) {
-        window.addEventListener(ev, function (e) {
-          var onButton = (ev === 'pointerdown' || ev === 'touchstart') && play && play.contains(e.target);
-          if (auto && !onButton) stopAuto();
-        }, { passive: true });
-      });
-      if (play && overview) play.addEventListener('click', function () {
-        stopAuto();
-        var start = window.scrollY;
-        var end = overview.getBoundingClientRect().top + start - 68;
-        var t0 = performance.now(), dur = 7500;
-        html.style.scrollBehavior = 'auto';
-        function step(now) {
-          var t = Math.min(1, (now - t0) / dur);
-          var e = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-          window.scrollTo(0, start + (end - start) * e);
-          if (t < 1) { auto = requestAnimationFrame(step); } else { auto = null; html.style.scrollBehavior = ''; }
-        }
-        auto = requestAnimationFrame(step);
-      });
     })();
 
     // ── Gallery lightbox: native <dialog>, arrows + keyboard, scroll lock ────
@@ -1165,10 +1225,12 @@
         img.alt = thumbs[idx].alt;
         count.textContent = (idx + 1) + ' / ' + thumbs.length;
       }
-      function open(i) { show(i); box.showModal(); document.body.style.overflow = 'hidden'; }
       thumbs.forEach(function (t, i) {
-        t.addEventListener('click', function () { open(i); });
-        t.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(i); } });
+        t.addEventListener('click', function () {
+          show(i);
+          box.showModal();
+          document.body.style.overflow = 'hidden';
+        });
       });
       box.addEventListener('close', function () { document.body.style.overflow = ''; img.src = ''; });
       document.getElementById('gl-close').addEventListener('click', function () { box.close(); });
@@ -1185,7 +1247,7 @@
       window.addEventListener('pageshow', function () { if (!box.open) document.body.style.overflow = ''; });
     })();
 
-    // Scroll-reveal (IntersectionObserver, no scroll listeners), same contract as index.html.
+    // Scroll-reveal (IntersectionObserver, no scroll listeners) — same contract as index.html.
     (function () {
       if (!document.documentElement.classList.contains('reveal-on')) return;
       var els = document.querySelectorAll('.reveal');
