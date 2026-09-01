@@ -188,7 +188,8 @@
     <!-- ============== 3 · UNIFIED ABOUT (image + advisory introduction) ============== -->
     <section id="about" class="bg-white scroll-mt-20">
       <div class="max-w-7xl mx-auto px-6 lg:px-10 pt-20 lg:pt-28 pb-16 lg:pb-24 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-        <div class="reveal">
+        <!-- Phones read the text first, the portrait follows (Michael 2026-09-01); desktop keeps portrait left. -->
+        <div class="reveal order-last lg:order-first">
           <img src="assets/photos/natalie-blue.jpg" alt="Natalie Gutman, real estate agent in Cascais, Portugal"
                class="w-full h-auto aspect-[4/5] object-cover object-top" loading="lazy" />
         </div>
