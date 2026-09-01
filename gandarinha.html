@@ -69,6 +69,8 @@
        surface), #D3A55B on dark. Page-local on purpose: the brief covers
        the Gandarinha page only, input.css is shared by all 11 pages. */
     body, .label { font-family: 'Montserrat Variable', ui-sans-serif, system-ui, sans-serif; }
+    /* Pass 7: tighter tracking on every heading level (h1/h2 via gx-h and the hero, h3 here). */
+    h3.label { letter-spacing: .12em; }
     /* Ivory ground (Natalie 2026-09-01): no stark white anywhere on this page.
        Body #FAF9F6, raised panels/inputs #FDFBF7, the surface band stays #F6F4F0. */
     body { background-color: #FAF9F6; }
@@ -79,7 +81,7 @@
     /* Section headings (pass 6): one treatment everywhere, the cover title's
        own: Cormorant Garamond medium, capitals, tracked, charcoal. The quote
        block is the deliberate exception (italic, sentence case). */
-    .gx-h { font-family: 'Cormorant Garamond', ui-serif, Georgia, serif; font-weight: 500; text-transform: uppercase; letter-spacing: .1em; line-height: 1.12; color: #2C2C2C; text-wrap: balance; }
+    .gx-h { font-family: 'Cormorant Garamond', ui-serif, Georgia, serif; font-weight: 500; text-transform: uppercase; letter-spacing: .04em; line-height: 1.12; color: #2C2C2C; text-wrap: balance; }
 
     /* ── Cinematic layer (template-owned, no external libs) ─────────────── */
     /* Hero text: staggered rise on load (above the fold, so not IO-driven). */
@@ -274,7 +276,7 @@
   <div id="gate" class="fixed inset-0 z-50 bg-ink items-center justify-center px-6" hidden>
     <div class="max-w-md w-full text-center">
       <p class="label !text-white/50 mb-4">Private listing</p>
-      <h2 class="font-garamond font-medium uppercase tracking-[0.1em] text-white text-3xl sm:text-4xl leading-[1.15] mb-4">The Gandarinha Estate</h2>
+      <h2 class="font-garamond font-medium uppercase tracking-[0.04em] text-white text-3xl sm:text-4xl leading-[1.15] mb-4">The Gandarinha Estate</h2>
       <p class="font-montserrat font-light text-white/75 text-sm leading-relaxed mb-8">Enter your email to view this private listing.</p>
       <form id="gate-form" novalidate>
         <label for="gate-email" class="sr-only">Email</label>
@@ -349,7 +351,7 @@
           <!-- Cover: magazine-style, centred, rises line by line, fades as the walk begins.
                Pass 6: title + subline only (eyebrow and hairline removed at Natalie's request). -->
           <div class="wt-caption absolute inset-x-0 bottom-[46vh] text-center px-6" data-at="0">
-            <h1 class="font-garamond font-medium uppercase tracking-[0.1em] text-white text-5xl sm:text-7xl lg:text-8xl leading-[1.02] rise" style="--rise-delay: 300ms;">The Gandarinha<br class="sm:hidden" /> Estate</h1>
+            <h1 class="font-garamond font-medium uppercase tracking-[0.04em] whitespace-nowrap text-white text-[clamp(1.5rem,7.4vw,1.75rem)] sm:text-5xl md:text-6xl lg:text-7xl leading-[1.05] rise" style="--rise-delay: 300ms;">Gandarinha Estate</h1>
             <p class="font-montserrat text-white/85 text-xs sm:text-sm tracking-[0.28em] uppercase mt-7 rise" style="--rise-delay: 440ms;">Gandarinha · Cascais · Portugal</p>
           </div>
         </div>
@@ -412,7 +414,7 @@
       <div class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-stretch">
         <div class="lg:col-span-6 reveal">
           <h2 class="gx-h text-2xl sm:text-3xl mb-8">A rare address in Cascais</h2>
-          <p class="leading-relaxed mb-4">Set within Gandarinha, one of the most prestigious and sought-after residential enclaves in Cascais, this exceptional villa offers a rare sense of space, privacy, and effortless comfort.</p>
+          <p class="leading-relaxed mb-4">Set within Gandarinha, one of the most prestigious enclaves along the Portuguese Riviera, this exceptional villa offers a rare sense of space, privacy, and effortless comfort.</p>
           <p class="leading-relaxed mb-4">Properties of this calibre are seldom offered for sale in Gandarinha, making the location itself part of the home's appeal. Quiet and discreet, yet ideally positioned close to the centre of Cascais, the coastline, beaches, restaurants, and all essential amenities, it is a setting that offers both seclusion and convenience.</p>
           <p class="leading-relaxed mb-4">The residence is defined by generous proportions and a refined sense of comfort. Expansive living spaces, carefully selected materials, elegant finishes, and a seamless relationship with the private gardens and impressive swimming pool create an atmosphere that feels both sophisticated and deeply inviting.</p>
           <p class="leading-relaxed mb-4">Thoughtful features such as a private lift and underfloor heating add to the everyday experience, while the scale and quality of the property allow it to be enjoyed equally as a peaceful private home or as a place to gather and entertain.</p>
@@ -667,7 +669,7 @@
     <div class="max-w-7xl mx-auto px-6 lg:px-10 py-24 lg:py-36">
       <div class="max-w-4xl mx-auto text-center mb-14 lg:mb-20">
         <h2 class="gx-h text-2xl sm:text-3xl lg:text-4xl mb-6 reveal">Where the sea meets a refined way of life</h2>
-        <p class="max-w-3xl mx-auto leading-relaxed text-balance reveal">Cascais offers a rare balance of coastal beauty, understated elegance and an exceptional quality of life. Just 30 minutes from Lisbon, the town combines the ease of seaside living with excellent dining, culture, golf and nature, all within easy reach.</p>
+        <p class="max-w-3xl mx-auto leading-relaxed text-balance reveal">Long celebrated as the Portuguese Riviera, Cascais offers a rare balance of coastal beauty, understated elegance, and an exceptional quality of life. Just 30 minutes from Lisbon, the town combines the ease of seaside living with world-class dining, culture, and nature.</p>
       </div>
       <div class="grid md:grid-cols-3 gap-10 lg:gap-14 reveal">
         <div class="gx-spec border-t border-accent pt-6">
