@@ -1,16 +1,16 @@
 /* ────────────────────────────────────────────────────────────────────────────
- * FORM ENDPOINT — set this ONCE to start collecting form submissions.
+ * FORM ENDPOINT: every form on the site posts here.
  *
- * Paste your Google Apps Script "Web app URL" between the quotes below.
- * (The 5-minute setup is documented in ../google-apps-script.js.)
+ * This is the n8n intake webhook on the site's technical provider
+ * (workflow "Natalie Site Forms Intake"): it validates each submission,
+ * appends it to the "Forms" tab of Natalie's Google Sheet and emails her.
+ * Guide signups, contact, valuation, viewing requests and the private-listing
+ * gate all read this single value.
  *
- * Every form on the site (guide signups, contact, valuation, and viewing
- * requests) reads this single value, so you only set it here.
- *
- * Until it is set, enquiry forms direct the visitor to Natalie's working
- * contact routes, and no third-party request is made.
+ * Empty this string to park all forms again (they fall back to the honest
+ * "form unavailable" message with direct contact routes).
  * ──────────────────────────────────────────────────────────────────────────── */
-window.SHEETS_URL = '';
+window.SHEETS_URL = 'https://n8n.vandalesolutions.com/webhook/gandarinha-gate-7f3a9c2e51b4d8a6';
 
 window.showFormUnavailable = function (form, className) {
   var result = document.createElement('div');
