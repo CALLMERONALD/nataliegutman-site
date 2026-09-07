@@ -266,58 +266,124 @@
 
 <body class="text-muted">
 
-  <!-- ============== EMAIL ACCESS GATE ==============
-       Soft gate (courtesy, not security — the page is unlisted/noindex and this
-       is client-side only). First visit asks for an email; stored in
-       localStorage so returning visitors pass straight through, and POSTed to
-       the shared Sheets endpoint once assets/form-endpoint.js carries a
-       SHEETS_URL (type=gate — the Apps Script needs a matching branch when
-       connected). With JS disabled the gate stays hidden and the page loads. -->
-  <div id="gate" class="fixed inset-0 z-50 bg-ink items-center justify-center px-6" hidden>
-    <div class="max-w-md w-full text-center">
-      <p class="label !text-white/50 mb-4">Private listing</p>
-      <h2 class="font-garamond font-medium uppercase tracking-[0.04em] text-white text-3xl sm:text-4xl leading-[1.15] mb-4">The Gandarinha Estate</h2>
-      <p class="font-montserrat font-light text-white/75 text-sm leading-relaxed mb-8">Enter your email to view this private listing.</p>
+  <!-- ============== EMAIL ACCESS GATE (delayed pop-up, Michael 2026-09-07) ==============
+       Soft gate (courtesy, not security: the page is unlisted/noindex and this is
+       client-side only). It no longer blocks on load: the visitor watches the
+       walkthrough, scrolls into the landing statement, and the pop-up rises over
+       the dimmed page ~4 s after most of that paragraph is on screen (#landing-copy,
+       IntersectionObserver). The email is POSTed to the shared n8n intake
+       (type=gate, same contract as before); a flag (not the email) goes to
+       localStorage so returning visitors are never asked again. No close button
+       by design (the copy is the reason to continue). With JS disabled the gate
+       stays hidden and the page reads freely. -->
+  <style>
+    #gate { position: fixed; inset: 0; z-index: 50; display: flex; align-items: center; justify-content: center; padding: 1.25rem;
+            background: rgba(26, 26, 26, .58); -webkit-backdrop-filter: blur(7px); backdrop-filter: blur(7px);
+            opacity: 0; transition: opacity .6s ease; }
+    #gate.is-open { opacity: 1; }
+    .gate-card { width: 100%; max-width: 30rem; background: #FDFBF7; border: 1px solid #E6E3DD; padding: 2.5rem 1.75rem 2rem;
+                 box-shadow: 0 30px 80px rgba(12, 12, 14, .35); transform: translateY(22px); opacity: 0;
+                 transition: transform .8s cubic-bezier(0.16, 1, 0.3, 1) .12s, opacity .7s ease .12s; }
+    @media (min-width: 640px) { .gate-card { padding: 3rem 2.75rem 2.25rem; } }
+    #gate.is-open .gate-card { transform: none; opacity: 1; }
+    .gate-input { width: 100%; background: #FAF9F6; border: 1px solid #D9D5CD; color: #2C2C2C; padding: .95rem 1rem; font-size: .9375rem; text-align: center; }
+    .gate-input::placeholder { color: #9A968F; }
+    .gate-input:focus-visible { outline: 2px solid #2C2C2C; outline-offset: 1px; }
+    .gate-btn { width: 100%; background: #2C2C2C; color: #FDFBF7; padding: .95rem 1.5rem; margin-top: .75rem; font-size: .875rem; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; transition: background .2s; }
+    .gate-btn:hover { background: #1A1A1A; }
+    .gate-btn:focus-visible { outline: 2px solid #2C2C2C; outline-offset: 2px; }
+    .gate-card p { text-wrap: pretty; }
+    html.gate-open .gx-pill { opacity: 0 !important; pointer-events: none !important; }
+    .gate-error { color: #8F3A2C; font-weight: 500; }
+    @media (max-width: 639px) { .gate-btn { font-size: .8125rem; letter-spacing: .06em; padding-left: 1rem; padding-right: 1rem; } }
+    @media (prefers-reduced-motion: reduce) { #gate, .gate-card { transition: none; } }
+  </style>
+  <div id="gate" role="dialog" aria-modal="true" aria-labelledby="gate-title" aria-describedby="gate-copy" hidden>
+    <div class="gate-card text-center">
+      <p class="label text-faint mb-4">By introduction only</p>
+      <h2 id="gate-title" class="gx-h text-2xl sm:text-3xl mb-5">You did not find this page by chance</h2>
+      <p id="gate-copy" class="text-sm sm:text-[15px] leading-[1.8] mb-7">Gandarinha Estate is not on any portal, and it is not advertised. It reaches only the people it is shared with, and today that is you. The private wing, the floor plans and the film are waiting just behind this note. Leave your email and pick up exactly where you left off.</p>
       <form id="gate-form" novalidate>
         <label for="gate-email" class="sr-only">Email</label>
-        <input id="gate-email" type="email" required autocomplete="email" placeholder="you@example.com"
-               class="w-full bg-white/10 border border-white/25 text-white placeholder-white/40 px-4 py-3.5 text-sm text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent" />
-        <p id="gate-error" class="text-xs text-white/70 mt-2" hidden>Please enter a valid email address.</p>
-        <button type="submit" class="cursor-pointer w-full bg-white text-ink text-sm tracking-wide px-8 py-3.5 mt-3 hover:bg-white/90 transition-colors">View the estate</button>
+        <input id="gate-email" class="gate-input" type="email" required autocomplete="email" placeholder="Your email" />
+        <p id="gate-error" class="gate-error text-xs mt-2" role="alert" hidden>Please enter a valid email address.</p>
+        <button type="submit" class="gate-btn">Continue the private tour</button>
       </form>
-      <p class="text-xs text-white/40 mt-8 leading-relaxed">Your email is used only to manage access to this private listing.
-        <a href="/privacy" class="underline hover:text-white/70">Privacy Policy</a></p>
-      <img src="assets/logo-script-white.png" alt="Natalie Gutman" class="h-11 w-auto mx-auto mt-8" />
+      <p class="text-xs text-faint mt-6 leading-relaxed">Used only to manage access to this private listing, nothing else.
+        <a href="/privacy" class="underline hover:text-ink">Privacy Policy</a></p>
+      <img src="assets/logo-script.png" alt="Natalie Gutman" class="h-10 w-auto mx-auto mt-7" />
     </div>
   </div>
   <script>
     (function () {
       var gate = document.getElementById('gate');
       var KEY = 'gandarinha-gate-email';
+      var DELAY_MS = 4000;
       var has = false;
-      try { has = !!localStorage.getItem(KEY); } catch (e) {}
+      // Value '2' = seen the 2026-09-07 pop-up. Earlier visitors hold '1' from the
+      // load-blocking gate and see the new pop-up once (Michael's reset ask).
+      try { has = localStorage.getItem(KEY) === '2'; } catch (e) {}
       if (has) return;
-      gate.hidden = false;
-      gate.style.display = 'flex';
-      document.documentElement.style.overflow = 'hidden';
+
+      var shown = false, timer = null;
+      function open() {
+        if (shown) return;
+        shown = true;
+        gate.hidden = false;
+        document.documentElement.style.overflow = 'hidden';
+        document.documentElement.classList.add('gate-open');
+        requestAnimationFrame(function () { requestAnimationFrame(function () { gate.classList.add('is-open'); }); });
+        setTimeout(function () { try { document.getElementById('gate-email').focus({ preventScroll: true }); } catch (e) {} }, 900);
+      }
+      function close() {
+        gate.classList.remove('is-open');
+        document.documentElement.style.overflow = '';
+        document.documentElement.classList.remove('gate-open');
+        setTimeout(function () { gate.hidden = true; }, 650);
+      }
+      function arm() { if (timer || shown) return; timer = setTimeout(open, DELAY_MS); }
+
+      // Arm once most of the landing paragraph is on screen (the visitor is reading it).
+      // This script sits above the paragraph in the document, so look it up only
+      // after parsing (QA 2026-09-07: an early lookup returned null). Without
+      // IntersectionObserver the gate simply never shows, same as with JS off.
+      function watch() {
+        var copy = document.getElementById('landing-copy');
+        if (!copy || !('IntersectionObserver' in window)) return;
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (en) { if (en.isIntersecting) { arm(); io.disconnect(); } });
+        }, { threshold: 0.6 });
+        io.observe(copy);
+      }
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', watch); else watch();
+
+      // Keep keyboard focus inside the card while it is open (no close path by design).
+      gate.addEventListener('keydown', function (ev) {
+        if (ev.key !== 'Tab') return;
+        var f = gate.querySelectorAll('input, button, a[href]');
+        var first = f[0], last = f[f.length - 1];
+        if (ev.shiftKey && document.activeElement === first) { ev.preventDefault(); last.focus(); }
+        else if (!ev.shiftKey && document.activeElement === last) { ev.preventDefault(); first.focus(); }
+      });
+
       document.getElementById('gate-form').addEventListener('submit', function (ev) {
         ev.preventDefault();
         var input = document.getElementById('gate-email');
         var err = document.getElementById('gate-error');
         var email = (input.value || '').trim();
-        if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { err.hidden = false; input.focus(); return; }
+        if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { err.hidden = false; input.setAttribute('aria-invalid', 'true'); input.focus(); return; }
         err.hidden = true;
-        // Counsel 2026-08-13: store a flag, not the email — keeps the
+        input.removeAttribute('aria-invalid');
+        // Counsel 2026-08-13: store a flag, not the email: keeps the
         // "strictly-necessary, no-personal-data storage" Lei 41/2004 position.
-        try { localStorage.setItem(KEY, '1'); } catch (e) {}
+        try { localStorage.setItem(KEY, '2'); } catch (e) {}
         if (window.SHEETS_URL) {
           var body = 'type=gate&property=' + encodeURIComponent('The Gandarinha Estate') + '&email=' + encodeURIComponent(email);
           try {
             fetch(window.SHEETS_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body }).catch(function () {});
           } catch (e) {}
         }
-        gate.style.display = 'none';
-        document.documentElement.style.overflow = '';
+        close();
       });
     })();
   </script>
@@ -382,7 +448,7 @@
   <section>
     <div class="max-w-4xl mx-auto px-6 lg:px-10 pt-20 lg:pt-28 pb-20 lg:pb-28 text-center">
       <h2 class="gx-h text-[1.375rem] sm:text-3xl md:text-4xl lg:text-5xl reveal">Where architecture meets<br class="hidden sm:block" /> coastal serenity</h2>
-      <p class="max-w-[58ch] mx-auto mt-8 lg:mt-10 text-base sm:text-lg leading-[1.85] reveal" style="--reveal-delay: 120ms;">The Gandarinha Estate is more than a residence, it is a refined private sanctuary. Within its gates, light moves through generous rooms, high glass opens living spaces seamlessly onto gardens, terraces and the pool, and the line between indoors and outdoors disappears. Quiet and discreet, yet moments from the Atlantic and Cascais Marina.</p>
+      <p id="landing-copy" class="max-w-[58ch] mx-auto mt-8 lg:mt-10 text-base sm:text-lg leading-[1.85] reveal" style="--reveal-delay: 120ms;">The Gandarinha Estate is more than a residence, it is a refined private sanctuary. Within its gates, light moves through generous rooms, high glass opens living spaces seamlessly onto gardens, terraces and the pool, and the line between indoors and outdoors disappears. Quiet and discreet, yet moments from the Atlantic and Cascais Marina.</p>
     </div>
   </section>
 
