@@ -115,7 +115,7 @@
 
     /* Full-bleed imagery gets a gentle scale-settle when revealed. */
     .reveal-img { transition: transform 1.4s cubic-bezier(0.16, 1, 0.3, 1); transform: scale(1.06); }
-    .is-in .reveal-img, .reveal-img.is-in { transform: scale(1); }
+    .is-in .reveal-img { transform: scale(1); }
 
     /* ══ gx-: page-local components (kept OUT of tailwind.css deliberately —
        another working session owns that file; these styles are template-scoped
@@ -134,7 +134,7 @@
     .gx-fp-tab .t-area { font-family: 'Montserrat Variable', ui-sans-serif, system-ui, sans-serif; font-size: .75rem; color: #5C5C5C; }
     .gx-fp-tab:hover { border-color: #B8893C; }
     .gx-fp-tab.is-active { border-color: #B8893C; background: #F6F4F0; box-shadow: inset 0 3px 0 #B8893C; }
-    .gx-fp-tab:focus-visible, .gx-room:focus-visible, .gx-pin:focus-visible, .gx-lm:focus-visible, .gx-pill:focus-visible, .gx-modal-x:focus-visible { outline: 2px solid #B8893C; outline-offset: 2px; }
+    .gx-fp-tab:focus-visible, .gx-room:focus-visible, .gx-pin:focus-visible, .gx-lm:focus-visible, .gx-pill:focus-visible { outline: 2px solid #B8893C; outline-offset: 2px; }
 
     .gx-fp-grid { display: grid; gap: 2rem; margin-top: 2.5rem; }
     @media (min-width: 1024px) { .gx-fp-grid { grid-template-columns: 7fr 5fr; gap: 3rem; align-items: start; } }
@@ -277,11 +277,14 @@
        by design (the copy is the reason to continue). With JS disabled the gate
        stays hidden and the page reads freely. -->
   <style>
-    #gate { position: fixed; inset: 0; z-index: 50; display: flex; align-items: center; justify-content: center; padding: 1.25rem;
+    /* overflow-y + margin:auto on the card: a card taller than a short phone viewport
+       (iPhone SE, keyboard open) scrolls inside the overlay instead of being clipped
+       top and bottom with the button unreachable (mobile repro 2026-09-08). */
+    #gate { position: fixed; inset: 0; z-index: 50; display: flex; align-items: flex-start; justify-content: center; padding: 1.25rem; overflow-y: auto; -webkit-overflow-scrolling: touch;
             background: rgba(26, 26, 26, .58); -webkit-backdrop-filter: blur(7px); backdrop-filter: blur(7px);
             opacity: 0; transition: opacity .6s ease; }
     #gate.is-open { opacity: 1; }
-    .gate-card { width: 100%; max-width: 30rem; background: #FDFBF7; border: 1px solid #E6E3DD; padding: 2.5rem 1.75rem 2rem;
+    .gate-card { width: 100%; max-width: 30rem; margin: auto; background: #FDFBF7; border: 1px solid #E6E3DD; padding: 2.5rem 1.75rem 2rem;
                  box-shadow: 0 30px 80px rgba(12, 12, 14, .35); transform: translateY(22px); opacity: 0;
                  transition: transform .8s cubic-bezier(0.16, 1, 0.3, 1) .12s, opacity .7s ease .12s; }
     @media (min-width: 640px) { .gate-card { padding: 3rem 2.75rem 2.25rem; } }
@@ -293,6 +296,7 @@
     .gate-btn:hover { background: #1A1A1A; }
     .gate-btn:focus-visible { outline: 2px solid #2C2C2C; outline-offset: 2px; }
     .gate-card p { text-wrap: pretty; }
+    @media (max-height: 700px) { .gate-card { padding-top: 1.75rem; padding-bottom: 1.5rem; } .gate-card img { display: none; } #gate-copy { margin-bottom: 1.25rem; } }
     /* Floor-plan heading keeps "Architectural layout," on one line (Michael 2026-09-08); narrow phones get a smaller size so it cannot overflow. */
     @media (max-width: 379px) { #floorplans h2 { font-size: 1.25rem; } }
     html.gate-open .gx-pill { opacity: 0 !important; pointer-events: none !important; }
@@ -353,7 +357,7 @@
         var copy = document.getElementById('landing-copy');
         if (!copy || !('IntersectionObserver' in window)) return;
         var io = new IntersectionObserver(function (entries) {
-          entries.forEach(function (en) { if (en.isIntersecting) { arm(); io.disconnect(); } });
+          entries.forEach(function (en) { if (en.intersectionRatio >= 0.6) { arm(); io.disconnect(); } });
         }, { threshold: 0.6 });
         io.observe(copy);
       }
@@ -413,7 +417,7 @@
       </header>
 
       <!-- Cover caption: data-at = position on the walkthrough timeline (0..1).
-           With a single caption the scrub is linear (see mapProgress below). -->
+           With a single caption the scrub is linear. -->
       <div class="absolute inset-x-0 bottom-0 z-[5] pointer-events-none">
         <div class="max-w-7xl mx-auto px-6 lg:px-10 pb-14 lg:pb-20 relative">
           <!-- Cover: magazine-style, centred, rises line by line, fades as the walk begins.
@@ -491,7 +495,7 @@
         <!-- lg: image is absolutely positioned so the column tracks the TEXT height —
              the portrait aerial crops to exactly the text block, no vertical spillage -->
         <div class="lg:col-span-6 relative overflow-hidden border border-hairline reveal" style="--reveal-delay: 120ms;">
-          <img src="assets/photos/gandarinha-aerial-portrait.jpg" alt="Aerial view of the estate within Gandarinha, the Cascais coastline and the Atlantic beyond" class="reveal-img w-full lg:absolute lg:inset-0 lg:h-full lg:object-cover" width="1400" height="2489" loading="lazy" />
+          <img src="assets/photos/gandarinha-aerial-portrait-1200.jpg" alt="Aerial view of the estate within Gandarinha, the Cascais coastline and the Atlantic beyond" class="reveal-img w-full lg:absolute lg:inset-0 lg:h-full lg:object-cover" width="1200" height="2134" loading="lazy" />
         </div>
       </div>
     </div>
@@ -561,9 +565,9 @@
         <div class="reveal">
           <div class="gx-fp-scroller">
             <div class="gx-fp-canvas" id="fp-canvas">
-              <img class="gx-fp-plan" data-plan="b" src="assets/photos/gandarinha-plan-basement.png" alt="Floor plan of Level -1: garage, technical rooms, flexible multi-purpose rooms, laundry and staff quarters" width="1600" height="1210" loading="lazy" />
-              <img class="gx-fp-plan is-active" data-plan="g" src="assets/photos/gandarinha-plan-ground.png" alt="Floor plan of Level 0: living room, dining room, kitchen, studio, guest suite, terrace and pool" width="1600" height="1210" loading="lazy" />
-              <img class="gx-fp-plan" data-plan="f" src="assets/photos/gandarinha-plan-first.png" alt="Floor plan of Level 1: four bedroom suites with walk-in closets, central office and panoramic terraces" width="1600" height="1210" loading="lazy" />
+              <img class="gx-fp-plan" data-plan="b" src="assets/photos/gandarinha-plan-basement.jpg" alt="Floor plan of Level -1: garage, technical rooms, flexible multi-purpose rooms, laundry and staff quarters" width="1600" height="1210" loading="lazy" />
+              <img class="gx-fp-plan is-active" data-plan="g" src="assets/photos/gandarinha-plan-ground.jpg" alt="Floor plan of Level 0: living room, dining room, kitchen, studio, guest suite, terrace and pool" width="1600" height="1210" loading="lazy" />
+              <img class="gx-fp-plan" data-plan="f" src="assets/photos/gandarinha-plan-first.jpg" alt="Floor plan of Level 1: four bedroom suites with walk-in closets, central office and panoramic terraces" width="1600" height="1210" loading="lazy" />
               <div id="fp-halos"></div>
             </div>
           </div>
@@ -779,12 +783,12 @@
       <div class="gx-map grid lg:grid-cols-12 gap-10 lg:gap-14 items-center" id="lm-map">
         <div class="lg:col-span-7 reveal">
           <div class="gx-map-stage">
-            <!-- gandarinha-map-simplified.png = the brochure map with the printed
+            <!-- gandarinha-map-simplified.jpg (1800 px re-encode of the .png, 2026-09-08) = the brochure map with the printed
                  markers outside this list painted out (derived copy, original
                  untouched). Overlay pins 1-7 sit on the surviving printed markers
                  (brochure 4, 3, town label, 7, 8, 9, 1); Lisbon is the printed arrow. -->
             <img class="gx-map-img"
-                 src="assets/photos/gandarinha-map-simplified.png"
+                 src="assets/photos/gandarinha-map-simplified.jpg"
                  alt="Map of the Cascais coastline marking Cascais Marina, Cascais Bay, historic Cascais, Guincho Beach, Quinta da Marinha, Oitavos Dunes and Estoril, with Lisbon thirty minutes to the east"
                  width="3177" height="2223" loading="lazy" />
             <button class="gx-pin" data-lm="1" style="--x:64.7%; --y:80.2%" aria-label="Cascais Marina, marker 1"><span aria-hidden="true">1</span></button>
@@ -888,7 +892,22 @@
 
   <script src="assets/form-endpoint.js"></script>
   <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
+    // Scroll-reveal (IntersectionObserver, no scroll listeners), same contract as index.html.
+    // FIRST in this block on purpose (2026-09-08): .reveal content starts at opacity 0, so
+    // an exception in any later IIFE (hero, viewer, lightbox) must never leave the page blank.
+    (function () {
+      if (!document.documentElement.classList.contains('reveal-on')) return;
+      var els = document.querySelectorAll('.reveal');
+      if (!('IntersectionObserver' in window)) { els.forEach(function (el) { el.classList.add('is-in'); }); return; }
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) { entry.target.classList.add('is-in'); io.unobserve(entry.target); }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+      els.forEach(function (el) { io.observe(el); });
+    })();
+
+    var yearEl = document.getElementById('year'); if (yearEl) yearEl.textContent = new Date().getFullYear();
 
     // ── Floating pill: shows between the hero and the viewing form ────────────
     (function () {
@@ -1097,7 +1116,7 @@
     // Scroll position drives which pre-extracted video frame is painted on the
     // canvas (Apple product-page technique, no libraries). A passive scroll
     // listener only records position; all painting happens in one rAF loop.
-    (function () {
+    try { (function () {
       // Remade 2026-08-27 (Michael): drone descent (f_001-024), AI bridge down to
       // the front door (f_219-242, Kling v3 from f_024 to f_059), in through the
       // door to the pool window (f_059-082), AI bridge out through the glass wall
@@ -1108,7 +1127,14 @@
       var SEQUENCE = [];
       SEGMENTS.forEach(function (seg) { for (var f = seg[0]; f <= seg[1]; f++) SEQUENCE.push(f); });
       var FRAME_COUNT = SEQUENCE.length;
-      var FRAME_PATH = function (i) { return 'assets/walkthrough/gandarinha/f_' + String(SEQUENCE[i]).padStart(3, '0') + '.jpg'; };
+      // Portrait phones only ever see the centre ~26-60% of each 16:9 frame (the
+      // canvas cover-scales to the viewport height), so they get the centre crop
+      // set assets/walkthrough/gandarinha-p (672x1080, same pixels they saw before,
+      // ~7 MB for the walk instead of ~18 MB, a third of the decoded bitmap memory
+      // that was pushing iOS Safari to reload the tab; 2026-09-08). ponytail: a
+      // phone rotated to landscape keeps the crop (cover-scaled, soft) until reload.
+      var FRAME_DIR = (window.innerHeight > window.innerWidth && window.innerWidth <= 500) ? 'assets/walkthrough/gandarinha-p/' : 'assets/walkthrough/gandarinha/';
+      var FRAME_PATH = function (i) { return FRAME_DIR + 'f_' + String(SEQUENCE[i]).padStart(3, '0') + '.jpg'; };
 
       var section = document.getElementById('walkthrough');
       var canvas = document.getElementById('wt-canvas');
@@ -1181,45 +1207,33 @@
         return;
       }
 
-      // Progressive load: every 8th frame first (fast scrub skeleton), then the rest.
+      // Progressive load: every 8th frame first (fast scrub skeleton), then the
+      // rest with at most 6 requests in flight (settle-driven, so a phone on slow
+      // data no longer queues all 96 downloads at once). If the skeleton has not
+      // settled within 6 s (one stalled request) the fill starts anyway. 2026-09-08.
       var skeletonReady = false;
       var skeletonTotal = 0, skeletonLoaded = 0;
       for (var i = 0; i < FRAME_COUNT; i += 8) skeletonTotal++;
+      var k = 0, inflight = 0;
+      function fill() {
+        while (k < FRAME_COUNT && inflight < 6) {
+          if (!frames[k]) { inflight++; loadFrame(k, function () { inflight--; fill(); }); }
+          k++;
+        }
+      }
+      function startFill() {
+        if (skeletonReady) return;
+        skeletonReady = true;
+        // Only drop the label once something actually drew: if every skeleton
+        // frame failed (dead network) "Loading…" staying up is the honest state.
+        if (loading && loadedCount > 0) { var lbl = loading; loading = null; lbl.style.transition = 'opacity 0.6s'; lbl.style.opacity = 0; setTimeout(function () { lbl.remove(); }, 700); }
+        fill();
+      }
       for (var j = 0; j < FRAME_COUNT; j += 8) loadFrame(j, function () {
         skeletonLoaded++;
-        if (!skeletonReady && skeletonLoaded >= skeletonTotal) {
-          skeletonReady = true;
-          // Only drop the label once something actually drew — if every skeleton
-          // frame failed (dead network) "Loading…" staying up is the honest state.
-          if (loading && loadedCount > 0) { var lbl = loading; loading = null; lbl.style.transition = 'opacity 0.6s'; lbl.style.opacity = 0; setTimeout(function () { lbl.remove(); }, 700); }
-          var k = 0;
-          (function fill() {
-            var batch = 0;
-            while (k < FRAME_COUNT && batch < 12) { if (!frames[k]) { loadFrame(k); batch++; } k++; }
-            if (k < FRAME_COUNT) setTimeout(fill, 120);
-          })();
-        }
+        if (skeletonLoaded >= skeletonTotal) startFill();
       });
-
-      // Scroll pauses at each caption: dwell plateaus (camera holds, caption
-      // stays readable) joined by travel segments. 16% of the scroll length is
-      // spent holding, 84% walking (buffers cut 60% per Michael 2026-08-13 —
-      // long entry holds read as a broken page). Returns progress 0..1.
-      var ROOMS = captions.length;
-      var DWELL = 0.16 / ROOMS, TRAVEL = 0.84 / (ROOMS - 1);
-      function mapProgress(u) {
-        // With a single caption (room captions removed 2026-08-13) the dwell
-        // math divides by zero — scrub linearly instead.
-        if (ROOMS <= 1) return u;
-        for (var s = 0; s < ROOMS; s++) {
-          if (u < DWELL) return s / (ROOMS - 1);
-          u -= DWELL;
-          if (s === ROOMS - 1) break;
-          if (u < TRAVEL) return (s + u / TRAVEL) / (ROOMS - 1);
-          u -= TRAVEL;
-        }
-        return 1;
-      }
+      setTimeout(startFill, 6000);
 
       var scrollTick = false, progress = 0;
       function readScroll() {
@@ -1231,9 +1245,11 @@
       window.addEventListener('resize', function () { resize(); readScroll(); }, { passive: true });
 
       var current = 0; // lerped frame position for glide feel
+      var running = false;
       function loop() {
+        if (!running) return;
         if (scrollTick) { readScroll(); scrollTick = false; }
-        var walk = mapProgress(progress);
+        var walk = progress; // one caption since 2026-08-13: linear scrub
         var target = walk * (FRAME_COUNT - 1);
         current += (target - current) * 0.22;
         if (Math.abs(target - current) < 0.5) current = target;
@@ -1253,11 +1269,25 @@
         if (hint) hint.style.opacity = intro * (1 - outro);
         requestAnimationFrame(loop);
       }
+      // The loop runs only while the hero is on screen (it idled at 60 fps under
+      // the whole page before, 2026-09-08); the observer restarts it on return.
+      function start() { if (running) return; running = true; readScroll(); requestAnimationFrame(loop); }
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (entries) {
+          entries.forEach(function (en) { if (en.isIntersecting) start(); else running = false; });
+        }, { threshold: 0 }).observe(section);
+      }
 
       resize();
       readScroll();
-      requestAnimationFrame(loop);
-    })();
+      start();
+    })(); } catch (err) {
+      // A hero failure must never leave 400vh of black: one screen, cover frame as a background.
+      var wtSec = document.getElementById('walkthrough'), wtCan = document.getElementById('wt-canvas'), wtLoad = document.getElementById('wt-loading');
+      if (wtSec) wtSec.style.height = '100vh';
+      if (wtCan) wtCan.style.background = 'url(assets/walkthrough/gandarinha/f_001.jpg) center / cover no-repeat';
+      if (wtLoad) wtLoad.remove();
+    }
 
     // ── Gallery lightbox: native <dialog>, arrows + keyboard, scroll lock ────
     (function () {
@@ -1295,18 +1325,6 @@
       window.addEventListener('pageshow', function () { if (!box.open) document.body.style.overflow = ''; });
     })();
 
-    // Scroll-reveal (IntersectionObserver, no scroll listeners) — same contract as index.html.
-    (function () {
-      if (!document.documentElement.classList.contains('reveal-on')) return;
-      var els = document.querySelectorAll('.reveal');
-      if (!('IntersectionObserver' in window)) { els.forEach(function (el) { el.classList.add('is-in'); }); return; }
-      var io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) { entry.target.classList.add('is-in'); io.unobserve(entry.target); }
-        });
-      }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
-      els.forEach(function (el) { io.observe(el); });
-    })();
   </script>
 </body>
 </html>
