@@ -71,8 +71,14 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
     return icon;
   }
 
-  function photoUrl(key) {
-    return typeof key === 'string' && key ? PHOTO_BASE_URL + encodeURIComponent(key) : '';
+  // width: served through Storage's image transform (imgproxy on the VPS, verified
+  // 2026-09-08: 221 KB original -> 53 KB at width 800). Originals were 300-600 KB
+  // rendered into ~350 px card slots. No width = the untouched original.
+  var RENDER_BASE_URL = PHOTO_BASE_URL.replace('/storage/v1/object/public/', '/storage/v1/render/image/public/');
+  function photoUrl(key, width) {
+    if (typeof key !== 'string' || !key) return '';
+    if (width) return RENDER_BASE_URL + encodeURIComponent(key) + '?width=' + width + '&quality=78';
+    return PHOTO_BASE_URL + encodeURIComponent(key);
   }
 
   function formatPrice(value) {
@@ -104,12 +110,16 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
   }
 
   function apiGet(query) {
+    // 12 s deadline (2026-09-08): a hung read used to leave the grid blank forever.
+    var ctrl = (typeof AbortController === 'function') ? new AbortController() : null;
+    if (ctrl) setTimeout(function () { ctrl.abort(); }, 12000);
     return fetch(API_URL + query, {
       method: 'GET',
       headers: {
         apikey: SUPABASE_ANON_KEY,
         'Accept-Profile': 'natalie'
-      }
+      },
+      signal: ctrl ? ctrl.signal : undefined
     }).then(function (response) {
       if (!response.ok) throw new Error('Listings request failed with HTTP ' + response.status);
       return response.json();
@@ -122,16 +132,16 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
   // off-market.html marks its <body data-off-market>; every other page gets only
   // the public (off_market=false) listings. Off-market rows are still published=true
   // rows — same RLS, just a different page.
-  function listingsQuery(offMarket) {
-    return '?select=*&published=eq.true&off_market=eq.' + (offMarket ? 'true' : 'false') + '&order=sort_order.asc.nullslast,created_at.desc';
+  function listingsQuery(offMarket, extra) {
+    return '?select=*&published=eq.true&off_market=eq.' + (offMarket ? 'true' : 'false') + '&order=sort_order.asc.nullslast,created_at.desc' + (extra || '');
   }
 
   function isOffMarketPage() {
     return document.body.hasAttribute('data-off-market');
   }
 
-  function fetchProperties() {
-    return apiGet(listingsQuery(isOffMarketPage()));
+  function fetchProperties(extra) {
+    return apiGet(listingsQuery(isOffMarketPage(), extra));
   }
 
   function fetchPropertyTitle(id) {
@@ -183,7 +193,8 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
 
     var media = createElement('div', 'relative aspect-[4/3] bg-surface overflow-hidden mb-5');
     var image = createElement('img', 'w-full h-full object-cover transition-transform duration-700 group-hover:scale-105');
-    image.src = photoUrl(Array.isArray(property.photos) ? property.photos[0] : '');
+    image.width = 800; image.height = 600; // reserves the 4:3 slot (no layout shift)
+    image.src = photoUrl(Array.isArray(property.photos) ? property.photos[0] : '', 800);
     image.alt = String(property.title || '');
     image.loading = 'lazy';
     media.appendChild(image);
@@ -226,6 +237,13 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
   function setupModal() {
     var modal = document.getElementById('property-modal');
     if (!modal) return null;
+    // Safari <15.4 has no <dialog> support: showModal() would throw AFTER the
+    // body scroll lock, freezing the page. Fall back to the contact deep-link.
+    if (typeof modal.showModal !== 'function') {
+      return function (property) {
+        window.location.href = '/contact?property=' + encodeURIComponent(String(property.id || ''));
+      };
+    }
     var closeButton = document.getElementById('property-modal-close');
     var prevButton = document.getElementById('property-modal-prev');
     var nextButton = document.getElementById('property-modal-next');
@@ -293,7 +311,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
       var enquiry = document.getElementById('property-modal-enquiry');
       var photoCount = document.getElementById('property-modal-photo-count');
 
-      mainImage.src = photoUrl(photos[0]);
+      mainImage.src = photoUrl(photos[0], 1600);
       mainImage.alt = String(property.title || '');
       clearElement(thumbnails);
 
@@ -306,7 +324,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
       var thumbnailButtons = [];
       function selectPhoto(index) {
         gallery.index = index;
-        mainImage.src = photoUrl(photos[index]);
+        mainImage.src = photoUrl(photos[index], 1600);
         mainImage.alt = String(property.title || '') + ', photo ' + (index + 1);
         photoCount.textContent = (index + 1) + ' / ' + photos.length;
         thumbnailButtons.forEach(function (button, buttonIndex) {
@@ -323,7 +341,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
         button.type = 'button';
         button.setAttribute('aria-label', 'Photo ' + (index + 1));
         var thumb = createElement('img', 'w-20 h-14 object-cover');
-        thumb.src = photoUrl(key);
+        thumb.src = photoUrl(key, 240);
         thumb.alt = '';
         thumb.loading = 'lazy';
         button.appendChild(thumb);
@@ -442,19 +460,35 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
     if (!section || !grid) return;
     section.hidden = true;
 
-    fetchProperties().then(function (properties) {
-      var featured = properties.filter(function (property) { return property.featured === true; }).slice(0, 3);
-      if (!featured.length) return;
-      clearElement(grid);
-      featured.forEach(function (property) {
-        grid.appendChild(createPropertyCard(property, function () {
-          window.location.href = propertyUrl(property, '/properties');
-        }));
+    function attempt(retriesLeft) {
+      // Featured filter + limit run server-side (2026-09-08): the homepage used to
+      // download every published listing to show three.
+      fetchProperties('&featured=eq.true&limit=3').then(function (properties) {
+        var featured = properties.filter(function (property) { return property.featured === true; }).slice(0, 3);
+        if (!featured.length) return; // genuinely nothing featured: section stays hidden by design
+        clearElement(grid);
+        featured.forEach(function (property) {
+          grid.appendChild(createPropertyCard(property, function () {
+            window.location.href = propertyUrl(property, '/properties');
+          }));
+        });
+        section.hidden = false;
+      }).catch(function () {
+        // One flaky-network retry, then show the section with a link instead of
+        // silently vanishing (reads as "the listings disappeared" on mobile).
+        if (retriesLeft > 0) { setTimeout(function () { attempt(retriesLeft - 1); }, 4000); return; }
+        clearElement(grid);
+        var note = createElement('p', 'text-muted');
+        note.appendChild(document.createTextNode('Listings are temporarily unavailable — '));
+        var link = createElement('a', 'underline text-ink', 'view all properties');
+        link.href = '/properties';
+        note.appendChild(link);
+        note.appendChild(document.createTextNode('.'));
+        grid.appendChild(note);
+        section.hidden = false;
       });
-      section.hidden = false;
-    }).catch(function () {
-      section.hidden = true;
-    });
+    }
+    attempt(1);
   }
 
   function prefillContactEnquiry() {

@@ -192,3 +192,10 @@
     font-size: 16px !important;
   }
 }
+
+/* Safari <15.4 has no <dialog> element: without this, every closed modal's
+   markup renders inline as ordinary content. Matches native dialog behavior
+   on supporting browsers, so it is a no-op there. */
+dialog:not([open]) {
+  display: none;
+}

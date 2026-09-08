@@ -37,7 +37,7 @@
         "name": "Natalie Gutman",
         "description": "Real estate agent helping international clients buy and sell property in Portugal's Golden Triangle: Lisbon, Cascais and Sintra. A local resident since 2019 with a background in high-stakes negotiation.",
         "url": "https://nataliegutman.com/",
-        "image": "https://nataliegutman.com/assets/natalie.png",
+        "image": "https://nataliegutman.com/assets/natalie-1280.jpg",
         "telephone": "+351969227709",
         "email": "natalie.gutman@expportugal.com",
         "knowsLanguage": ["en", "he", "pt"],
@@ -68,7 +68,7 @@
         "@id": "https://nataliegutman.com/#natalie",
         "name": "Natalie Gutman",
         "jobTitle": "Real Estate Agent",
-        "image": "https://nataliegutman.com/assets/natalie.png",
+        "image": "https://nataliegutman.com/assets/natalie-1280.jpg",
         "description": "Natalie Gutman moved to Cascais in 2019 and helps international clients buy and sell property across Portugal's Golden Triangle. She began her career as a professional Buyer in the fashion industry in Israel, where she specialised in market analysis and high-stakes negotiation.",
         "homeLocation": { "@type": "Place", "name": "Cascais, Portugal" },
         "knowsLanguage": ["en", "he", "pt"],
@@ -122,7 +122,7 @@
   <!-- ============== 1 · HEADER ============== -->
   <header class="absolute top-0 inset-x-0 z-30">
     <nav class="max-w-7xl mx-auto px-6 lg:px-10 h-20 flex items-center justify-between text-white" aria-label="Primary" id="site-nav">
-      <a href="/" class="inline-block"><img src="assets/logo-script-white.png" alt="Natalie Gutman" class="h-11 w-auto" /></a>
+      <a href="/" class="inline-block"><img src="assets/logo-script-white.png" width="600" height="139" alt="Natalie Gutman" class="h-11 w-auto" /></a>
 
       <ul class="hidden lg:flex items-center gap-9 label text-white/85">
         <li><a href="/buy" class="hover:text-white transition-colors">Buy</a></li>
@@ -418,7 +418,7 @@
     <div class="max-w-7xl mx-auto px-6 lg:px-10 py-16 lg:py-20">
       <div class="grid gap-12 lg:grid-cols-12">
         <div class="lg:col-span-3">
-          <a href="/" class="inline-block"><img src="assets/logo-script.png" alt="Natalie Gutman" class="h-12 w-auto" /></a>
+          <a href="/" class="inline-block"><img src="assets/logo-script.png" width="600" height="139" alt="Natalie Gutman" class="h-12 w-auto" /></a>
           <p class="text-muted text-sm mt-4 max-w-xs leading-relaxed">Boutique real estate for international buyers and sellers across Portugal's Golden Triangle.</p>
         </div>
 
@@ -502,9 +502,17 @@
       var modal = document.getElementById('guide-modal');
       var guideForm = document.getElementById('guide-form');
       if (!modal || !guideForm) return;
+      // Safari <15.4 has no <dialog>: showModal() throws. Land those visitors
+      // on the toolkit section instead of a dead button / console error.
+      var canModal = typeof modal.showModal === 'function';
+      function openGuide() {
+        if (canModal) { modal.showModal(); return; }
+        var toolkit = document.getElementById('toolkit');
+        if (toolkit) toolkit.scrollIntoView();
+      }
 
       document.querySelectorAll('[data-open-guide]').forEach(function (btn) {
-        btn.addEventListener('click', function () { modal.showModal(); });
+        btn.addEventListener('click', openGuide);
       });
 
       // Locked /guide visits bounce here as /#guide — land them on the toolkit
@@ -512,7 +520,7 @@
       if (window.location.hash === '#guide') {
         var toolkit = document.getElementById('toolkit');
         if (toolkit) toolkit.scrollIntoView();
-        modal.showModal();
+        if (canModal) modal.showModal();
       }
       document.getElementById('guide-modal-close').addEventListener('click', function () { modal.close(); });
       modal.addEventListener('click', function (e) { if (e.target === modal) modal.close(); });
@@ -532,7 +540,7 @@
         // Save the lead to the spreadsheet if a collector URL is configured (nothing is emailed).
         if (SHEETS_URL) {
           fetch(SHEETS_URL, {
-            method: 'POST',
+            method: 'POST', keepalive: true,
             mode: 'no-cors',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: 'email=' + encodeURIComponent(email) + '&role='

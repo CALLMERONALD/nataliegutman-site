@@ -280,7 +280,7 @@
     /* overflow-y + margin:auto on the card: a card taller than a short phone viewport
        (iPhone SE, keyboard open) scrolls inside the overlay instead of being clipped
        top and bottom with the button unreachable (mobile repro 2026-09-08). */
-    #gate { position: fixed; inset: 0; z-index: 50; display: flex; align-items: flex-start; justify-content: center; padding: 1.25rem; overflow-y: auto; -webkit-overflow-scrolling: touch;
+    #gate { position: fixed; inset: 0; z-index: 50; display: flex; align-items: flex-start; justify-content: center; padding: 1.25rem; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain;
             background: rgba(26, 26, 26, .58); -webkit-backdrop-filter: blur(7px); backdrop-filter: blur(7px);
             opacity: 0; transition: opacity .6s ease; }
     #gate.is-open { opacity: 1; }
@@ -317,7 +317,7 @@
       </form>
       <p class="text-xs text-faint mt-6 leading-relaxed">Used only to manage access to this private listing, nothing else.
         <a href="/privacy" class="underline hover:text-ink">Privacy Policy</a></p>
-      <img src="assets/logo-script.png" alt="Natalie Gutman" class="h-10 w-auto mx-auto mt-7" />
+      <img src="assets/logo-script.png" width="600" height="139" alt="Natalie Gutman" class="h-10 w-auto mx-auto mt-7" />
     </div>
   </div>
   <script>
@@ -331,11 +331,20 @@
       try { has = localStorage.getItem(KEY) === '2'; } catch (e) {}
       if (has) return;
 
-      var shown = false, timer = null;
+      var shown = false, timer = null, lockedY = 0;
       function open() {
         if (shown) return;
         shown = true;
         gate.hidden = false;
+        // Hard lock (Michael 2026-09-08): overflow:hidden alone still lets iOS Safari
+        // touch-scroll the page under the overlay, so the body is pinned at the
+        // current offset (position:fixed) and restored on close.
+        lockedY = window.pageYOffset || document.documentElement.scrollTop || 0;
+        document.body.style.position = 'fixed';
+        document.body.style.top = (-lockedY) + 'px';
+        document.body.style.left = '0';
+        document.body.style.right = '0';
+        document.body.style.width = '100%';
         document.documentElement.style.overflow = 'hidden';
         document.documentElement.classList.add('gate-open');
         requestAnimationFrame(function () { requestAnimationFrame(function () { gate.classList.add('is-open'); }); });
@@ -345,6 +354,12 @@
         gate.classList.remove('is-open');
         document.documentElement.style.overflow = '';
         document.documentElement.classList.remove('gate-open');
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.left = '';
+        document.body.style.right = '';
+        document.body.style.width = '';
+        window.scrollTo(0, lockedY);
         setTimeout(function () { gate.hidden = true; }, 650);
       }
       function arm() { if (timer || shown) return; timer = setTimeout(open, DELAY_MS); }
@@ -386,7 +401,7 @@
         if (window.SHEETS_URL) {
           var body = 'type=gate&property=' + encodeURIComponent('The Gandarinha Estate') + '&email=' + encodeURIComponent(email);
           try {
-            fetch(window.SHEETS_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body }).catch(function () {});
+            fetch(window.SHEETS_URL, { method: 'POST', keepalive: true, mode: 'no-cors', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body }).catch(function () {});
           } catch (e) {}
         }
         close();
@@ -412,7 +427,7 @@
       <!-- Minimal header over the hero: the logo only (pass 6: the "Private viewing" link is gone) -->
       <header class="absolute top-0 inset-x-0 z-10">
         <div class="max-w-7xl mx-auto px-6 lg:px-10 h-20 flex items-center">
-          <a href="/" class="inline-block rise"><img src="assets/logo-script-white.png" alt="Natalie Gutman" class="h-9 w-auto" /></a>
+          <a href="/" class="inline-block rise"><img src="assets/logo-script-white.png" width="600" height="139" alt="Natalie Gutman" class="h-9 w-auto" /></a>
         </div>
       </header>
 
@@ -858,7 +873,7 @@
           <p class="text-xs text-muted text-center mt-5">By sending, you agree to the <a href="/privacy" class="link-underline text-ink">Privacy Policy</a>.</p>
         </div>
       </form>
-      <img src="assets/logo-script.png" alt="Natalie Gutman" class="h-12 w-auto mx-auto mt-14 reveal" loading="lazy" />
+      <img src="assets/logo-script.png" width="600" height="139" alt="Natalie Gutman" class="h-12 w-auto mx-auto mt-14 reveal" loading="lazy" />
     </div>
   </section>
 
@@ -951,7 +966,7 @@
         }
 
         fetch(SHEETS_URL, {
-          method: 'POST',
+          method: 'POST', keepalive: true,
           mode: 'no-cors',
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
           body: 'type=viewing'

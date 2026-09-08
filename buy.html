@@ -111,7 +111,7 @@
   <!-- ============== HEADER ============== -->
   <header class="sticky top-0 z-30 bg-white/85 backdrop-blur-md border-b border-hairline">
     <nav class="max-w-7xl mx-auto px-6 lg:px-10 h-16 flex items-center justify-between" aria-label="Primary">
-      <a href="/" class="inline-block"><img src="assets/logo-script.png" alt="Natalie Gutman" class="h-11 w-auto" /></a>
+      <a href="/" class="inline-block"><img src="assets/logo-script.png" width="600" height="139" alt="Natalie Gutman" class="h-11 w-auto" /></a>
 
       <ul class="hidden lg:flex items-center gap-9 label text-faint">
         <li><a href="/buy" class="text-ink" aria-current="page">Buy</a></li>
@@ -177,9 +177,9 @@
 
         <div class="relative">
           <div class="aspect-[4/5] w-full bg-surface rounded-sm overflow-hidden">
-            <img src="assets/natalie.png"
+            <img src="assets/natalie-1280.jpg"
                  alt="Portrait of Natalie Gutman"
-                 class="w-full h-full object-cover object-top" loading="eager" />
+                 class="w-full h-full object-cover object-top" loading="lazy" />
           </div>
           <div class="hidden lg:block absolute -bottom-6 -left-6 bg-white border border-hairline px-5 py-4 max-w-[14rem]">
             <p class="font-serif text-2xl leading-none">Since <span class="text-ink">2019</span></p>
@@ -535,7 +535,7 @@
       <div class="max-w-7xl mx-auto px-6 lg:px-10 py-16 lg:py-20">
         <div class="grid gap-12 lg:grid-cols-12">
           <div class="lg:col-span-3">
-            <a href="/" class="inline-block"><img src="assets/logo-script.png" alt="Natalie Gutman" class="h-12 w-auto" /></a>
+            <a href="/" class="inline-block"><img src="assets/logo-script.png" width="600" height="139" alt="Natalie Gutman" class="h-12 w-auto" /></a>
             <p class="text-muted text-sm mt-4 max-w-xs leading-relaxed">Boutique real estate for international buyers and sellers across Portugal's Golden Triangle.</p>
           </div>
           <div class="lg:col-span-4">
@@ -633,7 +633,7 @@
 
         if (SHEETS_URL) {
           fetch(SHEETS_URL, {
-            method: 'POST',
+            method: 'POST', keepalive: true,
             mode: 'no-cors',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: 'email=' + encodeURIComponent(email)
@@ -660,7 +660,7 @@
 
         if (SHEETS_URL) {
           fetch(SHEETS_URL, {
-            method: 'POST',
+            method: 'POST', keepalive: true,
             mode: 'no-cors',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: 'type=contact'
