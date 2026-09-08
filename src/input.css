@@ -193,6 +193,9 @@
   }
 }
 
+/* Mobile menu never taller than the screen (landscape phones): scroll inside it. */
+#mobile-menu { max-height: calc(100vh - 4rem); max-height: calc(100dvh - 4rem); overflow-y: auto; }
+
 /* Safari <15.4 has no <dialog> element: without this, every closed modal's
    markup renders inline as ordinary content. Matches native dialog behavior
    on supporting browsers, so it is a no-op there. */

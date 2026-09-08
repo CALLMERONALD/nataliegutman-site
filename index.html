@@ -395,7 +395,7 @@
       <p class="text-sm text-muted leading-relaxed mb-7">
         Enter your email and I'll open the full guide for you to read right here on the site.
       </p>
-      <form id="guide-form" action="#" method="post" class="grid gap-3 text-left" novalidate>
+      <form id="guide-form" action="#" method="post" class="grid gap-3 text-left ph-no-capture" novalidate>
         <label for="g-email" class="sr-only">Email</label>
         <input id="g-email" name="email" type="email" required autocomplete="email" placeholder="Email"
                class="w-full border border-hairline bg-white px-4 py-3 text-sm text-ink placeholder:text-faint focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent" />
@@ -507,8 +507,8 @@
       var canModal = typeof modal.showModal === 'function';
       function openGuide() {
         if (canModal) { modal.showModal(); return; }
-        var toolkit = document.getElementById('toolkit');
-        if (toolkit) toolkit.scrollIntoView();
+        // No <dialog> (Safari < 15.4): the buy page has the same form inline.
+        window.location.href = '/buy#guide';
       }
 
       document.querySelectorAll('[data-open-guide]').forEach(function (btn) {
@@ -518,9 +518,10 @@
       // Locked /guide visits bounce here as /#guide — land them on the toolkit
       // and open the email capture instead of silently dropping them at the top.
       if (window.location.hash === '#guide') {
+        if (!canModal) { window.location.replace('/buy#guide'); return; }
         var toolkit = document.getElementById('toolkit');
         if (toolkit) toolkit.scrollIntoView();
-        if (canModal) modal.showModal();
+        modal.showModal();
       }
       document.getElementById('guide-modal-close').addEventListener('click', function () { modal.close(); });
       modal.addEventListener('click', function (e) { if (e.target === modal) modal.close(); });
@@ -553,5 +554,6 @@
       });
     })();
   </script>
+  <script src="assets/analytics.js" defer></script>
 </body>
 </html>

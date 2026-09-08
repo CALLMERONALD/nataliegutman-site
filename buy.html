@@ -158,7 +158,7 @@
             Cascais and Sintra, from the first viewing to the keys in your hand.
           </p>
 
-          <form data-guide-form action="#" method="post" class="flex flex-col sm:flex-row gap-3 max-w-md" novalidate>
+          <form data-guide-form action="#" method="post" class="flex flex-col sm:flex-row gap-3 max-w-md ph-no-capture" novalidate>
             <label for="hero-email" class="sr-only">Email address</label>
             <input id="hero-email" name="email" type="email" required autocomplete="email"
                    placeholder="your@email.com"
@@ -296,7 +296,7 @@
             </li>
           </ul>
 
-          <form data-guide-form action="#" method="post" class="flex flex-col sm:flex-row gap-3 max-w-md" novalidate>
+          <form data-guide-form action="#" method="post" class="flex flex-col sm:flex-row gap-3 max-w-md ph-no-capture" novalidate>
             <label for="guide-email" class="sr-only">Email address</label>
             <input id="guide-email" name="email" type="email" required autocomplete="email"
                    placeholder="your@email.com"
@@ -503,7 +503,7 @@
           </ul>
         </div>
 
-        <form action="#" method="post" class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-5" novalidate>
+        <form action="#" method="post" class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-5 ph-no-capture" novalidate>
           <div class="sm:col-span-1">
             <label for="c-name" class="block label mb-2">Name</label>
             <input id="c-name" name="name" type="text" required autocomplete="name"
@@ -649,6 +649,7 @@
     if (contactForm) {
       contactForm.addEventListener('submit', function (e) {
         e.preventDefault();
+        if (!contactForm.checkValidity()) { contactForm.reportValidity(); return; }
         var name    = (contactForm.querySelector('#c-name')  || {}).value || '';
         var email   = (contactForm.querySelector('#c-email') || {}).value || '';
         var message = (contactForm.querySelector('#c-msg')   || {}).value || '';
@@ -678,5 +679,6 @@
       });
     }
   </script>
+  <script src="assets/analytics.js" defer></script>
 </body>
 </html>

@@ -309,7 +309,7 @@
       <p class="label text-faint mb-4">By introduction only</p>
       <h2 id="gate-title" class="gx-h text-2xl sm:text-3xl mb-5">You did not find this page by chance</h2>
       <p id="gate-copy" class="text-sm sm:text-[15px] leading-[1.8] mb-7">Gandarinha Estate is not on any portal, and it is not advertised. It reaches only the people it is shared with, and today that is you. The private wing, the floor plans and the film are waiting just behind this note. Leave your email and pick up exactly where you left off.</p>
-      <form id="gate-form" novalidate>
+      <form id="gate-form" novalidate class="ph-no-capture">
         <label for="gate-email" class="sr-only">Email</label>
         <input id="gate-email" class="gate-input" type="email" required autocomplete="email" placeholder="Your email" />
         <p id="gate-error" class="gate-error text-xs mt-2" role="alert" hidden>Please enter a valid email address.</p>
@@ -348,10 +348,28 @@
         document.documentElement.style.overflow = 'hidden';
         document.documentElement.classList.add('gate-open');
         requestAnimationFrame(function () { requestAnimationFrame(function () { gate.classList.add('is-open'); }); });
+        fitViewport();
         setTimeout(function () { try { document.getElementById('gate-email').focus({ preventScroll: true }); } catch (e) {} }, 900);
       }
+      // On-screen keyboard: the fixed overlay keeps the layout viewport's height, so
+      // the card could sit behind the keyboard with the button unreachable. Follow
+      // the visual viewport instead (Astra 2026-09-08).
+      var vv = window.visualViewport;
+      function fitViewport() {
+        if (!vv || !shown || gate.hidden) return;
+        gate.style.height = vv.height + 'px';
+        gate.style.top = vv.offsetTop + 'px';
+      }
+      if (vv) { vv.addEventListener('resize', fitViewport); vv.addEventListener('scroll', fitViewport); }
+      var emailEl = document.getElementById('gate-email'), btnEl = gate.querySelector('.gate-btn');
+      if (emailEl && btnEl) emailEl.addEventListener('focus', function () {
+        setTimeout(function () { fitViewport(); try { btnEl.scrollIntoView({ block: 'nearest' }); } catch (e) {} }, 350);
+      });
+      // bfcache: never come back with the body still pinned
+      window.addEventListener('pageshow', function (ev) { if (ev.persisted && shown && !gate.hidden) { gate.hidden = true; document.body.style.position = ''; document.body.style.top = ''; document.documentElement.style.overflow = ''; document.documentElement.classList.remove('gate-open'); } });
       function close() {
         gate.classList.remove('is-open');
+        gate.style.height = ''; gate.style.top = '';
         document.documentElement.style.overflow = '';
         document.documentElement.classList.remove('gate-open');
         document.body.style.position = '';
@@ -363,6 +381,7 @@
         setTimeout(function () { gate.hidden = true; }, 650);
       }
       function arm() { if (timer || shown) return; timer = setTimeout(open, DELAY_MS); }
+      function disarm() { if (timer) { clearTimeout(timer); timer = null; } }
 
       // Arm once most of the landing paragraph is on screen (the visitor is reading it).
       // This script sits above the paragraph in the document, so look it up only
@@ -370,11 +389,20 @@
       // IntersectionObserver the gate simply never shows, same as with JS off.
       function watch() {
         var copy = document.getElementById('landing-copy');
+        var hero = document.getElementById('walkthrough');
         if (!copy || !('IntersectionObserver' in window)) return;
-        var io = new IntersectionObserver(function (entries) {
-          entries.forEach(function (en) { if (en.intersectionRatio >= 0.6) { arm(); io.disconnect(); } });
-        }, { threshold: 0.6 });
-        io.observe(copy);
+        // Two conditions (live phone repro 2026-09-08: the pop-up used to land while the
+        // pool frame still filled 60% of a phone screen, read as "stuck at the pool"):
+        // the paragraph is mostly on screen AND the walkthrough has scrolled fully away.
+        // Disarm the moment either stops being true.
+        var copyIn = false, heroGone = !hero;
+        function sync() { if (copyIn && heroGone) arm(); else disarm(); }
+        new IntersectionObserver(function (entries) {
+          entries.forEach(function (en) { copyIn = en.intersectionRatio >= 0.6; }); sync();
+        }, { threshold: 0.6 }).observe(copy);
+        if (hero) new IntersectionObserver(function (entries) {
+          entries.forEach(function (en) { heroGone = !en.isIntersecting; }); sync();
+        }, { threshold: 0 }).observe(hero);
       }
       if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', watch); else watch();
 
@@ -844,7 +872,7 @@
         <h2 class="gx-h text-2xl sm:text-3xl lg:text-4xl mb-5">Request a private viewing</h2>
         <p class="leading-relaxed">Natalie will contact you personally. All enquiries are handled discreetly.</p>
       </div>
-      <form id="viewing-form" action="#" method="post" class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-6 mt-12 reveal" style="--reveal-delay: 120ms;" novalidate>
+      <form id="viewing-form" action="#" method="post" class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-6 mt-12 reveal ph-no-capture" style="--reveal-delay: 120ms;" novalidate>
         <div class="sm:col-span-2">
           <label for="v-name" class="block label mb-2">Full name</label>
           <input id="v-name" name="name" type="text" required autocomplete="name" class="gx-field" />
@@ -1341,5 +1369,6 @@
     })();
 
   </script>
+  <script src="assets/analytics.js" defer></script>
 </body>
 </html>
