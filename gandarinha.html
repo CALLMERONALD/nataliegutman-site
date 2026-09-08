@@ -391,18 +391,19 @@
         var copy = document.getElementById('landing-copy');
         var hero = document.getElementById('walkthrough');
         if (!copy || !('IntersectionObserver' in window)) return;
-        // Two conditions (live phone repro 2026-09-08: the pop-up used to land while the
-        // pool frame still filled 60% of a phone screen, read as "stuck at the pool"):
-        // the paragraph is mostly on screen AND the walkthrough has scrolled fully away.
-        // Disarm the moment either stops being true.
-        var copyIn = false, heroGone = !hero;
-        function sync() { if (copyIn && heroGone) arm(); else disarm(); }
-        new IntersectionObserver(function (entries) {
-          entries.forEach(function (en) { copyIn = en.intersectionRatio >= 0.6; }); sync();
-        }, { threshold: 0.6 }).observe(copy);
+        // Hard wall for everyone who passes the walkthrough (Michael 2026-09-08): arm
+        // once the hero has scrolled fully away (the paragraph sits right under it, so
+        // they have reached the copy); disarm only if they scroll back up into the hero.
+        // Never while the pool frame is still on screen (live phone repro 2026-09-08:
+        // the old 60%-of-paragraph trigger read as "stuck at the pool").
+        var heroGone = !hero;
+        function sync() { if (heroGone) arm(); else disarm(); }
         if (hero) new IntersectionObserver(function (entries) {
           entries.forEach(function (en) { heroGone = !en.isIntersecting; }); sync();
         }, { threshold: 0 }).observe(hero);
+        else new IntersectionObserver(function (entries) {
+          entries.forEach(function (en) { if (en.intersectionRatio >= 0.6) arm(); else disarm(); });
+        }, { threshold: 0.6 }).observe(copy);
       }
       if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', watch); else watch();
 

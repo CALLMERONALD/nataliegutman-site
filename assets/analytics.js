@@ -56,6 +56,15 @@
         capture_exceptions: true,
         autocapture: true,
         disable_surveys: true,
+        cookie_expiration: 182, // days; matches the six-month re-ask (live check 2026-09-08 showed PostHog's 365 default)
+        // Before Accept (and after Decline) only page views, web vitals and JS errors
+        // leave the browser: click autocapture, heatmaps, dead and rage clicks are
+        // dropped so the pre-consent bucket stays "counting visits" (live check 2026-09-08).
+        before_send: function (ev) {
+          if (!ev) return ev;
+          if (getChoice() !== 'yes' && /^\$(autocapture|\$heatmap|dead_click|rageclick)$/.test(ev.event)) return null;
+          return ev;
+        },
         session_recording: {
           maskAllInputs: true,
           blockSelector: 'form, input, textarea, select',
