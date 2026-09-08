@@ -16,7 +16,7 @@
  *  - Empty POSTHOG_KEY = nothing loads, no banner, no requests.
  * ──────────────────────────────────────────────────────────────────────────── */
 (function () {
-  var POSTHOG_KEY = '';                    // project API key from PostHog Cloud EU
+  var POSTHOG_KEY = 'phc_pyHUKYxYFnWqQ2QQN8gdxNd2ghzzuMMijiE5DecVaHze'; // project token (public by design), PostHog Cloud EU project 269748
   var POSTHOG_HOST = 'https://eu.i.posthog.com';
   var CONSENT_KEY = 'natalie_analytics_consent';
   var local = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
