@@ -56,7 +56,7 @@
   <main class="max-w-3xl mx-auto px-6 lg:px-8 py-16 lg:py-24">
     <p class="label mb-4">Legal</p>
     <h1 class="font-serif text-4xl sm:text-5xl leading-tight mb-4">Privacy Policy</h1>
-    <p class="text-sm text-muted mb-12">Last updated: 1 September 2026</p>
+    <p class="text-sm text-muted mb-12">Last updated: 8 September 2026</p>
 
     <div class="space-y-10 text-muted leading-relaxed">
 
@@ -99,6 +99,11 @@
             <p>Like most websites, the hosting provider may automatically log technical data (such as your IP address and browser type) for security and to keep the site running. <strong>Legal basis:</strong> legitimate interest in operating a secure website.</p>
           </div>
           <div>
+            <p class="text-ink font-medium">Site analytics</p>
+            <p><strong>Counting visits.</strong> This site uses PostHog to count visits and see which pages are read. It sets no cookies and stores nothing on your device for this. PostHog&rsquo;s server turns your IP address, browser type and the date into a code that cannot be reversed and is discarded daily; your IP address itself is not kept. <strong>Legal basis:</strong> legitimate interest in understanding how the site is used (Article 6(1)(f) GDPR). If your browser sends a Do Not Track or Global Privacy Control signal, even this counting is switched off.</p>
+            <p class="mt-3"><strong>Session replay.</strong> Only if you click &ldquo;Accept&rdquo; on the banner, PostHog also records a replay of your visit: page views, scrolling and clicks. Everything you type is masked and every form is excluded, so no name, email, phone number or message is ever recorded. Replays are deleted after 30 days. <strong>Legal basis:</strong> your consent (Article 6(1)(a) GDPR). You can withdraw it at any time through the &ldquo;Privacy choices&rdquo; link in the footer, which reopens the banner; withdrawal stops recording immediately and removes the analytics items from your browser.</p>
+          </div>
+          <div>
             <p class="text-ink font-medium">Property portfolio pages</p>
             <p><strong>Data:</strong> your IP address, browser type and the time of the request. <strong>Purpose:</strong> the property listings, photographs and their details are stored on a dedicated server and are fetched by your browser when you open the home page or any page that displays property listings, including pages shared by private link. Your IP address necessarily reaches that server in order for it to send the page content back to you; it is used only to deliver the listings and to keep the server secure, and it is not used to build a profile of you or to track you across sites. <strong>Legal basis:</strong> legitimate interest in operating and securing the website (Article 6(1)(f) GDPR).</p>
           </div>
@@ -107,25 +112,26 @@
 
       <section>
         <h2 class="font-serif text-2xl text-ink mb-3">3. Cookies and local storage</h2>
-        <p>This site does <strong>not</strong> use advertising or analytics cookies, and it does not track you across other sites. Fonts and styles are served from this website itself, so nothing is requested from advertising or content-delivery networks. The exceptions are the property portfolio (pages that show listings load them from a dedicated server operated by this site&rsquo;s technical provider, see section 4 below) and the forms on this site, which send what you enter to that same provider&rsquo;s server when you submit them. No cookies are set by these requests.</p>
-        <p class="mt-3">The site stores small, strictly necessary items in your browser's local storage: <code class="text-ink">natalie_guide_unlocked</code> (so that, if you return after downloading the guide, you go straight to your resources instead of seeing the form again) and, on private listing pages, <code class="text-ink">gandarinha-gate-email</code> (so that returning visitors are not asked for their email again). They contain no personal data, are not shared with anyone, and you can clear them at any time through your browser settings.</p>
+        <p>This site uses no advertising cookies and does not track you across other sites. Analytics cookies are set only if you accept session replay on the banner (see section 2); until then, and if you decline, nothing is stored on your device for analytics. Fonts and styles are served from this website itself; apart from the analytics script described in section 2, nothing is requested from advertising or content-delivery networks. The exceptions are the property portfolio (pages that show listings load them from a dedicated server operated by this site&rsquo;s technical provider, see section 4 below) and the forms on this site, which send what you enter to that same provider&rsquo;s server when you submit them. No cookies are set by these requests.</p>
+        <p class="mt-3">The site stores small, strictly necessary items in your browser's local storage: <code class="text-ink">natalie_guide_unlocked</code> (so that, if you return after downloading the guide, you go straight to your resources instead of seeing the form again) and, on private listing pages, <code class="text-ink">gandarinha-gate-email</code> (so that returning visitors are not asked for their email again). On every page, <code class="text-ink">natalie_analytics_consent</code> together with PostHog&rsquo;s <code class="text-ink">__ph_opt_in_out_</code> item remember whether you accepted or declined session replay so the banner is not shown again (kept for six months). If you accept, PostHog additionally stores a <code class="text-ink">ph_&hellip;_posthog</code> cookie and local storage item holding a random visitor and session identifier. The strictly necessary items contain no personal data, are not shared with anyone, and you can clear them at any time through your browser settings.</p>
       </section>
 
       <section>
         <h2 class="font-serif text-2xl text-ink mb-3">4. Who your data is shared with</h2>
         <p>The property listings on this site (details and photographs) are hosted, and your form submissions are received and relayed, for Natalie Gutman by <strong>Exclusive Recipe Unipessoal Lda</strong>, a company registered in Portugal, which acts as a data processor on her behalf under a written data processing agreement. The servers are located in France, and the underlying infrastructure provider is Hostinger operations, UAB (Vilnius, Lithuania) — both within the European Union. Listing data and photographs are backed up nightly on the same EU infrastructure. No listing or visitor data is transferred outside the European Economic Area by this arrangement.</p>
         <p class="mt-3">Your form submissions (including private-listing access requests) are first received on the technical provider&rsquo;s server in the European Union (see above), are then stored in <strong>Google Sheets</strong> on Natalie&rsquo;s own Google account, and a notification email is sent to Natalie through the technical provider&rsquo;s email service. Google may process this data on servers outside the European Economic Area; where it does, transfers are covered by appropriate safeguards such as the EU Standard Contractual Clauses and the EU-US Data Privacy Framework.</p>
+        <p class="mt-3">Site analytics are processed by <strong>PostHog Inc.</strong> as a sub-processor of the technical provider under a written data processing agreement, on PostHog Cloud EU in Frankfurt, Germany. PostHog Inc. is a United States company; any access from the United States is covered by the EU Standard Contractual Clauses in that agreement.</p>
         <p class="mt-3">Data is not sold, rented, or shared for advertising. It may be shared with professional advisers (for example a lawyer or accountant) only where needed to help with your specific enquiry, and with authorities where required by law.</p>
       </section>
 
       <section>
         <h2 class="font-serif text-2xl text-ink mb-3">5. How long it is kept</h2>
-        <p>Email-list data is kept until you unsubscribe or ask to be removed. Contact-form enquiries are kept for as long as needed to handle your request and for a reasonable period afterwards, then deleted. Viewing, valuation and private-listing access records are kept while the property or enquiry is active and for a reasonable period afterwards, then deleted. You can ask for deletion at any time.</p>
+        <p>Email-list data is kept until you unsubscribe or ask to be removed. Contact-form enquiries are kept for as long as needed to handle your request and for a reasonable period afterwards, then deleted. Viewing, valuation and private-listing access records are kept while the property or enquiry is active and for a reasonable period afterwards, then deleted. Analytics counts are kept only in aggregate form. Session replays are deleted 30 days after the visit. The banner choice is kept for six months, then you are asked again. You can ask for deletion at any time.</p>
       </section>
 
       <section>
         <h2 class="font-serif text-2xl text-ink mb-3">6. Your rights</h2>
-        <p>Under the GDPR you have the right to access your data, correct it, delete it, restrict or object to its use, receive a copy in a portable format, and withdraw consent at any time (without affecting earlier processing). Every marketing email also includes a one-click unsubscribe link.</p>
+        <p>Under the GDPR you have the right to access your data, correct it, delete it, restrict or object to its use, receive a copy in a portable format, and withdraw consent at any time (without affecting earlier processing). Every marketing email also includes a one-click unsubscribe link. Consent to session replay is withdrawn through the &ldquo;Privacy choices&rdquo; link in the footer.</p>
         <p class="mt-3">To exercise any of these rights, email <a href="mailto:natalie.gutman@expportugal.com" class="link-underline text-ink">natalie.gutman@expportugal.com</a>. If you believe your data has been handled improperly, you can complain to Portugal's data protection authority, the Comissão Nacional de Proteção de Dados (CNPD), <a href="https://www.cnpd.pt" class="link-underline text-ink" rel="noopener" target="_blank">www.cnpd.pt</a>.</p>
       </section>
 
@@ -199,5 +205,6 @@
       menu.addEventListener('click', function (e) { if (e.target.closest('a')) { menu.classList.add('hidden'); btn.setAttribute('aria-expanded', 'false'); } });
     })();
   </script>
+  <script src="assets/analytics.js" defer></script>
 </body>
 </html>
