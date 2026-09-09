@@ -51,7 +51,10 @@
         opt_out_capturing_by_default: true, // stays cookieless until accept()
         person_profiles: 'never',
         respect_dnt: true,
-        capture_pageview: true,
+        // The automatic pageview fires before the consent state is applied and is
+        // dropped while consent is pending (live data 2026-09-09: web vitals landed,
+        // pageviews did not). Sent by hand below once the state is set.
+        capture_pageview: false,
         capture_pageleave: true,
         capture_exceptions: true,
         autocapture: true,
@@ -77,9 +80,11 @@
     };
     document.head.appendChild(s);
   }
-  function accept() { setChoice('yes'); load(); withPosthog(function (p) { p.opt_in_capturing(); if (p.startSessionRecording) p.startSessionRecording(); }); }
-  function decline() { setChoice('no'); load(); withPosthog(function (p) { p.opt_out_capturing(); }); }
-  function countOnly() { load(); withPosthog(function (p) { p.opt_out_capturing(); }); }
+  var pageviewSent = false;
+  function pageview(p) { if (pageviewSent) return; pageviewSent = true; p.capture('$pageview'); }
+  function accept() { setChoice('yes'); load(); withPosthog(function (p) { p.opt_in_capturing({ captureEventName: false }); if (p.startSessionRecording) p.startSessionRecording(); pageview(p); }); }
+  function decline() { setChoice('no'); load(); withPosthog(function (p) { p.opt_out_capturing(); pageview(p); }); }
+  function countOnly() { load(); withPosthog(function (p) { p.opt_out_capturing(); pageview(p); }); }
 
   /* ── Banner, styled like the site: ivory card, hairline, Cormorant capitals,
         Montserrat body, two equal buttons (no dark patterns). ── */
