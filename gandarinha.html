@@ -481,7 +481,7 @@
       <!-- Play button (Michael 2026-09-10, testing against the scroll prompt): one tap
            drives the walkthrough by itself and lands on the landing statement. Manual
            scrolling still scrubs it, and any touch, wheel or key stops the auto walk. -->
-      <div id="wt-hint" class="absolute inset-x-0 bottom-[9vh] z-[5] flex justify-center px-6 pointer-events-none">
+      <div id="wt-hint" class="absolute inset-x-0 bottom-[15vh] z-[5] flex justify-center px-6 pointer-events-none">
         <button type="button" id="wt-play" class="wt-prompt" style="pointer-events: auto; background: none; border: 0; cursor: pointer; font-family: inherit;" aria-label="Play the walkthrough of the residence">
           <span class="wt-prompt-text text-center">Play the walkthrough</span>
           <span class="wt-ring" aria-hidden="true"><svg class="wt-play-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg></span>
@@ -1347,9 +1347,18 @@
       var autoRaf = null, autoT0 = 0, autoFrom = 0, autoTo = 0, AUTO_MS = 9000;
       var htmlEl = document.documentElement;
       function stopAuto() { if (autoRaf) { cancelAnimationFrame(autoRaf); autoRaf = null; htmlEl.style.scrollBehavior = ''; } }
+      // Speed profile (Michael 2026-09-10: cubic ease-in-out started too slow and
+      // ended too fast): a short 12% acceleration, constant speed through the walk,
+      // then a longer 28% glide to a stop at the text.
+      var ACC = 0.12, DEC = 0.28, VMAX = 1 / (1 - (ACC + DEC) / 2);
+      function profile(t) {
+        if (t < ACC) return 0.5 * VMAX * t * t / ACC;
+        if (t < 1 - DEC) return 0.5 * VMAX * ACC + VMAX * (t - ACC);
+        var r = 1 - t; return 1 - 0.5 * VMAX * r * r / DEC;
+      }
       function autoStep(now) {
         var t = Math.min(1, (now - autoT0) / AUTO_MS);
-        var e = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+        var e = profile(t);
         window.scrollTo(0, autoFrom + (autoTo - autoFrom) * e);
         scrollTick = true;
         if (t < 1) autoRaf = requestAnimationFrame(autoStep); else stopAuto();
