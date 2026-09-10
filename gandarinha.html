@@ -387,6 +387,12 @@
       function arm() { if (timer || shown) return; timer = setTimeout(open, DELAY_MS); }
       function disarm() { if (timer) { clearTimeout(timer); timer = null; } }
 
+      // 2026-09-10 (Michael): a full watch opens the gate as soon as the glide lands.
+      document.addEventListener('gandarinha:walk-landed', function () {
+        disarm();
+        if (!shown && !has) open();
+      });
+
       // Arm once most of the landing paragraph is on screen (the visitor is reading it).
       // This script sits above the paragraph in the document, so look it up only
       // after parsing (QA 2026-09-07: an early lookup returned null). Without
@@ -1173,20 +1179,44 @@
       var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       var playing = false, ended = false;
 
-      function glideToText() {
+      function glideToText(watched) {
         if (!landing) return;
+        // 2026-09-10 (Michael): reset once, on scrollend or the fallback timeout.
+        var reset = false, timer;
+        function landed() {
+          if (reset) return;
+          reset = true;
+          clearTimeout(timer);
+          document.removeEventListener('scrollend', landed);
+          if (fade) fade.style.opacity = '0';
+          section.classList.remove('is-playing');
+          try { video.currentTime = 0; } catch (e) {}
+          ended = false; playing = false;
+          if (watched) document.dispatchEvent(new CustomEvent('gandarinha:walk-landed'));
+        }
         var top = landing.getBoundingClientRect().top + (window.pageYOffset || 0) + 12; // hero fully off screen
+        if ('onscrollend' in document) document.addEventListener('scrollend', landed);
+        // Fallback for browsers without scrollend (Safari): poll until the glide has
+        // arrived (or stopped moving), 2.5 s cap, so the gate never pins a half-scrolled page.
+        var t0 = Date.now(), lastY = -1;
+        function poll() {
+          if (reset) return;
+          var y = window.pageYOffset || 0;
+          if (Math.abs(y - top) < 2 || (y === lastY && Date.now() - t0 > 400) || Date.now() - t0 > 2500) { landed(); return; }
+          lastY = y; timer = setTimeout(poll, 100);
+        }
+        timer = setTimeout(poll, 300);
         try { window.scrollTo({ top: top, behavior: reduceMotion ? 'auto' : 'smooth' }); } catch (e) { window.scrollTo(0, top); }
       }
-      function finish() {
+      function finish(watched) {
         if (ended) return;
         ended = true; playing = false;
         if (fade) fade.style.opacity = '1';
-        setTimeout(glideToText, 600);
+        setTimeout(function () { glideToText(watched); }, 600);
       }
       playBtn.addEventListener('click', function () {
         if (playing) return;
-        if (ended) { glideToText(); return; }
+        if (ended) return;
         if (!video.getAttribute('src')) video.setAttribute('src', SRC);
         playing = true;
         section.classList.add('is-playing');
@@ -1197,7 +1227,7 @@
         });
         if (window.posthog && window.posthog.capture) { try { window.posthog.capture('walkthrough_play'); } catch (e) {} }
       });
-      video.addEventListener('ended', finish);
+      video.addEventListener('ended', function () { finish(true); });
       video.addEventListener('error', function () { if (playing) finish(); });
       // Scrolling away pauses; coming back shows the cover and the button again.
       if ('IntersectionObserver' in window) {
