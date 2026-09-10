@@ -522,13 +522,27 @@
           }).catch(function () {});
         }
 
-        valForm.innerHTML =
-          '<div class="py-6 text-center">' +
-          '<p class="font-serif text-2xl text-ink mb-3">Thank you, ' + (name.split(' ')[0] || 'and welcome') + '.</p>' +
-          '<p class="text-muted">Your valuation request is in. I\'ll review the comparables for ' +
-          (address ? '<span class="text-ink">' + address.replace(/</g, '&lt;') + '</span>' : 'your property') +
-          ' and come back to you within one business day.</p>' +
-          '</div>';
+        var result = document.createElement('div');
+        result.className = 'py-6 text-center';
+        var heading = document.createElement('p');
+        heading.className = 'font-serif text-2xl text-ink mb-3';
+        heading.textContent = 'Thank you, ' + (name.split(' ')[0] || 'and welcome') + '.';
+        var detail = document.createElement('p');
+        detail.className = 'text-muted';
+        detail.appendChild(document.createTextNode('Your valuation request is in. I\'ll review the comparables for '));
+        if (address) {
+          var where = document.createElement('span');
+          where.className = 'text-ink';
+          where.textContent = address;
+          detail.appendChild(where);
+        } else {
+          detail.appendChild(document.createTextNode('your property'));
+        }
+        detail.appendChild(document.createTextNode(' and come back to you within one business day.'));
+        result.appendChild(heading);
+        result.appendChild(detail);
+        while (valForm.firstChild) valForm.removeChild(valForm.firstChild);
+        valForm.appendChild(result);
       });
     }
 
@@ -559,11 +573,18 @@
           }).catch(function () {});
         }
 
-        contactForm.innerHTML =
-          '<div class="sm:col-span-2 py-8 text-center">' +
-          '<p class="font-serif text-2xl text-ink mb-3">Message sent.</p>' +
-          '<p class="text-muted">Thanks ' + (name.split(' ')[0] || 'for reaching out') + '. I\'ll be in touch within one business day.</p>' +
-          '</div>';
+        var result = document.createElement('div');
+        result.className = 'sm:col-span-2 py-8 text-center';
+        var heading = document.createElement('p');
+        heading.className = 'font-serif text-2xl text-ink mb-3';
+        heading.textContent = 'Message sent.';
+        var detail = document.createElement('p');
+        detail.className = 'text-muted';
+        detail.textContent = 'Thanks ' + (name.split(' ')[0] || 'for reaching out') + '. I\'ll be in touch within one business day.';
+        result.appendChild(heading);
+        result.appendChild(detail);
+        while (contactForm.firstChild) contactForm.removeChild(contactForm.firstChild);
+        contactForm.appendChild(result);
       });
     }
   </script>

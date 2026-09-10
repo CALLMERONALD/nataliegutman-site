@@ -671,11 +671,18 @@
           }).catch(function () {});
         }
 
-        contactForm.innerHTML =
-          '<div class="sm:col-span-2 py-8 text-center">' +
-          '<p class="font-serif text-2xl text-ink mb-3">Message sent.</p>' +
-          '<p class="text-muted">Thanks ' + (name.split(' ')[0] || 'for reaching out') + '. I\'ll be in touch within one business day.</p>' +
-          '</div>';
+        var result = document.createElement('div');
+        result.className = 'sm:col-span-2 py-8 text-center';
+        var heading = document.createElement('p');
+        heading.className = 'font-serif text-2xl text-ink mb-3';
+        heading.textContent = 'Message sent.';
+        var detail = document.createElement('p');
+        detail.className = 'text-muted';
+        detail.textContent = 'Thanks ' + (name.split(' ')[0] || 'for reaching out') + '. I\'ll be in touch within one business day.';
+        result.appendChild(heading);
+        result.appendChild(detail);
+        while (contactForm.firstChild) contactForm.removeChild(contactForm.firstChild);
+        contactForm.appendChild(result);
       });
     }
   </script>

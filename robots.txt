@@ -5,7 +5,9 @@ User-agent: *
 Allow: /
 # Keep the gated funnel pages out of the index
 Disallow: /hub.html
+Disallow: /hub
 Disallow: /guide.html
+Disallow: /guide
 
 # --- AI search crawlers (explicitly welcomed for citation) ---
 # Blocking any of these means that platform can't cite the site.

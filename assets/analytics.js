@@ -66,7 +66,12 @@
         // dropped so the pre-consent bucket stays "counting visits" (live check 2026-09-08).
         before_send: function (ev) {
           if (!ev) return ev;
-          if (getChoice() !== 'yes' && /^\$(autocapture|\$heatmap|dead_click|rageclick)$/.test(ev.event)) return null;
+          if (getChoice() !== 'yes') {
+            if (/^\$(autocapture|\$heatmap|dead_click|rageclick)$/.test(ev.event)) return null;
+            // Counting only: keep the path, drop query strings and fragments (Astra 2026-09-10).
+            var props = ev.properties || {}, k;
+            for (k in props) if (/url|referrer/i.test(k) && typeof props[k] === 'string') props[k] = props[k].replace(/[?#].*$/, '');
+          }
           return ev;
         },
         session_recording: {

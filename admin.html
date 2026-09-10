@@ -34,7 +34,7 @@
       <h1 class="font-serif text-2xl text-center">Natalie Gutman</h1>
       <p class="label text-center mt-2 mb-8">Listings admin</p>
 
-      <form id="login-form" class="space-y-5">
+      <form id="login-form" class="space-y-5" method="post" action="#">
         <div>
           <label for="login-email" class="label block mb-2">Email</label>
           <input id="login-email" name="email" type="email" required autocomplete="username"
@@ -45,7 +45,7 @@
           <input id="login-password" name="password" type="password" required autocomplete="current-password"
                  class="w-full border border-hairline bg-white px-4 py-3 text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent" />
         </div>
-        <button id="login-submit" type="submit"
+        <button id="login-submit" type="submit" disabled
                 class="w-full bg-ink text-white px-5 py-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2">
           Sign in
         </button>
