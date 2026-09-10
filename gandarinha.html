@@ -90,7 +90,11 @@
 
     /* Editorial cover (2026-09-01): the aerial settles from a slight zoom, the
        type rises line by line. Pass 6: title and subline only. */
-    #wt-canvas { transform-origin: center; animation: wtSettle 3.4s cubic-bezier(0.16, 1, 0.3, 1) both; }
+    #wt-cover { transform-origin: center; animation: wtSettle 3.4s cubic-bezier(0.16, 1, 0.3, 1) both; }
+    #wt-video { opacity: 0; transition: opacity .6s ease; }
+    #walkthrough.is-playing #wt-video { opacity: 1; }
+    #walkthrough.is-playing .wt-caption, #walkthrough.is-playing #wt-hint { opacity: 0 !important; transition: opacity .8s ease; pointer-events: none; }
+    #wt-fade { position: absolute; inset: 0; z-index: 6; background: #FAF9F6; opacity: 0; pointer-events: none; transition: opacity .9s ease; }
     @keyframes wtSettle { from { transform: scale(1.07); } to { transform: none; } }
     /* Scroll indicator: text + pulsing ring with a nudging arrow, held for the
        walkthrough (JS fades it over the last stretch of the walk). */
@@ -103,14 +107,12 @@
     .wt-play-icon { width: 1.2rem; height: 1.2rem; margin-left: .15rem; }
     #wt-play:focus-visible .wt-ring { outline: 2px solid #fff; outline-offset: 3px; }
     @keyframes wtNudge { 0%, 100% { transform: translateY(-2px); } 50% { transform: translateY(3px); } }
-    /* Scroll-scrubbed walkthrough: captions are positioned/faded from JS. */
     /* vh first = fallback for Safari <15.4 (no dvh): without it this sticky
        wrapper has no height and the whole 850vh hero renders blank. */
     .wt-viewport { height: 100vh; height: 100dvh; }
-    .wt-caption { opacity: 0; transform: translateY(18px); will-change: opacity, transform; }
+    .wt-caption { transition: opacity .8s ease; }
     /* Captions sit over bright frames (sky, pool): a soft shadow keeps them legible. */
     .wt-caption h1, .wt-caption p, #wt-hint { text-shadow: 0 1px 10px rgba(0, 0, 0, 0.6); }
-    #wt-hint { opacity: 0; will-change: opacity; }
 
     /* Gallery lightbox backdrop */
     #gallery-lightbox::backdrop { background: rgba(12, 12, 14, 0.94); }
@@ -256,7 +258,7 @@
     /* prefers-reduced-motion: the sitewide rule in tailwind.css already
        collapses every animation/transition to ~0ms; the looping keyframes are
        additionally switched off here. */
-    @media (prefers-reduced-motion: reduce) { #wt-canvas, .wt-ring::before, .wt-arrow { animation: none !important; } }
+    @media (prefers-reduced-motion: reduce) { #wt-cover, .wt-ring::before, .wt-arrow { animation: none !important; } }
   </style>
   <script>
     // Same calm scroll-reveal contract as the rest of the site.
@@ -440,55 +442,49 @@
     })();
   </script>
 
-  <!-- ============== HERO: scroll-scrubbed AI walkthrough ==============
-       The walkthrough video is pre-exploded into JPEG frames
-       (assets/walkthrough/gandarinha/); the SEGMENTS list in the script below
-       picks the 96 that play (remade 2026-08-27: drone descent, AI bridge down
-       to the front door, in through the door to the pool window, AI bridge out
-       through the glass wall to the pool). Scrolling scrubs the camera; the
-       title shows at the start and the scroll indicator stays up for the walk.
-       The landing headline + copy sit on solid ground right after this
-       section (pass 6), not over the pool frame. -->
-  <section id="walkthrough" class="relative bg-ink" style="height: 400vh;">
-    <div class="wt-viewport sticky top-0 overflow-hidden">
-      <canvas id="wt-canvas" class="absolute inset-0 w-full h-full"></canvas>
-      <noscript><img src="assets/walkthrough/gandarinha/f_001.jpg" alt="Aerial view of Villa Gandarinha above the Cascais coastline" class="absolute inset-0 w-full h-full object-cover" /></noscript>
-      <div class="absolute inset-0 bg-gradient-to-t from-ink/75 via-ink/25 to-ink/40 pointer-events-none"></div>
+  <!-- ============== HERO: the walkthrough as a video (Michael 2026-09-10) ==============
+       One screen tall. The cover still (f_001, portrait crop on phones) carries the
+       title; the Play button starts an inline, muted video of the walk (drone
+       descent, AI bridge to the door, in through the house, AI bridge out to the
+       pool: the same four segments the scroll-scrubbed frames used, now at full
+       frame rate, 1.5x, ~13 s). Nothing downloads until Play. When it ends the
+       frame dissolves to ivory and the page glides to the landing statement.
+       Scrolling away simply pauses it. The 96-frame scrub engine is gone. -->
+  <section id="walkthrough" class="relative bg-ink wt-viewport overflow-hidden">
+    <picture>
+      <source media="(max-width: 500px) and (orientation: portrait)" srcset="assets/walkthrough/gandarinha-p/f_001.jpg" />
+      <img id="wt-cover" src="assets/walkthrough/gandarinha/f_001.jpg" alt="Aerial view of Villa Gandarinha above the Cascais coastline" class="absolute inset-0 w-full h-full object-cover" width="1920" height="1080" fetchpriority="high" />
+    </picture>
+    <video id="wt-video" class="absolute inset-0 w-full h-full object-cover" playsinline muted preload="none" aria-label="Walkthrough of the Gandarinha Estate"></video>
+    <div class="absolute inset-0 bg-gradient-to-t from-ink/75 via-ink/25 to-ink/40 pointer-events-none"></div>
 
-      <!-- Minimal header over the hero: the logo only (pass 6: the "Private viewing" link is gone) -->
-      <header class="absolute top-0 inset-x-0 z-10">
-        <div class="max-w-7xl mx-auto px-6 lg:px-10 h-20 flex items-center">
-          <a href="/" class="inline-block rise"><img src="assets/logo-script-white.png" width="600" height="139" alt="Natalie Gutman" class="h-9 w-auto" /></a>
-        </div>
-      </header>
+    <!-- Minimal header over the hero: the logo only (pass 6: the "Private viewing" link is gone) -->
+    <header class="absolute top-0 inset-x-0 z-10">
+      <div class="max-w-7xl mx-auto px-6 lg:px-10 h-20 flex items-center">
+        <a href="/" class="inline-block rise"><img src="assets/logo-script-white.png" width="600" height="139" alt="Natalie Gutman" class="h-9 w-auto" /></a>
+      </div>
+    </header>
 
-      <!-- Cover caption: data-at = position on the walkthrough timeline (0..1).
-           With a single caption the scrub is linear. -->
-      <div class="absolute inset-x-0 bottom-0 z-[5] pointer-events-none">
-        <div class="max-w-7xl mx-auto px-6 lg:px-10 pb-14 lg:pb-20 relative">
-          <!-- Cover: magazine-style, centred, rises line by line, fades as the walk begins.
-               Pass 6: title + subline only (eyebrow and hairline removed at Natalie's request). -->
-          <div class="wt-caption absolute inset-x-0 bottom-[46vh] text-center px-6" data-at="0">
-            <h1 class="font-garamond font-medium uppercase tracking-[0.04em] whitespace-nowrap text-white text-[clamp(1.5rem,7.4vw,1.75rem)] sm:text-5xl md:text-6xl lg:text-7xl leading-[1.05] rise" style="--rise-delay: 300ms;">Gandarinha Estate</h1>
-            <p class="font-montserrat text-white/85 text-xs sm:text-sm tracking-[0.28em] uppercase mt-7 rise" style="--rise-delay: 440ms;">Gandarinha · Cascais · Portugal</p>
-          </div>
+    <!-- Cover: magazine-style, centred, rises line by line, fades when the video starts.
+         Pass 6: title + subline only (eyebrow and hairline removed at Natalie's request). -->
+    <div class="absolute inset-x-0 bottom-0 z-[5] pointer-events-none">
+      <div class="max-w-7xl mx-auto px-6 lg:px-10 pb-14 lg:pb-20 relative">
+        <div class="wt-caption absolute inset-x-0 bottom-[46vh] text-center px-6">
+          <h1 class="font-garamond font-medium uppercase tracking-[0.04em] whitespace-nowrap text-white text-[clamp(1.5rem,7.4vw,1.75rem)] sm:text-5xl md:text-6xl lg:text-7xl leading-[1.05] rise" style="--rise-delay: 300ms;">Gandarinha Estate</h1>
+          <p class="font-montserrat text-white/85 text-xs sm:text-sm tracking-[0.28em] uppercase mt-7 rise" style="--rise-delay: 440ms;">Gandarinha · Cascais · Portugal</p>
         </div>
       </div>
-
-      <!-- Scroll indicator (Natalie 2026-09-01): clear text + pulsing ring with an
-           arrow, held for the walkthrough so nobody stalls; it fades over the
-           last stretch of the walk as the landing section arrives beneath. -->
-      <!-- Play button (Michael 2026-09-10, testing against the scroll prompt): one tap
-           drives the walkthrough by itself and lands on the landing statement. Manual
-           scrolling still scrubs it, and any touch, wheel or key stops the auto walk. -->
-      <div id="wt-hint" class="absolute inset-x-0 bottom-[15vh] z-[5] flex justify-center px-6 pointer-events-none">
-        <button type="button" id="wt-play" class="wt-prompt" style="pointer-events: auto; background: none; border: 0; cursor: pointer; font-family: inherit;" aria-label="Play the walkthrough of the residence">
-          <span class="wt-prompt-text text-center">Play the walkthrough</span>
-          <span class="wt-ring" aria-hidden="true"><svg class="wt-play-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg></span>
-        </button>
-      </div>
-      <p id="wt-loading" class="absolute bottom-5 right-6 z-10 text-white/60 text-xs tracking-widest uppercase">Loading the walkthrough…</p>
     </div>
+
+    <!-- Play button (Michael 2026-09-10): one tap plays the walkthrough. -->
+    <div id="wt-hint" class="absolute inset-x-0 bottom-[15vh] z-[5] flex justify-center px-6 pointer-events-none rise" style="--rise-delay: 1100ms;">
+      <button type="button" id="wt-play" class="wt-prompt" style="pointer-events: auto; background: none; border: 0; cursor: pointer; font-family: inherit;" aria-label="Play the walkthrough of the residence">
+        <span class="wt-prompt-text text-center">Play the walkthrough</span>
+        <span class="wt-ring" aria-hidden="true"><svg class="wt-play-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg></span>
+      </button>
+    </div>
+    <!-- Ivory dissolve at the end of the walk -->
+    <div id="wt-fade" aria-hidden="true"></div>
     <!-- NOTE 2026-08-04: the visible AI-walkthrough disclosure was REMOVED at Michael's
          explicit instruction (twice). The remaining disclosure is the footer sentence only.
          Counsel's position (2026-08-04) was that EU AI Act art. 50(4) wants the disclosure
@@ -1161,232 +1157,59 @@
       }
     })();
 
-    // ── Scroll-scrubbed walkthrough hero ──────────────────────────────────
-    // Scroll position drives which pre-extracted video frame is painted on the
-    // canvas (Apple product-page technique, no libraries). A passive scroll
-    // listener only records position; all painting happens in one rAF loop.
+    // ── Walkthrough video hero (Michael 2026-09-10) ───────────────────────
+    // Play starts an inline muted video (portrait crop on phones); when it ends
+    // the frame dissolves to ivory and the page glides to the landing statement,
+    // whose arrival off the hero arms the email pop-up. Scrolling away pauses it.
     try { (function () {
-      // Remade 2026-08-27 (Michael): drone descent (f_001-024), AI bridge down to
-      // the front door (f_219-242, Kling v3 from f_024 to f_059), in through the
-      // door to the pool window (f_059-082), AI bridge out through the glass wall
-      // to the pool (f_243-266, Kling v3 from f_082 to a cleaned gallery pool
-      // photo). The original exterior pull-back and the suite/bath/terrace clips
-      // stay on disk unused.
-      var SEGMENTS = [[1, 24], [219, 242], [59, 82], [243, 266]];
-      var SEQUENCE = [];
-      SEGMENTS.forEach(function (seg) { for (var f = seg[0]; f <= seg[1]; f++) SEQUENCE.push(f); });
-      var FRAME_COUNT = SEQUENCE.length;
-      // Portrait phones only ever see the centre ~26-60% of each 16:9 frame (the
-      // canvas cover-scales to the viewport height), so they get the centre crop
-      // set assets/walkthrough/gandarinha-p (672x1080, same pixels they saw before,
-      // ~7 MB for the walk instead of ~18 MB, a third of the decoded bitmap memory
-      // that was pushing iOS Safari to reload the tab; 2026-09-08). ponytail: a
-      // phone rotated to landscape keeps the crop (cover-scaled, soft) until reload.
-      var FRAME_DIR = (window.innerHeight > window.innerWidth && window.innerWidth <= 500) ? 'assets/walkthrough/gandarinha-p/' : 'assets/walkthrough/gandarinha/';
-      var FRAME_PATH = function (i) { return FRAME_DIR + 'f_' + String(SEQUENCE[i]).padStart(3, '0') + '.jpg'; };
-
       var section = document.getElementById('walkthrough');
-      var canvas = document.getElementById('wt-canvas');
-      var loading = document.getElementById('wt-loading');
-      var hint = document.getElementById('wt-hint');
-      var t0 = performance.now();
-      var captions = Array.prototype.slice.call(document.querySelectorAll('.wt-caption'));
-      if (!section || !canvas || !canvas.getContext) return;
-      var ctx = canvas.getContext('2d');
-
+      var video = document.getElementById('wt-video');
+      var playBtn = document.getElementById('wt-play');
+      var fade = document.getElementById('wt-fade');
+      var landing = document.getElementById('landing');
+      if (!section || !video || !playBtn) return;
+      var portrait = window.innerHeight > window.innerWidth && window.innerWidth <= 500;
+      var SRC = portrait ? 'assets/gandarinha-walkthrough-portrait.mp4' : 'assets/gandarinha-walkthrough-landscape.mp4';
       var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var playing = false, ended = false;
 
-      var frames = new Array(FRAME_COUNT);
-      var loadedCount = 0;
-      function loadFrame(i, onsettle) {
-        if (frames[i]) return;
-        var img = new Image();
-        img.decoding = 'async';
-        img.onload = function () { loadedCount++; if (onsettle) onsettle(); };
-        // A failed frame must still settle (or one dropped cellular request
-        // stalls the loader forever) — null marks it retryable by the fill pass.
-        img.onerror = function () { frames[i] = null; if (onsettle) onsettle(); };
-        img.src = FRAME_PATH(i);
-        frames[i] = img;
+      function glideToText() {
+        if (!landing) return;
+        var top = landing.getBoundingClientRect().top + (window.pageYOffset || 0) + 12; // hero fully off screen
+        try { window.scrollTo({ top: top, behavior: reduceMotion ? 'auto' : 'smooth' }); } catch (e) { window.scrollTo(0, top); }
       }
-
-      function nearestLoaded(target) {
-        for (var d = 0; d < FRAME_COUNT; d++) {
-          var lo = target - d, hi = target + d;
-          if (lo >= 0 && frames[lo] && frames[lo].complete && frames[lo].naturalWidth) return lo;
-          if (hi < FRAME_COUNT && frames[hi] && frames[hi].complete && frames[hi].naturalWidth) return hi;
-        }
-        return -1;
+      function finish() {
+        if (ended) return;
+        ended = true; playing = false;
+        if (fade) fade.style.opacity = '1';
+        setTimeout(glideToText, 600);
       }
-
-      var dpr = Math.min(window.devicePixelRatio || 1, 2);
-      function resize() {
-        canvas.width = canvas.clientWidth * dpr;
-        canvas.height = canvas.clientHeight * dpr;
-        drawnFrame = -1; // force repaint at new size
-      }
-
-      var drawnFrame = -1;
-      function draw(frameIndex) {
-        var img = frames[frameIndex];
-        if (!img || !img.complete || !img.naturalWidth || frameIndex === drawnFrame) return;
-        var cw = canvas.width, ch = canvas.height;
-        var scale = Math.max(cw / img.naturalWidth, ch / img.naturalHeight);
-        var w = img.naturalWidth * scale, h = img.naturalHeight * scale;
-        ctx.drawImage(img, (cw - w) / 2, (ch - h) / 2, w, h);
-        drawnFrame = frameIndex;
-        // Safety net: if the label survived the skeleton phase (all skeleton
-        // frames failed), the first successful paint clears it.
-        if (loading && skeletonReady) { loading.remove(); loading = null; }
-      }
-
-      // Reduced motion: paint the first frame, show the title, skip the scrub.
-      if (reduceMotion) {
-        section.style.height = '100vh'; // fallback for pre-dvh Safari
-        section.style.height = '100dvh';
-        // No fill pass runs in this mode, so give frame 0 one retry.
-        loadFrame(0, function () {
-          if (frames[0] === null) loadFrame(0, function () { resize(); draw(0); });
-          else { resize(); draw(0); }
+      playBtn.addEventListener('click', function () {
+        if (playing) return;
+        if (ended) { glideToText(); return; }
+        if (!video.getAttribute('src')) video.setAttribute('src', SRC);
+        playing = true;
+        section.classList.add('is-playing');
+        var p = video.play();
+        if (p && p.catch) p.catch(function () {
+          // Playback refused (old browser, data saver): still take them to the text.
+          playing = false; section.classList.remove('is-playing'); finish();
         });
-        if (captions[0]) { captions[0].style.opacity = 1; captions[0].style.transform = 'none'; }
-        if (hint) hint.remove(); // nothing to scroll through in this mode
-        if (loading) loading.remove();
-        window.addEventListener('resize', function () { resize(); draw(0); });
-        return;
-      }
-
-      // Progressive load: every 8th frame first (fast scrub skeleton), then the
-      // rest with at most 6 requests in flight (settle-driven, so a phone on slow
-      // data no longer queues all 96 downloads at once). If the skeleton has not
-      // settled within 6 s (one stalled request) the fill starts anyway. 2026-09-08.
-      var skeletonReady = false;
-      var skeletonTotal = 0, skeletonLoaded = 0;
-      for (var i = 0; i < FRAME_COUNT; i += 8) skeletonTotal++;
-      var k = 0, inflight = 0;
-      function fill() {
-        while (k < FRAME_COUNT && inflight < 6) {
-          if (!frames[k]) { inflight++; loadFrame(k, function () { inflight--; fill(); }); }
-          k++;
-        }
-      }
-      function startFill() {
-        if (skeletonReady) return;
-        skeletonReady = true;
-        // Only drop the label once something actually drew: if every skeleton
-        // frame failed (dead network) "Loading…" staying up is the honest state.
-        if (loading && loadedCount > 0) { var lbl = loading; loading = null; lbl.style.transition = 'opacity 0.6s'; lbl.style.opacity = 0; setTimeout(function () { lbl.remove(); }, 700); }
-        fill();
-      }
-      for (var j = 0; j < FRAME_COUNT; j += 8) loadFrame(j, function () {
-        skeletonLoaded++;
-        if (skeletonLoaded >= skeletonTotal) startFill();
+        if (window.posthog && window.posthog.capture) { try { window.posthog.capture('walkthrough_play'); } catch (e) {} }
       });
-      setTimeout(startFill, 6000);
-
-      var scrollTick = false, progress = 0;
-      function readScroll() {
-        var rect = section.getBoundingClientRect();
-        var total = section.offsetHeight - window.innerHeight;
-        progress = total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 0;
-      }
-      window.addEventListener('scroll', function () { scrollTick = true; }, { passive: true });
-      window.addEventListener('resize', function () { resize(); readScroll(); }, { passive: true });
-
-      var current = 0; // lerped frame position for glide feel
-      var running = false;
-      function loop() {
-        if (!running) return;
-        if (scrollTick) { readScroll(); scrollTick = false; }
-        var walk = progress; // one caption since 2026-08-13: linear scrub
-        var target = walk * (FRAME_COUNT - 1);
-        current += (target - current) * 0.22;
-        if (Math.abs(target - current) < 0.5) current = target;
-        var idx = nearestLoaded(Math.round(current));
-        if (idx >= 0) draw(idx);
-
-        for (var c = 0; c < captions.length; c++) {
-          var at = parseFloat(captions[c].getAttribute('data-at'));
-          var vis = Math.min(1, Math.max(0, 1 - Math.abs(walk - at) * 12));
-          captions[c].style.opacity = vis;
-          captions[c].style.transform = 'translateY(' + (18 * (1 - vis)) + 'px)';
-        }
-        // The indicator eases in after the cover type, stays up for the walk and
-        // fades over its last stretch, as the landing section arrives beneath.
-        var intro = Math.min(1, Math.max(0, (performance.now() - t0 - 1100) / 900));
-        // The play prompt belongs to the cover: it fades as soon as the walk begins
-        // (auto or manual) and comes back if the visitor returns to the top.
-        var outro = Math.min(1, Math.max(0, walk / 0.08));
-        if (hint) {
-          var hv = intro * (1 - outro);
-          hint.style.opacity = hv;
-          var pb = document.getElementById('wt-play');
-          if (pb) pb.style.pointerEvents = hv > 0.5 ? 'auto' : 'none';
-        }
-        requestAnimationFrame(loop);
-      }
-      // The loop runs only while the hero is on screen (it idled at 60 fps under
-      // the whole page before, 2026-09-08); the observer restarts it on return.
-      function start() { if (running) return; running = true; readScroll(); requestAnimationFrame(loop); }
+      video.addEventListener('ended', finish);
+      video.addEventListener('error', function () { if (playing) finish(); });
+      // Scrolling away pauses; coming back shows the cover and the button again.
       if ('IntersectionObserver' in window) {
         new IntersectionObserver(function (entries) {
-          entries.forEach(function (en) { if (en.isIntersecting) start(); else running = false; });
+          entries.forEach(function (en) {
+            if (!en.isIntersecting && playing) { video.pause(); playing = false; section.classList.remove('is-playing'); }
+          });
         }, { threshold: 0 }).observe(section);
       }
-
-      resize();
-      readScroll();
-      start();
-
-      // ── Play: drive the scroll from here to the landing statement over ~9 s
-      // (ease-in-out), so the walkthrough plays itself and ends where the text
-      // begins (the hero is then fully off screen, which is what arms the pop-up).
-      // Any wheel, touch, key or pointer input outside the button cancels it.
-      var playBtn = document.getElementById('wt-play');
-      var landing = document.getElementById('landing');
-      var autoRaf = null, autoT0 = 0, autoFrom = 0, autoTo = 0, AUTO_MS = 9000;
-      var htmlEl = document.documentElement;
-      function stopAuto() { if (autoRaf) { cancelAnimationFrame(autoRaf); autoRaf = null; htmlEl.style.scrollBehavior = ''; } }
-      // Speed profile (Michael 2026-09-10: cubic ease-in-out started too slow and
-      // ended too fast): a short 12% acceleration, constant speed through the walk,
-      // then a longer 28% glide to a stop at the text.
-      var ACC = 0.12, DEC = 0.28, VMAX = 1 / (1 - (ACC + DEC) / 2);
-      function profile(t) {
-        if (t < ACC) return 0.5 * VMAX * t * t / ACC;
-        if (t < 1 - DEC) return 0.5 * VMAX * ACC + VMAX * (t - ACC);
-        var r = 1 - t; return 1 - 0.5 * VMAX * r * r / DEC;
-      }
-      function autoStep(now) {
-        var t = Math.min(1, (now - autoT0) / AUTO_MS);
-        var e = profile(t);
-        window.scrollTo(0, autoFrom + (autoTo - autoFrom) * e);
-        scrollTick = true;
-        if (t < 1) autoRaf = requestAnimationFrame(autoStep); else stopAuto();
-      }
-      if (playBtn && landing) {
-        playBtn.addEventListener('click', function () {
-          stopAuto();
-          autoFrom = window.pageYOffset || htmlEl.scrollTop || 0;
-          autoTo = landing.getBoundingClientRect().top + autoFrom + 12; // hero fully off screen (QA 2026-09-10: 8 px short left the pop-up unarmed)
-          autoT0 = performance.now();
-          htmlEl.style.scrollBehavior = 'auto'; // input.css sets smooth; per-frame scrollTo needs instant
-          autoRaf = requestAnimationFrame(autoStep);
-          if (window.posthog && window.posthog.capture) { try { window.posthog.capture('walkthrough_play'); } catch (e) {} }
-        });
-        ['wheel', 'touchstart', 'keydown', 'pointerdown'].forEach(function (ev) {
-          window.addEventListener(ev, function (e) {
-            if (!autoRaf) return;
-            if ((ev === 'pointerdown' || ev === 'touchstart') && playBtn.contains(e.target)) return;
-            stopAuto();
-          }, { passive: true });
-        });
-      }
     })(); } catch (err) {
-      // A hero failure must never leave 400vh of black: one screen, cover frame as a background.
-      var wtSec = document.getElementById('walkthrough'), wtCan = document.getElementById('wt-canvas'), wtLoad = document.getElementById('wt-loading');
-      if (wtSec) wtSec.style.height = '100vh';
-      if (wtCan) wtCan.style.background = 'url(assets/walkthrough/gandarinha/f_001.jpg) center / cover no-repeat';
-      if (wtLoad) wtLoad.remove();
+      // A hero failure must never hide the page: the cover still is plain markup and stays.
+      var wtBtn = document.getElementById('wt-play'); if (wtBtn) wtBtn.style.display = 'none';
     }
 
     // ── Gallery lightbox: native <dialog>, arrows + keyboard, scroll lock ────
