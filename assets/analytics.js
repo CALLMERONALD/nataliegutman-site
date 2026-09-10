@@ -19,7 +19,8 @@
   var POSTHOG_KEY = 'phc_pyHUKYxYFnWqQ2QQN8gdxNd2ghzzuMMijiE5DecVaHze'; // project token (public by design), PostHog Cloud EU project 269748
   var POSTHOG_HOST = 'https://eu.i.posthog.com';
   var CONSENT_KEY = 'natalie_analytics_consent';
-  var local = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+  // localhost and private LAN addresses (phone previews of the dev server) never count.
+  var local = /^(localhost|127\.0\.0\.1|10\.\d+\.\d+\.\d+|192\.168\.\d+\.\d+|172\.(1[6-9]|2\d|3[01])\.\d+\.\d+)$/.test(location.hostname);
   var preview = local && /nl-consent-preview/.test(location.search); // ?nl-consent-preview shows the banner on localhost, loads nothing
   if (!POSTHOG_KEY && !preview) return;
   if (local && !preview) return; // never count QA sessions
