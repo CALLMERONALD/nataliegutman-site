@@ -94,6 +94,19 @@
     #wt-video { opacity: 0; transition: opacity .6s ease; }
     #walkthrough.is-playing #wt-video { opacity: 1; }
     #walkthrough.is-playing .wt-caption, #walkthrough.is-playing #wt-hint { opacity: 0 !important; transition: opacity .8s ease; pointer-events: none; }
+    /* AI disclosure (counsel 2026-09-10, AI Act art. 50(4)/(5): at first exposure). Michael 2026-09-11: small, bottom left. */
+    #wt-ai-note { position: absolute; left: 1.5rem; bottom: max(1rem, env(safe-area-inset-bottom)); z-index: 5; max-width: min(70vw, 26rem); margin: 0;
+      font-size: .6875rem; line-height: 1.5; letter-spacing: .06em; color: rgba(255,255,255,.78); text-shadow: 0 1px 3px rgba(0,0,0,.45); pointer-events: none; }
+    @media (min-width: 1024px) { #wt-ai-note { left: 2.5rem; bottom: 1.5rem; } }
+    #wt-sound { position: absolute; right: 1.5rem; bottom: max(1rem, env(safe-area-inset-bottom)); z-index: 5; width: 2.75rem; height: 2.75rem;
+      display: flex; align-items: center; justify-content: center; padding: 0; border: 1px solid rgba(255,255,255,.55); border-radius: 50%;
+      background: rgba(12,12,14,.28); color: #fff; cursor: pointer; opacity: 0; pointer-events: none; transition: opacity .6s ease; }
+    #walkthrough.is-playing #wt-sound { opacity: 1; pointer-events: auto; }
+    #wt-sound svg { width: 1.15rem; height: 1.15rem; }
+    #wt-sound .off, #wt-sound[aria-pressed="true"] .on { display: none; }
+    #wt-sound[aria-pressed="true"] .off { display: block; }
+    #wt-sound:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+    @media (min-width: 1024px) { #wt-sound { right: 2.5rem; bottom: 1.25rem; } }
     #wt-fade { position: absolute; inset: 0; z-index: 6; background: #FAF9F6; opacity: 0; pointer-events: none; transition: opacity .9s ease; }
     @keyframes wtSettle { from { transform: scale(1.07); } to { transform: none; } }
     /* Scroll indicator: text + pulsing ring with a nudging arrow, held for the
@@ -450,7 +463,7 @@
 
   <!-- ============== HERO: the walkthrough as a video (Michael 2026-09-10) ==============
        One screen tall. The cover still (f_001, portrait crop on phones) carries the
-       title; the Play button starts an inline, muted video of the walk (drone
+       title; the Play button starts an inline video of the walk, with music (drone
        descent, AI bridge to the door, in through the house, AI bridge out to the
        pool: the same four segments the scroll-scrubbed frames used, now at full
        frame rate, 1.5x, ~13 s). Nothing downloads until Play. When it ends the
@@ -461,7 +474,7 @@
       <source media="(max-width: 500px) and (orientation: portrait)" srcset="assets/walkthrough/gandarinha-p/f_001.jpg" />
       <img id="wt-cover" src="assets/walkthrough/gandarinha/f_001.jpg" alt="Aerial view of Villa Gandarinha above the Cascais coastline" class="absolute inset-0 w-full h-full object-cover" width="1920" height="1080" fetchpriority="high" />
     </picture>
-    <video id="wt-video" class="absolute inset-0 w-full h-full object-cover" playsinline muted preload="none" aria-label="Walkthrough of the Gandarinha Estate"></video>
+    <video id="wt-video" class="absolute inset-0 w-full h-full object-cover" playsinline preload="none" aria-label="Walkthrough of the Gandarinha Estate"></video>
     <div class="absolute inset-0 bg-gradient-to-t from-ink/75 via-ink/25 to-ink/40 pointer-events-none"></div>
 
     <!-- Minimal header over the hero: the logo only (pass 6: the "Private viewing" link is gone) -->
@@ -489,13 +502,18 @@
         <span class="wt-ring" aria-hidden="true"><svg class="wt-play-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg></span>
       </button>
     </div>
+    <!-- AI disclosure, restored 2026-09-11 (Michael's go on counsel's 2026-09-10 must-fix:
+         AI Act art. 50(4)/(5) applies since 2026-08-02 and wants it at first exposure).
+         Visible on the cover and while the film plays; the footer carries the long form.
+         Do not remove either. -->
+    <p id="wt-ai-note">Drone footage and photographs, with AI&#8209;generated transitions</p>
+    <!-- Music toggle (Michael 2026-09-11: the walk has welcoming music). Shown only while playing. -->
+    <button type="button" id="wt-sound" aria-pressed="false" aria-label="Mute the music">
+      <svg class="on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6"/><path d="M18 6.5a7.5 7.5 0 0 1 0 11"/></svg>
+      <svg class="off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M16 9.5l5 5M21 9.5l-5 5"/></svg>
+    </button>
     <!-- Ivory dissolve at the end of the walk -->
     <div id="wt-fade" aria-hidden="true"></div>
-    <!-- NOTE 2026-08-04: the visible AI-walkthrough disclosure was REMOVED at Michael's
-         explicit instruction (twice). The remaining disclosure is the footer sentence only.
-         Counsel's position (2026-08-04) was that EU AI Act art. 50(4) wants the disclosure
-         "clear and distinguishable, at first exposure" — a footer line may not satisfy that.
-         Do not re-add without asking him; do not delete the footer sentence either. -->
   </section>
 
   <!-- ============== LANDING STATEMENT (Natalie 2026-09-01, pass 6) ==============
@@ -933,7 +951,9 @@
       <p class="text-xs text-faint leading-relaxed max-w-3xl mt-10 pt-8 border-t border-hairline">
         All listing details, measurements and availability are indicative, provided in good faith
         and subject to change or prior sale. They do not form part of any offer or contract, and should be
-        independently verified before you commit to a purchase. Energy performance class is stated as
+        independently verified before you commit to a purchase. The walkthrough film combines drone footage
+        and photographs of the estate with AI-generated transitions; it is an illustration of the property,
+        not a survey of it. Energy performance class is stated as
         required by Decreto-Lei n.º 101-D/2020. Property mediation is provided through eXp Realty,
         a licensed brokerage (AMI 18470).
       </p>
@@ -1173,7 +1193,16 @@
       var playBtn = document.getElementById('wt-play');
       var fade = document.getElementById('wt-fade');
       var landing = document.getElementById('landing');
+      var soundBtn = document.getElementById('wt-sound');
       if (!section || !video || !playBtn) return;
+      // Music (2026-09-11): on by default, since Play is a tap; the toggle keeps the
+      // visitor's choice for the rest of the visit.
+      var muted = false;
+      function applySound() {
+        video.muted = muted;
+        if (soundBtn) soundBtn.setAttribute('aria-pressed', muted ? 'true' : 'false');
+      }
+      if (soundBtn) soundBtn.addEventListener('click', function () { muted = !muted; applySound(); });
       var portrait = window.innerHeight > window.innerWidth && window.innerWidth <= 500;
       var SRC = portrait ? 'assets/gandarinha-walkthrough-portrait.mp4' : 'assets/gandarinha-walkthrough-landscape.mp4';
       var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1220,10 +1249,21 @@
         if (!video.getAttribute('src')) video.setAttribute('src', SRC);
         playing = true;
         section.classList.add('is-playing');
-        var p = video.play();
-        if (p && p.catch) p.catch(function () {
+        applySound();
+        function refused() {
           // Playback refused (old browser, data saver): still take them to the text.
           playing = false; section.classList.remove('is-playing'); finish();
+        }
+        var p = video.play();
+        if (p && p.catch) p.catch(function () {
+          // Sound refused by the browser's autoplay policy: play silently rather than skip the walk.
+          if (!video.muted) {
+            muted = true; applySound();
+            var p2 = video.play();
+            if (p2 && p2.catch) p2.catch(refused);
+            return;
+          }
+          refused();
         });
         if (window.posthog && window.posthog.capture) { try { window.posthog.capture('walkthrough_play'); } catch (e) {} }
       });
