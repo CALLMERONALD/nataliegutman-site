@@ -145,9 +145,11 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
     }
   }
 
+  var sessionEpoch = 0; // bumped on every clear so a late refresh cannot restore a signed-out session (Astra 2026-09-14)
   function clearSession() {
     session = null;
     refreshInFlight = null;
+    sessionEpoch += 1;
     try {
       sessionStorage.removeItem(SESSION_KEY);
     } catch (error) {}
@@ -216,11 +218,10 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
   }
 
   async function rejectWrongAccount(accessToken) {
-    try {
-      await postLogout(accessToken);
-    } catch (error) {}
     clearSession();
     showLogin('This account has no access');
+    // Best-effort server sign-out; never keeps the login form disabled (Astra 2026-09-14).
+    try { postLogout(accessToken).catch(function () {}); } catch (error) {}
   }
 
   function refreshSession() {
@@ -232,7 +233,9 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
     }
 
     var refreshToken = session.refresh_token;
+    var epoch = sessionEpoch;
     refreshInFlight = authRequest('?grant_type=refresh_token', { refresh_token: refreshToken }).then(async function (data) {
+      if (epoch !== sessionEpoch) throw requestError('Signed out while the session was refreshing.', 401, false, true);
       var pair = tokenPairFromResponse(data);
       if (!tokenBelongsToNatalie(pair.access_token)) {
         await rejectWrongAccount(pair.access_token);
@@ -493,8 +496,11 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
       if (!error.ambiguous) return { outcome: 'failed', error: error };
       try {
         var row = await getProperty(id);
-        if (operation === 'create') return row ? { outcome: 'applied' } : { outcome: 'failed', error: error };
-        if (operation === 'edit') return row && valuesMatch(row, values) ? { outcome: 'applied' } : { outcome: 'failed', error: error };
+        // A write that was sent but not acknowledged may still land after this read:
+        // "not there yet" is unknown, not failed, so uploaded photos are never deleted
+        // from under a save that then commits (Astra 2026-09-14).
+        if (operation === 'create') return row ? { outcome: 'applied' } : { outcome: 'unknown', error: error };
+        if (operation === 'edit') return row && valuesMatch(row, values) ? { outcome: 'applied' } : { outcome: 'unknown', error: error };
         return row ? { outcome: 'failed', error: error } : { outcome: 'applied' };
       } catch (reconciliationError) {
         return { outcome: 'unknown', error: reconciliationError };

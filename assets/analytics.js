@@ -61,16 +61,14 @@
         autocapture: true,
         disable_surveys: true,
         cookie_expiration: 182, // days; matches the six-month re-ask (live check 2026-09-08 showed PostHog's 365 default)
-        // Before Accept (and after Decline) only page views, web vitals and JS errors
-        // leave the browser: click autocapture, heatmaps, dead and rage clicks are
-        // dropped so the pre-consent bucket stays "counting visits" (live check 2026-09-08).
+        // Before Accept (and after Decline) only the counting set leaves the browser:
+        // page views, page leaves, JS errors and the walkthrough Play count (counsel
+        // 2026-09-10). Everything else, web vitals included, waits for Accept.
         before_send: function (ev) {
           if (!ev) return ev;
           if (getChoice() !== 'yes') {
-            if (/^\$(autocapture|\$heatmap|dead_click|rageclick)$/.test(ev.event)) return null;
-            // Counting only: keep the path, drop query strings and fragments (Astra 2026-09-10).
-            var props = ev.properties || {}, k;
-            for (k in props) if (/url|referrer/i.test(k) && typeof props[k] === 'string') props[k] = props[k].replace(/[?#].*$/, '');
+            if (!/^(\$pageview|\$pageleave|\$exception|walkthrough_play)$/.test(ev.event)) return null;
+            scrub(ev.properties);
           }
           return ev;
         },
@@ -85,6 +83,21 @@
       });
     };
     document.head.appendChild(s);
+  }
+  // Pre-consent hygiene: URL-shaped fields lose query strings and fragments, and
+  // anything that looks like an email anywhere in the payload (an exception message,
+  // a path) is blanked (Astra 2026-09-10 and 2026-09-14).
+  function scrub(obj, depth) {
+    depth = depth || 0;
+    if (!obj || typeof obj !== 'object' || depth > 6) return;
+    var k, v;
+    for (k in obj) {
+      v = obj[k];
+      if (typeof v === 'string') {
+        if (/url|referrer/i.test(k)) v = v.replace(/[?#].*$/, '');
+        obj[k] = v.replace(/[^\s@"'<>()]+@[^\s@"'<>()]+\.[a-z]{2,}/gi, '[email]');
+      } else if (v && typeof v === 'object') scrub(v, depth + 1);
+    }
   }
   var pageviewSent = false;
   function pageview(p) { if (pageviewSent) return; pageviewSent = true; p.capture('$pageview'); }
@@ -142,7 +155,13 @@
     if (!link || document.getElementById('privacy-choices')) return;
     var li = link.parentNode, item = li.cloneNode(false);
     var a = document.createElement('a'); a.id = 'privacy-choices'; a.href = '#'; a.className = link.className; a.textContent = 'Privacy choices';
-    a.addEventListener('click', function (ev) { ev.preventDefault(); clearChoice(); showBanner(); });
+    a.addEventListener('click', function (ev) {
+      ev.preventDefault(); clearChoice();
+      // Back to counting mode until a new choice is made (Astra 2026-09-14: the SDK
+      // otherwise stayed opted in, recording included).
+      withPosthog(function (p) { try { if (p.stopSessionRecording) p.stopSessionRecording(); p.opt_out_capturing(); } catch (e) {} });
+      showBanner();
+    });
     item.appendChild(a); li.parentNode.insertBefore(item, li.nextSibling);
   }
 

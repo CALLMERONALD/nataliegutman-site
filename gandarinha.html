@@ -93,15 +93,15 @@
     #wt-cover { transform-origin: center; animation: wtSettle 3.4s cubic-bezier(0.16, 1, 0.3, 1) both; }
     #wt-video { opacity: 0; transition: opacity .6s ease; }
     #walkthrough.is-playing #wt-video { opacity: 1; }
-    #walkthrough.is-playing .wt-caption, #walkthrough.is-playing #wt-hint { opacity: 0 !important; transition: opacity .8s ease; pointer-events: none; }
+    #walkthrough.is-playing .wt-caption, #walkthrough.is-playing #wt-hint { opacity: 0 !important; visibility: hidden; transition: opacity .8s ease, visibility 0s linear .8s; pointer-events: none; }
     /* AI disclosure (counsel 2026-09-10, AI Act art. 50(4)/(5): at first exposure). Michael 2026-09-11: small, bottom left. */
     #wt-ai-note { position: absolute; left: 1.5rem; bottom: max(1rem, env(safe-area-inset-bottom)); z-index: 5; max-width: min(70vw, 26rem); margin: 0;
       font-size: .6875rem; line-height: 1.5; letter-spacing: .06em; color: rgba(255,255,255,.78); text-shadow: 0 1px 3px rgba(0,0,0,.45); pointer-events: none; }
     @media (min-width: 1024px) { #wt-ai-note { left: 2.5rem; bottom: 1.5rem; } }
     #wt-sound { position: absolute; right: 1.5rem; bottom: max(1rem, env(safe-area-inset-bottom)); z-index: 5; width: 2.75rem; height: 2.75rem;
       display: flex; align-items: center; justify-content: center; padding: 0; border: 1px solid rgba(255,255,255,.55); border-radius: 50%;
-      background: rgba(12,12,14,.28); color: #fff; cursor: pointer; opacity: 0; pointer-events: none; transition: opacity .6s ease; }
-    #walkthrough.is-playing #wt-sound { opacity: 1; pointer-events: auto; }
+      background: rgba(12,12,14,.28); color: #fff; cursor: pointer; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .6s ease, visibility 0s linear .6s; }
+    #walkthrough.is-playing #wt-sound { opacity: 1; visibility: visible; pointer-events: auto; transition: opacity .6s ease, visibility 0s; }
     #wt-sound svg { width: 1.15rem; height: 1.15rem; }
     #wt-sound .off, #wt-sound[aria-pressed="true"] .on { display: none; }
     #wt-sound[aria-pressed="true"] .off { display: block; }
@@ -502,6 +502,7 @@
         <span class="wt-ring" aria-hidden="true"><svg class="wt-play-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg></span>
       </button>
     </div>
+    <noscript><style>#wt-hint { display: none; }</style></noscript>
     <!-- AI disclosure, restored 2026-09-11 (Michael's go on counsel's 2026-09-10 must-fix:
          AI Act art. 50(4)/(5) applies since 2026-08-02 and wants it at first exposure).
          Visible on the cover and while the film plays; the footer carries the long form.
@@ -1211,27 +1212,32 @@
       function glideToText(watched) {
         if (!landing) return;
         // 2026-09-10 (Michael): reset once, on scrollend or the fallback timeout.
-        var reset = false, timer;
-        function landed() {
-          if (reset) return;
-          reset = true;
+        // 2026-09-14 (Astra): a touch mid-glide fires scrollend early, so the hero is
+        // reset either way but the gate is told only when the page really arrived;
+        // an interrupted glide is left to the hero-exit timer.
+        var settled = false, timer, still = 0;
+        var top = landing.getBoundingClientRect().top + (window.pageYOffset || 0) + 12; // hero fully off screen
+        function arrived() { return Math.abs((window.pageYOffset || 0) - top) < 2; }
+        function settle() {
+          if (settled) return;
+          settled = true;
           clearTimeout(timer);
-          document.removeEventListener('scrollend', landed);
+          document.removeEventListener('scrollend', settle);
           if (fade) fade.style.opacity = '0';
           section.classList.remove('is-playing');
           try { video.currentTime = 0; } catch (e) {}
           ended = false; playing = false;
-          if (watched) document.dispatchEvent(new CustomEvent('gandarinha:walk-landed'));
+          if (watched && arrived()) document.dispatchEvent(new CustomEvent('gandarinha:walk-landed'));
         }
-        var top = landing.getBoundingClientRect().top + (window.pageYOffset || 0) + 12; // hero fully off screen
-        if ('onscrollend' in document) document.addEventListener('scrollend', landed);
+        if ('onscrollend' in document) document.addEventListener('scrollend', settle);
         // Fallback for browsers without scrollend (Safari): poll until the glide has
-        // arrived (or stopped moving), 2.5 s cap, so the gate never pins a half-scrolled page.
+        // arrived, or has not moved for 300 ms, 2.5 s cap.
         var t0 = Date.now(), lastY = -1;
         function poll() {
-          if (reset) return;
+          if (settled) return;
           var y = window.pageYOffset || 0;
-          if (Math.abs(y - top) < 2 || (y === lastY && Date.now() - t0 > 400) || Date.now() - t0 > 2500) { landed(); return; }
+          still = (y === lastY) ? still + 1 : 0;
+          if (arrived() || still >= 3 || Date.now() - t0 > 2500) { settle(); return; }
           lastY = y; timer = setTimeout(poll, 100);
         }
         timer = setTimeout(poll, 300);
@@ -1256,11 +1262,14 @@
         }
         var p = video.play();
         if (p && p.catch) p.catch(function () {
+          // Scrolled away while play() was still pending: the observer already paused
+          // and restored the cover, nothing to retry (Astra 2026-09-14).
+          if (!playing) return;
           // Sound refused by the browser's autoplay policy: play silently rather than skip the walk.
           if (!video.muted) {
             muted = true; applySound();
             var p2 = video.play();
-            if (p2 && p2.catch) p2.catch(refused);
+            if (p2 && p2.catch) p2.catch(function () { if (playing) refused(); });
             return;
           }
           refused();
@@ -1268,6 +1277,11 @@
         if (window.posthog && window.posthog.capture) { try { window.posthog.capture('walkthrough_play'); } catch (e) {} }
       });
       video.addEventListener('ended', function () { finish(true); });
+      // The browser paused us (iOS background, screen lock): show the cover and Play
+      // again so the visitor can resume; our own pauses have cleared `playing` first.
+      video.addEventListener('pause', function () {
+        if (playing && !ended && !video.ended) { playing = false; section.classList.remove('is-playing'); }
+      });
       video.addEventListener('error', function () { if (playing) finish(); });
       // Scrolling away pauses; coming back shows the cover and the button again.
       if ('IntersectionObserver' in window) {
