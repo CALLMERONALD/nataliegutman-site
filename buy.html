@@ -632,6 +632,7 @@
         } catch (err) {}
 
         if (SHEETS_URL) {
+          window.siteTrack && window.siteTrack('form_submitted', { form: 'guide' }); // count only, no field values (Michael 2026-09-16)
           fetch(SHEETS_URL, {
             method: 'POST', keepalive: true,
             mode: 'no-cors',
@@ -660,6 +661,7 @@
         }
 
         if (SHEETS_URL) {
+          window.siteTrack && window.siteTrack('form_submitted', { form: 'contact' }); // count only, no field values (Michael 2026-09-16)
           fetch(SHEETS_URL, {
             method: 'POST', keepalive: true,
             mode: 'no-cors',

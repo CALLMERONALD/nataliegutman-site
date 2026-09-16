@@ -453,6 +453,7 @@
         if (window.SHEETS_URL) {
           var body = 'type=gate&property=' + encodeURIComponent('The Gandarinha Estate') + '&email=' + encodeURIComponent(email);
           try {
+            window.siteTrack && window.siteTrack('gate_submitted'); // count only, no field values (Michael 2026-09-16)
             fetch(window.SHEETS_URL, { method: 'POST', keepalive: true, mode: 'no-cors', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body }).catch(function () {});
           } catch (e) {}
         }
@@ -1022,6 +1023,7 @@
           return;
         }
 
+        window.siteTrack && window.siteTrack('form_submitted', { form: 'viewing' }); // count only, no field values (Michael 2026-09-16)
         fetch(SHEETS_URL, {
           method: 'POST', keepalive: true,
           mode: 'no-cors',

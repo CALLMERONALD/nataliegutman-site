@@ -1,92 +1,52 @@
 /* ────────────────────────────────────────────────────────────────────────────
- * ANALYTICS + CONSENT: PostHog Cloud EU (Michael's decision 2026-09-08, banner path).
+ * ANALYTICS: PostHog Cloud EU, cookieless counting only (Michael 2026-09-15:
+ * "we don't need session replays anymore ... so that we won't need a cookies
+ * tab thing").
  *
- * Contract (counsel 2026-09-08):
- *  - Before any choice, and after "Decline": cookieless counting only
- *    (cookieless_mode 'on_reject' + opt_out_capturing = PostHog's server-side
- *    daily hash; nothing written to cookies, localStorage or sessionStorage).
- *  - After "Accept": PostHog may store its cookie/localStorage items and session
- *    replay runs with every input masked and every <form> blocked (ph-no-capture).
- *  - The choice itself is the ONE item this file stores: localStorage
- *    natalie_analytics_consent = 'yes|<ms>' | 'no|<ms>' (strictly necessary to
- *    honour it; asked again after six months). PostHog adds its own __ph_opt_in_out_ item.
- *  - Do Not Track / Global Privacy Control = treated as "Decline", no banner.
- *  - "Privacy choices" link (injected next to the footer Privacy link) reopens the banner.
- *  - Project settings that must be ON in PostHog: cookieless server hash, discard client IP.
- *  - Empty POSTHOG_KEY = nothing loads, no banner, no requests.
+ * What this does:
+ *  - No banner, no session replay, no cookies, nothing written to the device.
+ *    PostHog runs in cookieless mode: its server turns IP + browser + date into a
+ *    code that rotates daily and cannot be reversed (project 269748: cookieless
+ *    server hash mode ON, IP discarded, replay / heatmaps / autocapture /
+ *    web vitals OFF at project level since 2026-09-15).
+ *  - What leaves the browser, and nothing else: $pageview, $pageleave,
+ *    $exception (JS errors), walkthrough_play (the Play tap on the private
+ *    listing), gate_submitted (the email pop-up, no email) and form_submitted
+ *    (form name only, never the contents; Michael 2026-09-16). Query strings,
+ *    fragments and anything email-shaped are stripped.
+ *  - Do Not Track / Global Privacy Control = nothing loads. localhost and LAN
+ *    previews = nothing loads. Empty POSTHOG_KEY = nothing loads.
+ *  - Legal basis: legitimate interest, art. 6(1)(f) (counsel 2026-09-08 and
+ *    2026-09-10: the counting bucket without web vitals). privacy.html s.2, 3, 5.
  * ──────────────────────────────────────────────────────────────────────────── */
 (function () {
+  // Pages call this at the moment a form is actually sent (after their own validation).
+  // Defined before every early return so callers never need to check for it; a no-op
+  // when nothing loaded (localhost, DNT, GPC).
+  window.siteTrack = function (event, props) {
+    try { if (window.posthog && window.posthog.capture) window.posthog.capture(event, props, { send_instantly: true, transport: 'sendBeacon' }); } catch (e) {}
+  };
   var POSTHOG_KEY = 'phc_pyHUKYxYFnWqQ2QQN8gdxNd2ghzzuMMijiE5DecVaHze'; // project token (public by design), PostHog Cloud EU project 269748
   var POSTHOG_HOST = 'https://eu.i.posthog.com';
-  var CONSENT_KEY = 'natalie_analytics_consent';
-  // localhost and private LAN addresses (phone previews of the dev server) never count.
+  // Visitors from the banner era (2026-09-08 to 2026-09-15) may still hold the old
+  // consent items; forget them so the device carries nothing for analytics.
+  try {
+    localStorage.removeItem('natalie_analytics_consent');
+    Object.keys(localStorage).forEach(function (k) { if (/^(__ph_opt_in_out_|ph_.*_posthog$)/.test(k)) localStorage.removeItem(k); });
+    document.cookie.split(';').forEach(function (c) {
+      var name = c.split('=')[0].trim();
+      if (/^ph_.*_posthog$/.test(name)) document.cookie = name + '=; Max-Age=0; path=/; domain=' + location.hostname.replace(/^www\./, '.');
+      if (/^ph_.*_posthog$/.test(name)) document.cookie = name + '=; Max-Age=0; path=/';
+    });
+  } catch (e) {}
   var local = /^(localhost|127\.0\.0\.1|10\.\d+\.\d+\.\d+|192\.168\.\d+\.\d+|172\.(1[6-9]|2\d|3[01])\.\d+\.\d+)$/.test(location.hostname);
-  var preview = local && /nl-consent-preview/.test(location.search); // ?nl-consent-preview shows the banner on localhost, loads nothing
-  if (!POSTHOG_KEY && !preview) return;
-  if (local && !preview) return; // never count QA sessions
-
+  if (!POSTHOG_KEY || local) return; // never count QA sessions
   var dnt = (navigator.doNotTrack === '1' || window.doNotTrack === '1' || navigator.globalPrivacyControl === true);
-  var SIX_MONTHS = 182 * 24 * 3600 * 1000; // counsel: ask again after six months
-  function getChoice() {
-    try {
-      var raw = localStorage.getItem(CONSENT_KEY); if (!raw) return null;
-      var parts = raw.split('|'); // "yes|<ms since epoch>"
-      if (parts.length < 2 || (Date.now() - Number(parts[1])) > SIX_MONTHS) { clearChoice(); return null; }
-      return parts[0];
-    } catch (e) { return null; }
-  }
-  function setChoice(v) { try { localStorage.setItem(CONSENT_KEY, v + '|' + Date.now()); } catch (e) {} }
-  function clearChoice() { try { localStorage.removeItem(CONSENT_KEY); } catch (e) {} }
+  if (dnt) return;
 
-  var ph = null, pending = [];
-  function withPosthog(fn) { if (ph) fn(ph); else pending.push(fn); }
-  function load() {
-    if (preview || ph || document.getElementById('ph-loader')) return;
-    var s = document.createElement('script');
-    s.id = 'ph-loader'; s.async = true; s.src = POSTHOG_HOST + '/static/array.js';
-    s.onload = function () {
-      if (!window.posthog) return;
-      window.posthog.init(POSTHOG_KEY, {
-        api_host: POSTHOG_HOST,
-        cookieless_mode: 'on_reject',
-        opt_out_capturing_by_default: true, // stays cookieless until accept()
-        person_profiles: 'never',
-        respect_dnt: true,
-        // The automatic pageview fires before the consent state is applied and is
-        // dropped while consent is pending (live data 2026-09-09: web vitals landed,
-        // pageviews did not). Sent by hand below once the state is set.
-        capture_pageview: false,
-        capture_pageleave: true,
-        capture_exceptions: true,
-        autocapture: true,
-        disable_surveys: true,
-        cookie_expiration: 182, // days; matches the six-month re-ask (live check 2026-09-08 showed PostHog's 365 default)
-        // Before Accept (and after Decline) only the counting set leaves the browser:
-        // page views, page leaves, JS errors and the walkthrough Play count (counsel
-        // 2026-09-10). Everything else, web vitals included, waits for Accept.
-        before_send: function (ev) {
-          if (!ev) return ev;
-          if (getChoice() !== 'yes') {
-            if (!/^(\$pageview|\$pageleave|\$exception|walkthrough_play)$/.test(ev.event)) return null;
-            scrub(ev.properties);
-          }
-          return ev;
-        },
-        session_recording: {
-          maskAllInputs: true,
-          blockSelector: 'form, input, textarea, select',
-          maskTextSelector: '[data-ph-mask]',
-          recordHeaders: false,   // counsel: form POST bodies carry name/email/phone
-          recordBody: false
-        },
-        loaded: function (p) { ph = p; pending.forEach(function (fn) { fn(p); }); pending = []; }
-      });
-    };
-    document.head.appendChild(s);
-  }
-  // Pre-consent hygiene: URL-shaped fields lose query strings and fragments, and
-  // anything that looks like an email anywhere in the payload (an exception message,
-  // a path) is blanked (Astra 2026-09-10 and 2026-09-14).
+  // Payload hygiene: URL-shaped fields lose query strings and fragments, and anything
+  // that looks like an email anywhere in the payload (an exception message, a path)
+  // is blanked (Astra 2026-09-10 and 2026-09-14).
   function scrub(obj, depth) {
     depth = depth || 0;
     if (!obj || typeof obj !== 'object' || depth > 6) return;
@@ -99,99 +59,39 @@
       } else if (v && typeof v === 'object') scrub(v, depth + 1);
     }
   }
-  var pageviewSent = false;
-  function pageview(p) { if (pageviewSent) return; pageviewSent = true; p.capture('$pageview'); }
-  function accept() { setChoice('yes'); load(); withPosthog(function (p) { p.opt_in_capturing({ captureEventName: false }); if (p.startSessionRecording) p.startSessionRecording(); pageview(p); }); }
-  function decline() { setChoice('no'); load(); withPosthog(function (p) { p.opt_out_capturing(); pageview(p); }); }
-  function countOnly() { load(); withPosthog(function (p) { p.opt_out_capturing(); pageview(p); }); }
 
-  /* ── Banner, styled like the site: ivory card, hairline, Cormorant capitals,
-        Montserrat body, two equal buttons (no dark patterns). ── */
-  var css = ''
-    + '#nl-consent{position:fixed;left:1rem;right:1rem;bottom:1rem;z-index:45;display:flex;justify-content:center;pointer-events:none}'
-    + '#nl-consent .c{pointer-events:auto;width:100%;max-width:34rem;background:#FDFBF7;border:1px solid #E6E3DD;box-shadow:0 18px 50px rgba(12,12,14,.16);padding:1.35rem 1.5rem 1.25rem;'
-    + 'font-family:"Montserrat Variable",Montserrat,ui-sans-serif,system-ui,sans-serif;color:#5C5C5C;font-size:.8125rem;line-height:1.65;'
-    + 'transform:translateY(12px);opacity:0;transition:transform .6s cubic-bezier(.16,1,.3,1),opacity .5s ease}'
-    + '#nl-consent.on .c{transform:none;opacity:1}'
-    + '#nl-consent h2{font-family:"Cormorant Garamond",ui-serif,Georgia,serif;font-weight:500;text-transform:uppercase;letter-spacing:.04em;font-size:1.25rem;line-height:1.15;color:#2C2C2C;margin:0 0 .5rem}'
-    + '#nl-consent p{margin:0 0 1rem}'
-    + '#nl-consent a{color:#2C2C2C;text-decoration:underline;text-underline-offset:2px}'
-    + '#nl-consent .b{display:flex;gap:.6rem;flex-wrap:wrap}'
-    + '#nl-consent button{flex:1 1 9rem;cursor:pointer;background:transparent;border:1px solid #2C2C2C;color:#2C2C2C;padding:.7rem 1rem;font:inherit;font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;transition:background .18s,color .18s}'
-    + '#nl-consent button:hover{background:#2C2C2C;color:#FDFBF7}'
-    + '#nl-consent button:focus-visible{outline:2px solid #2C2C2C;outline-offset:2px}'
-    + '@media (prefers-reduced-motion:reduce){#nl-consent .c{transition:none}}';
-
-  var COPY = {
-    title: 'Your privacy on this site',
-    body: 'This site counts visits without cookies. With your permission it also keeps a 30-day replay of how you move through the pages (scrolling and clicks, never what you type). Change your mind at any time.',
-    accept: 'Accept',
-    decline: 'Decline',
-    link: 'Privacy policy'
-  };
-
-  function showBanner() {
-    if (document.getElementById('nl-consent')) return;
-    var st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
-    var w = document.createElement('div'); w.id = 'nl-consent'; w.setAttribute('role', 'region'); w.setAttribute('aria-label', 'Privacy choices');
-    var c = document.createElement('div'); c.className = 'c';
-    var h = document.createElement('h2'); h.textContent = COPY.title;
-    var p = document.createElement('p'); p.textContent = COPY.body + ' ';
-    var a = document.createElement('a'); a.href = '/privacy'; a.textContent = COPY.link; p.appendChild(a); p.appendChild(document.createTextNode('.'));
-    var b = document.createElement('div'); b.className = 'b';
-    var yes = document.createElement('button'); yes.type = 'button'; yes.textContent = COPY.accept;
-    var no = document.createElement('button'); no.type = 'button'; no.textContent = COPY.decline;
-    function close() { w.classList.remove('on'); setTimeout(function () { w.remove(); }, 600); }
-    yes.addEventListener('click', function () { accept(); close(); });
-    no.addEventListener('click', function () { decline(); close(); });
-    b.appendChild(no); b.appendChild(yes);
-    c.appendChild(h); c.appendChild(p); c.appendChild(b); w.appendChild(c); document.body.appendChild(w);
-    requestAnimationFrame(function () { requestAnimationFrame(function () { w.classList.add('on'); }); });
-  }
-
-  // Footer "Privacy choices" link: forget the choice and ask again.
-  function addChoicesLink() {
-    var link = document.querySelector('footer a[href="/privacy"]');
-    if (!link || document.getElementById('privacy-choices')) return;
-    var li = link.parentNode, item = li.cloneNode(false);
-    var a = document.createElement('a'); a.id = 'privacy-choices'; a.href = '#'; a.className = link.className; a.textContent = 'Privacy choices';
-    a.addEventListener('click', function (ev) {
-      ev.preventDefault(); clearChoice();
-      // Back to counting mode until a new choice is made (Astra 2026-09-14: the SDK
-      // otherwise stayed opted in, recording included).
-      withPosthog(function (p) { try { if (p.stopSessionRecording) p.stopSessionRecording(); p.opt_out_capturing(); } catch (e) {} });
-      showBanner();
+  if (document.getElementById('ph-loader')) return;
+  var s = document.createElement('script');
+  s.id = 'ph-loader'; s.async = true; s.src = POSTHOG_HOST + '/static/array.js';
+  s.onload = function () {
+    if (!window.posthog) return;
+    window.posthog.init(POSTHOG_KEY, {
+      api_host: POSTHOG_HOST,
+      cookieless_mode: 'always',   // no cookie, no localStorage, no visitor id on the device
+      persistence: 'memory',
+      person_profiles: 'never',
+      respect_dnt: true,
+      // The automatic pageview raced the init state in the banner era (live data
+      // 2026-09-09); sent by hand from `loaded` so every counted visit has one.
+      capture_pageview: false,
+      capture_pageleave: true,
+      capture_exceptions: true,
+      autocapture: false,
+      capture_heatmaps: false,
+      capture_dead_clicks: false,
+      rageclick: false,
+      capture_performance: false,  // web vitals stay off (counsel 2026-09-10)
+      disable_session_recording: true,
+      disable_surveys: true,
+      // Belt and braces: only the counting set can leave, whatever the SDK adds later.
+      before_send: function (ev) {
+        if (!ev) return ev;
+        if (!/^(\$pageview|\$pageleave|\$exception|walkthrough_play|gate_submitted|form_submitted)$/.test(ev.event)) return null;
+        scrub(ev.properties);
+        return ev;
+      },
+      loaded: function (p) { p.capture('$pageview'); }
     });
-    item.appendChild(a); li.parentNode.insertBefore(item, li.nextSibling);
-  }
-
-  function start() {
-    addChoicesLink();
-    var choice = getChoice();
-    if (dnt || choice === 'no') { countOnly(); return; }
-    if (choice === 'yes') { accept(); return; }
-    countOnly();
-    // Pages with the scroll-driven hero (gandarinha): the card would cover the
-    // "Scroll to explore" hint, the one instruction a first visit gets. Wait until
-    // the hero has left the screen and the email pop-up (#gate) is not open.
-    var hero = document.getElementById('walkthrough'), gate = document.getElementById('gate');
-    if (!hero || !('IntersectionObserver' in window)) { showBanner(); return; }
-    // The pop-up has been passed when the page flag is '2' (returning visitor) or
-    // once #gate goes hidden -> open -> hidden in this visit.
-    function whenGatePassed(fn) {
-      var passed = false; try { passed = localStorage.getItem('gandarinha-gate-email') === '2'; } catch (e) {}
-      if (!gate || passed) { fn(); return; }
-      var opened = !gate.hidden;
-      var mo = new MutationObserver(function () {
-        if (!gate.hidden) { opened = true; return; }
-        if (opened) { mo.disconnect(); fn(); }
-      });
-      mo.observe(gate, { attributes: true, attributeFilter: ['hidden'] });
-    }
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) { if (!en.isIntersecting) { io.disconnect(); whenGatePassed(showBanner); } });
-    }, { threshold: 0 });
-    io.observe(hero);
-  }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+  };
+  document.head.appendChild(s);
 })();
