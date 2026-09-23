@@ -251,6 +251,17 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
     var returnTarget = null;
     var shareUrl = '';
     var shareRef = '';
+    // What a visitor shares is the address bar (desktop copy, iOS share sheet) or the
+    // canonical link (Chrome on Android shares that instead). Both must point at the
+    // listing while it is open, never at the page, whose preview is the portrait
+    // (Michael 2026-09-23: group-chat previews must show the property itself).
+    var listPath = window.location.pathname;
+    var canonical = document.querySelector('link[rel="canonical"]');
+    var pageCanonical = canonical ? canonical.getAttribute('href') : '';
+    function pointShareAt(path) {
+      history.replaceState(null, '', path);
+      if (canonical) canonical.setAttribute('href', window.location.origin + path);
+    }
     // The arrow buttons are static markup, so their listeners attach once here and
     // dispatch through this gallery state, which every openModal call resets.
     var gallery = { count: 0, index: 0, select: function () {} };
@@ -275,7 +286,9 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
       document.body.style.overflow = '';
       if (returnTarget && document.contains(returnTarget)) returnTarget.focus();
       returnTarget = null;
-      history.replaceState(null, '', window.location.pathname);
+      shareRef = '';
+      history.replaceState(null, '', listPath);
+      if (canonical) canonical.setAttribute('href', pageCanonical);
     });
     if (copyButton) {
       copyButton.addEventListener('click', function () {
@@ -405,16 +418,16 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
       amenitiesSection.hidden = propertyAmenities.length === 0;
 
       enquiry.href = '/contact?property=' + encodeURIComponent(String(property.id || ''));
-      shareUrl = propertyUrl(property);
+      shareUrl = propertyUrl(property, listPath);
       shareRef = propertyRef(property);
-      history.replaceState(null, '', shareUrl);
+      pointShareAt(shareUrl);
       // Prefer the pre-rendered share page /p/<ref> (rich link preview) when it exists;
       // otherwise the always-valid ?ref= link stays (listings published since the last
       // share-pages build, off-market). Resolved on open, not on click, so the clipboard
       // write below still happens inside the user gesture (Safari requires that).
       (function (ref) {
         fetch('/p/' + ref, { method: 'HEAD' }).then(function (response) {
-          if (response.ok && shareRef === ref) shareUrl = '/p/' + ref;
+          if (response.ok && shareRef === ref && modal.open) { shareUrl = '/p/' + ref; pointShareAt(shareUrl); }
         }).catch(function () {});
       })(shareRef);
       returnTarget = originButton;

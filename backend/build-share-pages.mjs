@@ -22,7 +22,12 @@ const SUPABASE_URL = process.env.SUPABASE_URL || 'https://supabase.vandalesoluti
 // Public anon key (same one shipped in assets/portfolio.js); RLS is the boundary.
 const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlzcyI6InN1cGFiYXNlIiwiaWF0IjoxNzgxNTcyODc0LCJleHAiOjE5MzkyNTI4NzR9.F676ikQc-ocleC7cDjwiLB9N_YaUmOyVj2NOeR7o2VQ';
 const SITE = 'https://nataliegutman.com';
-const PHOTO_BASE_URL = SUPABASE_URL + '/storage/v1/object/public/natalie-properties/';
+// Preview image = the listing's cover photo through the Storage image transform, cropped
+// to 1200x630 (the large-card size WhatsApp/Facebook expect) and kept well under
+// WhatsApp's ~300 KB thumbnail limit; format=origin forces JPEG, because the transform
+// otherwise answers WebP to crawlers that accept it (Michael 2026-09-23).
+const PREVIEW_BASE_URL = SUPABASE_URL + '/storage/v1/render/image/public/natalie-properties/';
+const PREVIEW_QUERY = '?width=1200&height=630&resize=cover&quality=75&format=origin';
 const OUT_DIR = path.join(path.dirname(path.dirname(fileURLToPath(import.meta.url))), 'p');
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 
@@ -70,7 +75,7 @@ export function render(property) {
   const url = SITE + '/p/' + ref;
   const target = '/properties?ref=' + ref;
   const cover = Array.isArray(property.photos) && typeof property.photos[0] === 'string' && property.photos[0]
-    ? PHOTO_BASE_URL + encodeURIComponent(property.photos[0])
+    ? PREVIEW_BASE_URL + encodeURIComponent(property.photos[0]) + PREVIEW_QUERY
     : SITE + '/assets/og-image.jpg';
   const title = escapeHtml(property.title);
   const description = escapeHtml(describe(property));
@@ -92,6 +97,8 @@ export function render(property) {
   <meta property="og:description" content="${description}">
   <meta property="og:url" content="${url}">
   <meta property="og:image" content="${image}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
   <meta property="og:locale" content="en_US">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="${title}">
