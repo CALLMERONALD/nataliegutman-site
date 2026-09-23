@@ -13,7 +13,7 @@ module.exports = {
         hairline: '#E6E3DD',  // hairline dividers
       },
       fontFamily: {
-        sans:    ['"Hanken Grotesk Variable"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        sans:    ['"Montserrat Variable"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
         serif:   ['"Cormorant Garamond"', 'ui-serif', 'Georgia', 'serif'],
         script:  ['"Pinyon Script"', 'ui-serif', 'cursive'],
         playfair: ['"Playfair Display Variable"', 'ui-serif', 'Georgia', 'serif'],

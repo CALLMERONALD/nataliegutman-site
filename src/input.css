@@ -94,8 +94,10 @@
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
   }
+  /* Two fonts site-wide (Natalie 2026-09-23: everything like the Prime Locations section):
+     titles and display figures in Cormorant Garamond, all other text in Montserrat. */
   body {
-    font-family: 'Hanken Grotesk Variable', ui-sans-serif, system-ui, sans-serif;
+    font-family: 'Montserrat Variable', ui-sans-serif, system-ui, sans-serif;
     color: #1A1A1A;
     background: #ffffff;
     -webkit-font-smoothing: antialiased;
@@ -107,10 +109,7 @@
     font-weight: 400;
     letter-spacing: 0.005em;
   }
-  /* Subheadings — the paragraph directly under any title */
-  h1 + p, h2 + p, h3 + p {
-    font-family: 'Montserrat Variable', ui-sans-serif, system-ui, sans-serif;
-  }
+  code { font-family: inherit; }
 }
 
 /* ── Components ───────────────────────────────────────────────────────── */
@@ -125,7 +124,7 @@
 
   /* Tracked uppercase label */
   .label {
-    font-family: 'Hanken Grotesk Variable', ui-sans-serif, system-ui, sans-serif;
+    font-family: 'Montserrat Variable', ui-sans-serif, system-ui, sans-serif;
     font-size: 0.6875rem;
     text-transform: uppercase;
     letter-spacing: 0.22em;
@@ -144,7 +143,7 @@
 
   /* Small caps "discover" link with arrow, like the reference's CTAs */
   .more-link {
-    font-family: 'Hanken Grotesk Variable', ui-sans-serif, system-ui, sans-serif;
+    font-family: 'Montserrat Variable', ui-sans-serif, system-ui, sans-serif;
     font-size: 0.6875rem;
     text-transform: uppercase;
     letter-spacing: 0.2em;

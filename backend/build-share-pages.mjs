@@ -164,7 +164,8 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     const html = render(sample);
     const ok = describe(sample) === 'Cascais · €1.250.000 · Energy class B- · 3 bed · 2 bath · 127 m²'
       && html.includes('<meta property="og:title" content="Villa &lt;&quot;Test&quot;&gt; &amp; co">')
-      && html.includes('og:image" content="' + PHOTO_BASE_URL + 'a%20b.jpg"')
+      && html.includes('og:image" content="' + escapeHtml(PREVIEW_BASE_URL + 'a%20b.jpg' + PREVIEW_QUERY) + '"')
+      && render({ ...sample, photos: [] }).includes('/assets/og-hero.jpg') && !render(sample).includes('og-image.jpg')
       && html.includes('location.replace("/properties?ref=11111111")')
       && !html.includes('http-equiv')
       && describe({ ...sample, status: 'sold', energy_rating: 'exempt', bedrooms: null }).startsWith('Sold · ')

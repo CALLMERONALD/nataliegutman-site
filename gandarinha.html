@@ -86,7 +86,7 @@
     /* Section headings (pass 6): one treatment everywhere, the cover title's
        own: Cormorant Garamond medium, capitals, tracked, charcoal. The quote
        block is the deliberate exception (italic, sentence case). */
-    .gx-h { font-family: 'Cormorant Garamond', ui-serif, Georgia, serif; font-weight: 500; text-transform: uppercase; letter-spacing: .04em; line-height: 1.12; color: #2C2C2C; text-wrap: balance; }
+    .gx-h { font-family: 'Cormorant Garamond', ui-serif, Georgia, serif; font-weight: 400; letter-spacing: .005em; /* Prime Locations style, Natalie 2026-09-23 (was 500 caps .04em) */ line-height: 1.12; color: #2C2C2C; text-wrap: balance; }
 
     /* ── Cinematic layer (template-owned, no external libs) ─────────────── */
     /* Hero text: staggered rise on load (above the fold, so not IO-driven). */
@@ -495,7 +495,7 @@
     <div class="absolute inset-x-0 bottom-0 z-[5] pointer-events-none">
       <div class="max-w-7xl mx-auto px-6 lg:px-10 pb-14 lg:pb-20 relative">
         <div class="wt-caption absolute inset-x-0 bottom-[46vh] text-center px-6">
-          <h1 class="font-garamond font-medium uppercase tracking-[0.04em] whitespace-nowrap text-white text-[clamp(1.5rem,7.4vw,1.75rem)] sm:text-5xl md:text-6xl lg:text-7xl leading-[1.05] rise" style="--rise-delay: 300ms;">Gandarinha Estate</h1>
+          <h1 class="font-garamond font-normal tracking-[0.005em] whitespace-nowrap text-white text-[clamp(1.9rem,9vw,2.25rem)] sm:text-5xl md:text-6xl lg:text-7xl leading-[1.05] rise" style="--rise-delay: 300ms;">Gandarinha Estate</h1>
           <p class="font-montserrat text-white/85 text-xs sm:text-sm tracking-[0.28em] uppercase mt-7 rise" style="--rise-delay: 440ms;">Gandarinha · Cascais · Portugal</p>
         </div>
       </div>
@@ -737,35 +737,35 @@
       </div>
       <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-14 reveal">
         <div class="gx-spec border-t border-accent pt-6">
-          <h3 class="label text-ink mb-3">Custom kitchens</h3>
+          <h3 class="font-garamond text-2xl leading-snug text-ink mb-3">Custom kitchens</h3>
           <p class="leading-relaxed">Bespoke luxury fitted kitchens by Leiken.</p>
         </div>
         <div class="gx-spec border-t border-accent pt-6">
-          <h3 class="label text-ink mb-3">Sanitaryware &amp; fixtures</h3>
+          <h3 class="font-garamond text-2xl leading-snug text-ink mb-3">Sanitaryware &amp; fixtures</h3>
           <p class="leading-relaxed">Designer bathrooms equipped with premium Villeroy &amp; Boch and Hansgrohe fixtures.</p>
         </div>
         <div class="gx-spec border-t border-accent pt-6">
-          <h3 class="label text-ink mb-3">Hardwood flooring</h3>
+          <h3 class="font-garamond text-2xl leading-snug text-ink mb-3">Hardwood flooring</h3>
           <p class="leading-relaxed">Solid natural oak flooring protected with a refined white varnish from the Pur Natur series.</p>
         </div>
         <div class="gx-spec border-t border-accent pt-6">
-          <h3 class="label text-ink mb-3">Tile &amp; natural stone</h3>
+          <h3 class="font-garamond text-2xl leading-snug text-ink mb-3">Tile &amp; natural stone</h3>
           <p class="leading-relaxed">High-end porcelain tiles by Porcelanosa paired with high-end marble — Dolomiti, Sochi Blanco and Liem Black — across bathrooms and feature walls.</p>
         </div>
         <div class="gx-spec border-t border-accent pt-6">
-          <h3 class="label text-ink mb-3">Climate &amp; comfort</h3>
+          <h3 class="font-garamond text-2xl leading-snug text-ink mb-3">Climate &amp; comfort</h3>
           <p class="leading-relaxed">Complete underfloor heating throughout the entire home; integrated central air conditioning and climate control.</p>
         </div>
         <div class="gx-spec border-t border-accent pt-6">
-          <h3 class="label text-ink mb-3">Advanced security</h3>
+          <h3 class="font-garamond text-2xl leading-snug text-ink mb-3">Advanced security</h3>
           <p class="leading-relaxed">Integrated indoor security sensors and window monitoring; pre-installation for external perimeter security cameras and surveillance systems.</p>
         </div>
         <div class="gx-spec border-t border-accent pt-6">
-          <h3 class="label text-ink mb-3">Vertical mobility</h3>
+          <h3 class="font-garamond text-2xl leading-snug text-ink mb-3">Vertical mobility</h3>
           <p class="leading-relaxed">A private Liftech Homelift seamlessly serving all three levels.</p>
         </div>
         <div class="gx-spec border-t border-accent pt-6">
-          <h3 class="label text-ink mb-3">Balconies &amp; glasswork</h3>
+          <h3 class="font-garamond text-2xl leading-snug text-ink mb-3">Balconies &amp; glasswork</h3>
           <p class="leading-relaxed">Double-laminated tempered glass railings (SGG Stadip Securit) for uninterrupted views. Pool lined with Niebla Turquoise mosaic tiles.</p>
         </div>
       </div>
@@ -821,15 +821,15 @@
       </div>
       <div class="grid md:grid-cols-3 gap-10 lg:gap-14 reveal">
         <div class="gx-spec border-t border-accent pt-6">
-          <h3 class="label text-ink mb-3">World-class golf</h3>
+          <h3 class="font-garamond text-2xl leading-snug text-ink mb-3">World-class golf</h3>
           <p class="leading-relaxed">Some of Portugal's finest golf courses are close by, including Quinta da Marinha and Oitavos Dunes, offering exceptional courses set among the Atlantic landscape.</p>
         </div>
         <div class="gx-spec border-t border-accent pt-6">
-          <h3 class="label text-ink mb-3">Dining &amp; culture</h3>
+          <h3 class="font-garamond text-2xl leading-snug text-ink mb-3">Dining &amp; culture</h3>
           <p class="leading-relaxed">From refined seafood and acclaimed restaurants to galleries, museums and a vibrant cultural scene, Cascais offers an effortless blend of gastronomy, art and local character.</p>
         </div>
         <div class="gx-spec border-t border-accent pt-6">
-          <h3 class="label text-ink mb-3">Life by the Atlantic</h3>
+          <h3 class="font-garamond text-2xl leading-snug text-ink mb-3">Life by the Atlantic</h3>
           <p class="leading-relaxed">The coastline is part of everyday life. Scenic cycling and walking routes, dramatic Atlantic landscapes and beaches such as Guincho are all within easy reach, offering a natural extension of the Cascais lifestyle.</p>
         </div>
       </div>
