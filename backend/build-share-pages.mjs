@@ -76,7 +76,7 @@ export function render(property) {
   const target = '/properties?ref=' + ref;
   const cover = Array.isArray(property.photos) && typeof property.photos[0] === 'string' && property.photos[0]
     ? PREVIEW_BASE_URL + encodeURIComponent(property.photos[0]) + PREVIEW_QUERY
-    : SITE + '/assets/og-image.jpg';
+    : SITE + '/assets/og-hero.jpg'; // never the portrait (unreachable today: publishing requires a photo)
   const title = escapeHtml(property.title);
   const description = escapeHtml(describe(property));
   const image = escapeHtml(cover);
