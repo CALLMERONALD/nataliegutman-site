@@ -358,6 +358,7 @@
         if (shown) return;
         shown = true;
         gate.hidden = false;
+        window.siteTrack && window.siteTrack('gate_shown');
         // Hard lock (Michael 2026-09-08): overflow:hidden alone still lets iOS Safari
         // touch-scroll the page under the overlay, so the body is pinned at the
         // current offset (position:fixed) and restored on close.
@@ -1133,7 +1134,7 @@
       }
 
       tabs.forEach(function (t) {
-        t.addEventListener('click', function () { switchLevel(t.getAttribute('data-level')); });
+        t.addEventListener('click', function () { window.siteTrack && window.siteTrack('floorplan_used', { level: t.getAttribute('data-level') }); switchLevel(t.getAttribute('data-level')); });
       });
 
       var finePointer = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
@@ -1282,7 +1283,7 @@
         });
         if (window.posthog && window.posthog.capture) { try { window.posthog.capture('walkthrough_play'); } catch (e) {} }
       });
-      video.addEventListener('ended', function () { finish(true); });
+      video.addEventListener('ended', function () { window.siteTrack && window.siteTrack('walkthrough_completed'); finish(true); });
       // The browser paused us (iOS background, screen lock): show the cover and Play
       // again so the visitor can resume; our own pauses have cleared `playing` first.
       video.addEventListener('pause', function () {
@@ -1320,6 +1321,7 @@
         t.addEventListener('click', function () {
           show(i);
           box.showModal();
+          window.siteTrack && window.siteTrack('gallery_opened');
           document.body.style.overflow = 'hidden';
         });
       });

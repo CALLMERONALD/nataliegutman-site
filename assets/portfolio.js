@@ -293,6 +293,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
     if (copyButton) {
       copyButton.addEventListener('click', function () {
         var url = window.location.origin + shareUrl;
+        window.siteTrack && window.siteTrack('property_link_copied', { ref: shareRef });
         function copied() {
           copyButton.textContent = 'Link copied';
           setTimeout(function () { copyButton.textContent = 'Copy link'; }, 2000);
@@ -302,13 +303,15 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
         else manual();
       });
     }
+    var enquiryLink = document.getElementById('property-modal-enquiry');
+    if (enquiryLink) enquiryLink.addEventListener('click', function () { window.siteTrack && window.siteTrack('property_enquiry_click', { ref: shareRef }); });
     // Back/forward-cache can restore the page with the scroll lock still applied
     // (modal was open when the user navigated away). Clear it unless the modal is open.
     window.addEventListener('pageshow', function () {
       if (!modal.open) document.body.style.overflow = '';
     });
 
-    return function openModal(property, originButton) {
+    return function openModal(property, originButton, via) {
       var photos = (Array.isArray(property.photos) ? property.photos : []).filter(function (key) {
         return typeof key === 'string' && key;
       });
@@ -421,6 +424,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
       shareUrl = propertyUrl(property, listPath);
       shareRef = propertyRef(property);
       pointShareAt(shareUrl);
+      window.siteTrack && window.siteTrack('property_viewed', { ref: shareRef, via: via || 'card' });
       // Prefer the pre-rendered share page /p/<ref> (rich link preview) when it exists;
       // otherwise the always-valid ?ref= link stays (listings published since the last
       // share-pages build, off-market). Resolved on open, not on click, so the clipboard
@@ -460,7 +464,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
       if (!ref || !dialogSupported()) return;
       var wanted = properties.filter(function (property) { return propertyRef(property) === ref; })[0];
       if (!wanted) return;
-      openModal(wanted, grid.querySelector('[data-property-id="' + wanted.id + '"] button'));
+      openModal(wanted, grid.querySelector('[data-property-id="' + wanted.id + '"] button'), 'link');
     }).catch(function (error) {
       setStateVisibility(errorState, true);
       console.error('Unable to load published property listings.', error);
