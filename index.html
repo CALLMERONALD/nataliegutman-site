@@ -157,141 +157,286 @@
 
   <main id="main">
 
-    <!-- ============== 2 · HERO (full-bleed) ============== -->
-    <!-- SAMPLE photo (AI-generated placeholder) — swap for a real coastline / signature villa -->
-    <section class="relative min-h-[100svh] flex items-center justify-center bg-ink overflow-hidden">
-      <img src="assets/photos/featured-villa.jpg" alt="A contemporary luxury villa in Portugal at dusk" class="absolute inset-0 w-full h-full object-cover" loading="eager" fetchpriority="high" />
-      <div class="absolute inset-0 bg-gradient-to-b from-ink/45 via-ink/45 to-ink/65"></div>
+    <!-- Homepage copy + order = Natalie's "Homepage – Final Implementation Guide" (2026-09-30).
+         Her em dashes became commas (no-dash rule); imagery unchanged by her instruction. -->
 
-      <div class="relative z-10 text-center text-white px-6 max-w-5xl">
-        <h1 class="text-balance font-serif text-4xl sm:text-5xl lg:text-6xl leading-[1.05] mb-5">
-          Boutique Real Estate<br />in Portugal
-        </h1>
-        <p class="label !text-white/75 mb-6">Cascais &middot; Lisbon &middot; Sintra</p>
-        <p class="font-montserrat text-white/80 text-base sm:text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
-          Representing buyers and sellers with expert guidance and total discretion.
-        </p>
-        <div class="flex flex-col sm:flex-row items-center justify-center gap-5 sm:gap-8">
-          <a href="/contact" class="more-link bg-white text-ink px-7 py-4 hover:bg-white/90 transition-colors duration-300">
-            Schedule a Private Consultation
-            <svg viewBox="0 0 24 24" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 5l7 7-7 7"/></svg>
-          </a>
-          <a href="/properties" class="more-link link-underline text-white/75 py-2 hover:text-white transition-colors duration-300">
-            Explore Services &amp; Portfolio
-            <svg viewBox="0 0 24 24" class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 13l7 7 7-7"/></svg>
-          </a>
+    <!-- ============== 1 · HERO (full-bleed) ============== -->
+    <section class="relative min-h-[100svh] flex flex-col bg-ink overflow-hidden">
+      <img src="assets/photos/featured-villa.jpg" alt="A contemporary luxury villa in Portugal at dusk" class="absolute inset-0 w-full h-full object-cover" loading="eager" fetchpriority="high" />
+      <div class="absolute inset-0 bg-gradient-to-b from-ink/45 via-ink/50 to-ink/70"></div>
+
+      <div class="relative z-10 flex-1 flex items-center justify-center pt-28 pb-10">
+        <div class="text-center text-white px-6 max-w-4xl">
+          <h1 class="text-balance font-serif text-4xl sm:text-5xl lg:text-6xl leading-[1.05] mb-5">
+            Boutique Real Estate<br />in Portugal
+          </h1>
+          <p class="label !text-white/75 mb-7">Cascais &middot; Lisbon &middot; Sintra</p>
+          <p class="text-balance text-white/90 text-lg sm:text-xl max-w-2xl mx-auto mb-5 leading-relaxed">
+            Local knowledge. Strong representation. By your side from start to finish.
+          </p>
+          <p class="text-white/75 text-sm sm:text-base max-w-2xl mx-auto mb-10 leading-relaxed">
+            From finding the right place to negotiating the right terms, coordinating the purchase and
+            helping you settle in, I stay personally by your side from our first conversation to keys in hand.
+          </p>
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-5 sm:gap-8">
+            <a href="/properties" class="more-link bg-white text-ink px-7 py-4 hover:bg-white/90 transition-colors duration-300">
+              Find Your Place
+            </a>
+            <a href="/contact" class="more-link link-underline text-white/80 py-2 hover:text-white transition-colors duration-300">
+              Talk to Natalie
+            </a>
+          </div>
         </div>
       </div>
 
-      <!-- honest badge (in place of the reference's award badges) -->
-      <div class="absolute bottom-8 left-6 lg:left-10 z-10 label text-white/70">Cascais Resident &bull; Since 2019</div>
+      <p class="relative z-10 max-w-7xl w-full mx-auto px-6 lg:px-10 pb-8 label !text-white/70">
+        <span class="block sm:inline">Living in Cascais since 2019</span><span class="hidden sm:inline" aria-hidden="true"> &middot; </span><span class="block sm:inline mt-1 sm:mt-0">Working across Cascais, Lisbon &amp; Sintra</span>
+      </p>
     </section>
 
-    <!-- ============== 3 · UNIFIED ABOUT (image + advisory introduction) ============== -->
+    <!-- ============== 2 · WHY NATALIE ============== -->
+    <section class="bg-white">
+      <div class="max-w-7xl mx-auto px-6 lg:px-10 py-20 lg:py-28">
+        <div class="max-w-3xl mx-auto text-center mb-16 reveal">
+          <h2 class="text-balance font-serif text-4xl sm:text-5xl leading-tight mb-7">More than finding the right property.</h2>
+          <div class="text-muted leading-relaxed space-y-5">
+            <p>
+              Buying or selling property in Portugal requires more than access to listings. It takes local
+              knowledge, sound judgement, strong negotiation and the right people around the transaction.
+            </p>
+            <p>My role is to bring those pieces together while making sure your interests remain at the centre of every decision.</p>
+          </div>
+        </div>
+
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-12">
+          <div class="reveal border-t border-hairline pt-7">
+            <p class="label mb-4">Local Knowledge</p>
+            <h3 class="font-serif text-2xl leading-snug mb-3">I live where I work.</h3>
+            <p class="text-sm text-muted leading-relaxed">
+              Based in Cascais since 2019, I know the areas I represent beyond what appears on a property
+              portal, from individual neighbourhoods and lifestyle to the details that can make a real
+              difference once you live here.
+            </p>
+          </div>
+          <div class="reveal border-t border-hairline pt-7" style="--reveal-delay:90ms">
+            <p class="label mb-4">Negotiation &amp; Representation</p>
+            <h3 class="font-serif text-2xl leading-snug mb-3">Your interests come first.</h3>
+            <p class="text-sm text-muted leading-relaxed">
+              My background as a professional commercial buyer taught me to assess value, identify potential
+              issues and negotiate with discipline. I am there to represent you, not simply to move a
+              transaction forward.
+            </p>
+          </div>
+          <div class="reveal border-t border-hairline pt-7" style="--reveal-delay:180ms">
+            <p class="label mb-4">Personal Service</p>
+            <h3 class="font-serif text-2xl leading-snug mb-3">One advisor, personally involved.</h3>
+            <p class="text-sm text-muted leading-relaxed">
+              Whether I’m representing you as a buyer or a seller, you work directly with me. I remain close
+              to the process, coordinate the people around the transaction and make sure you always know
+              what comes next.
+            </p>
+          </div>
+          <div class="reveal border-t border-hairline pt-7" style="--reveal-delay:270ms">
+            <p class="label mb-4">Global Reach</p>
+            <h3 class="font-serif text-2xl leading-snug mb-3">Personal service, backed by a global network.</h3>
+            <p class="text-sm text-muted leading-relaxed">
+              As part of eXp Realty, I combine the attention and accessibility of a boutique advisor with the
+              reach, resources and connections of an international real estate company.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== 3 · SELECTED PROPERTIES (featured listings, shown by portfolio.js) ============== -->
+    <section class="bg-white" id="featured-properties-section" hidden>
+      <div class="max-w-7xl mx-auto px-6 lg:px-10 pb-20 lg:pb-28">
+        <div class="text-center mb-14 reveal">
+          <h2 class="font-serif text-4xl sm:text-5xl mb-5">Selected Properties</h2>
+          <p class="text-muted leading-relaxed max-w-2xl mx-auto">Homes I currently represent across Cascais, Lisbon &amp; Sintra.</p>
+        </div>
+        <div id="featured-grid" class="grid md:grid-cols-3 gap-8"><!-- up to 3 featured cards --></div>
+        <div class="text-center mt-12">
+          <a href="/properties" class="more-link hover:text-accent transition-colors">
+            View All Properties
+            <svg viewBox="0 0 24 24" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== 4 · BUYING OR SELLING ============== -->
+    <section class="bg-surface">
+      <div class="max-w-7xl mx-auto px-6 lg:px-10 py-20 lg:py-28">
+        <h2 class="text-balance font-serif text-4xl sm:text-5xl leading-tight text-center max-w-3xl mx-auto mb-14 reveal">Whether you’re buying or selling, representation matters.</h2>
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="bg-white border border-hairline p-8 lg:p-12 flex flex-col reveal">
+            <p class="label mb-4">Buying</p>
+            <h3 class="font-serif text-3xl leading-snug mb-4">Find the right home. Buy it well.</h3>
+            <p class="text-muted leading-relaxed mb-8 flex-1">
+              Finding a property is only the beginning. I help you understand the market, identify the right
+              opportunities, assess value and negotiate the right terms, while coordinating the people and
+              steps around your purchase.
+            </p>
+            <a href="/buy" class="more-link hover:text-accent transition-colors">
+              Explore Buying
+              <svg viewBox="0 0 24 24" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+          <div class="bg-white border border-hairline p-8 lg:p-12 flex flex-col reveal" style="--reveal-delay:90ms">
+            <p class="label mb-4">Selling</p>
+            <h3 class="font-serif text-3xl leading-snug mb-4">Position it well. Represent it properly.</h3>
+            <p class="text-muted leading-relaxed mb-8 flex-1">
+              Selling well starts long before the first viewing. I work with you on positioning, pricing and
+              presentation, then personally manage enquiries, viewings and negotiations, with a clear
+              strategy and your interests at the centre of every decision.
+            </p>
+            <a href="/sell" class="more-link hover:text-accent transition-colors">
+              Explore Selling
+              <svg viewBox="0 0 24 24" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== 5 · FIND THE LIFE (Cascais / Lisbon / Sintra) ============== -->
+    <section class="bg-white">
+      <div class="max-w-7xl mx-auto px-6 lg:px-10 py-20 lg:py-28">
+        <div class="max-w-2xl mx-auto text-center mb-14 reveal">
+          <h2 class="text-balance font-serif text-4xl sm:text-5xl leading-tight mb-7">Find the life. Then find the home.</h2>
+          <div class="text-muted leading-relaxed space-y-5">
+            <p>Choosing between Cascais, Lisbon and Sintra isn’t simply about finding the right property.</p>
+            <p>
+              Each offers a completely different way of living. Before we talk about bedrooms, square metres
+              or finishes, I want to understand how you want your everyday life to feel.
+            </p>
+            <p>Once we know that, we can find the right place to call home.</p>
+          </div>
+        </div>
+
+        <!-- No area pages exist yet: the three Explore links open the portfolio (Fable 2026-09-30). -->
+        <div class="grid md:grid-cols-3 gap-10 md:gap-8">
+          <div class="reveal flex flex-col">
+            <div class="aspect-[4/3] bg-surface overflow-hidden mb-6">
+              <img src="assets/photos/cascais.jpg" alt="Cascais bay, the fishing pier and the hillside town" width="1200" height="900" class="w-full h-full object-cover" loading="lazy" />
+            </div>
+            <p class="label mb-3">Cascais</p>
+            <h3 class="font-serif text-2xl leading-snug mb-3">Ocean. Community. Everyday quality of life.</h3>
+            <div class="text-sm text-muted leading-relaxed space-y-3 mb-6 flex-1">
+              <p>
+                Mornings by the Atlantic, an international community, excellent schools and a relaxed coastal
+                lifestyle, with Lisbon still within easy reach.
+              </p>
+              <p>Cascais is for those who want life to feel a little more spacious, without feeling disconnected.</p>
+            </div>
+            <a href="/properties" class="more-link hover:text-accent transition-colors">
+              Explore Cascais
+              <svg viewBox="0 0 24 24" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+          <div class="reveal flex flex-col" style="--reveal-delay:90ms">
+            <div class="aspect-[4/3] bg-surface overflow-hidden mb-6">
+              <img src="assets/photos/lisbon.jpg" alt="The historic rooftops of Alfama, Lisbon" width="1200" height="900" class="w-full h-full object-cover" loading="lazy" />
+            </div>
+            <p class="label mb-3">Lisbon</p>
+            <h3 class="font-serif text-2xl leading-snug mb-3">Energy. Culture. City living.</h3>
+            <div class="text-sm text-muted leading-relaxed space-y-3 mb-6 flex-1">
+              <p>Historic neighbourhoods, restaurants, culture and the energy of a European capital.</p>
+              <p>
+                Lisbon offers a completely different rhythm, and choosing the right neighbourhood can change
+                the experience entirely.
+              </p>
+            </div>
+            <a href="/properties" class="more-link hover:text-accent transition-colors">
+              Explore Lisbon
+              <svg viewBox="0 0 24 24" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+          <div class="reveal flex flex-col" style="--reveal-delay:180ms">
+            <div class="aspect-[4/3] bg-surface overflow-hidden mb-6">
+              <img src="assets/photos/sintra.jpg" alt="The Pena Palace above the forested hills of Sintra" width="1200" height="900" class="w-full h-full object-cover" loading="lazy" />
+            </div>
+            <p class="label mb-3">Sintra</p>
+            <h3 class="font-serif text-2xl leading-snug mb-3">Nature. Space. Privacy.</h3>
+            <div class="text-sm text-muted leading-relaxed space-y-3 mb-6 flex-1">
+              <p>Green landscapes, character properties and room to breathe.</p>
+              <p>
+                Sintra can offer something increasingly difficult to find: privacy and space, while remaining
+                connected to both Cascais and Lisbon.
+              </p>
+            </div>
+            <a href="/properties" class="more-link hover:text-accent transition-colors">
+              Explore Sintra
+              <svg viewBox="0 0 24 24" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <p class="text-balance font-serif text-2xl sm:text-3xl text-center mt-16 lg:mt-20 reveal">The right property starts with understanding the right place.</p>
+      </div>
+    </section>
+
+    <!-- ============== 6 · SOCIAL PROOF (testimonial wording unchanged, see backend/testimonials-record.md) ============== -->
+    <section class="bg-surface">
+      <div class="max-w-3xl mx-auto px-6 py-20 lg:py-28 text-center reveal">
+        <h2 class="label mb-10">Client Experience</h2>
+        <figure>
+          <p class="font-serif text-2xl text-accent mb-5">"Saved us from a bad deal."</p>
+          <blockquote class="text-lg sm:text-xl leading-relaxed text-ink">
+            "Natalie made buying our home in Cascais feel effortless. She caught structural and
+            legal issues our lawyer missed and was always two steps ahead."
+          </blockquote>
+          <figcaption class="mt-6 label text-faint">Sarah C. · London (Acquisition in Cascais)</figcaption>
+        </figure>
+        <p class="text-balance font-serif text-2xl sm:text-3xl mt-14 pt-10 border-t border-hairline">Good representation sometimes means knowing when to walk away.</p>
+      </div>
+    </section>
+
+    <!-- ============== 7 · ABOUT NATALIE (image + introduction) ============== -->
     <section id="about" class="bg-white scroll-mt-20">
-      <div class="max-w-7xl mx-auto px-6 lg:px-10 pt-20 lg:pt-28 pb-16 lg:pb-24 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+      <div class="max-w-7xl mx-auto px-6 lg:px-10 py-20 lg:py-28 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
         <!-- Phones read the text first, the portrait follows (Michael 2026-09-01); desktop keeps portrait left. -->
         <div class="reveal order-last lg:order-first">
           <img src="assets/photos/natalie-blue.jpg" alt="Natalie Gutman, real estate agent in Cascais, Portugal"
                class="w-full h-auto aspect-[4/5] object-cover object-top" loading="lazy" />
         </div>
         <div class="reveal" style="--reveal-delay:90ms">
-          <p class="label mb-4">About</p>
-          <h2 class="font-serif text-3xl sm:text-4xl leading-snug mb-7">A Tailored Approach to Real Estate Across Cascais, Lisbon &amp; Sintra</h2>
+          <h2 class="font-serif text-3xl sm:text-4xl leading-snug mb-7">A local, by your side.</h2>
           <div class="text-muted leading-relaxed space-y-5 max-w-md">
+            <p>I’m Natalie Gutman, a real estate advisor based in Cascais, where I’ve lived since 2019.</p>
             <p>
-              Successful real estate acquisition and sale in Portugal rewards deep local integration,
-              data-driven analysis, and precise timing. Based in Cascais since 2019, I offer bespoke
-              property advisory for international clients who expect both deep market knowledge and
-              authentic personal attention.
+              Before real estate, I worked as a professional commercial buyer, a background that shaped the
+              way I work today: I ask the right questions, pay attention to the details, negotiate carefully
+              and never lose sight of whose interests I represent.
             </p>
             <p>
-              Drawing from my background as an international commercial buyer, I approach real estate
-              with a clear-eyed evaluation of value and a hard-negotiation mindset. I protect my
-              clients' interests by looking beyond aesthetics to analyze numbers, legal clarity, and
-              long-term yield.
+              I believe good real estate advice should feel personal. My clients work directly with me, and I
+              stay close to the process from our first conversation to the final signature.
             </p>
             <p>
-              Recognizing that buying or selling abroad requires absolute confidence, I provide a
-              complete end-to-end framework. I work hand-in-hand with leading legal partners, tax
-              advisors, and financial specialists to handle the complex mechanics of every
-              transaction. From initial viewings to notary signatures, I ensure a seamless, discreet,
-              and rewarding experience tailored entirely to your goals.
+              Sometimes that means finding the right opportunity. Sometimes it means negotiating harder. And
+              sometimes it means saying, “This isn’t the right property for you.”
             </p>
+            <p>For me, that’s what good representation looks like.</p>
           </div>
           <a href="/about" class="more-link mt-9 hover:text-accent transition-colors">
-            My story
+            More About Natalie
             <svg viewBox="0 0 24 24" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 5l7 7-7 7"/></svg>
           </a>
         </div>
       </div>
     </section>
 
-    <!-- ============== 4 · PRIME LOCATIONS (the Golden Triangle) ============== -->
-    <section class="bg-white">
-      <div class="max-w-7xl mx-auto px-6 lg:px-10 py-20 lg:py-28">
-        <div class="text-center mb-14 reveal">
-          <p class="label mb-4">The Golden Triangle</p>
-          <h2 class="font-serif text-4xl sm:text-5xl mb-5">Prime Locations</h2>
-          <p class="text-muted leading-relaxed max-w-2xl mx-auto">
-            Distinctive lifestyles, world-class schools, and exceptional investment potential across
-            three iconic coastal markets.
-          </p>
-        </div>
-
-        <div class="grid md:grid-cols-3 gap-8">
-          <div class="reveal">
-            <div class="aspect-[4/3] bg-surface overflow-hidden mb-5">
-              <img src="assets/photos/cascais.jpg" alt="Cascais bay, the fishing pier and the hillside town" width="1200" height="900" class="w-full h-full object-cover" loading="lazy" />
-            </div>
-            <h3 class="font-serif text-2xl mb-2">Cascais</h3>
-            <p class="text-sm text-muted leading-relaxed">Coastal elegance, premier international schools, and relaxed luxury living.</p>
-          </div>
-          <div class="reveal" style="--reveal-delay:90ms">
-            <div class="aspect-[4/3] bg-surface overflow-hidden mb-5">
-              <img src="assets/photos/lisbon.jpg" alt="The historic rooftops of Alfama, Lisbon" width="1200" height="900" class="w-full h-full object-cover" loading="lazy" />
-            </div>
-            <h3 class="font-serif text-2xl mb-2">Lisbon</h3>
-            <p class="text-sm text-muted leading-relaxed">Historic charm, vibrant cosmopolitan energy, and high-yielding urban assets.</p>
-          </div>
-          <div class="reveal" style="--reveal-delay:180ms">
-            <div class="aspect-[4/3] bg-surface overflow-hidden mb-5">
-              <img src="assets/photos/sintra.jpg" alt="The Pena Palace above the forested hills of Sintra" width="1200" height="900" class="w-full h-full object-cover" loading="lazy" />
-            </div>
-            <h3 class="font-serif text-2xl mb-2">Sintra</h3>
-            <p class="text-sm text-muted leading-relaxed">Enchanting microclimates, majestic private estates, and timeless tranquility.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============== 5 · FEATURED PROPERTIES ============== -->
-    <section class="bg-white" id="featured-properties-section" hidden>
-      <div class="max-w-7xl mx-auto px-6 lg:px-10 pb-20 lg:pb-28">
-        <div class="text-center mb-14 reveal">
-          <p class="label mb-4">Portfolio</p>
-          <h2 class="font-serif text-4xl sm:text-5xl mb-5">Featured Properties</h2>
-        </div>
-        <div id="featured-grid" class="grid md:grid-cols-3 gap-8"><!-- up to 3 featured cards --></div>
-        <div class="text-center mt-12">
-          <a href="/properties" class="more-link hover:text-accent transition-colors">
-            View all properties
-            <svg viewBox="0 0 24 24" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 5l7 7-7 7"/></svg>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============== 5 · INVESTOR & BUYER TOOLKIT (guide + calculators + valuation) ============== -->
+    <!-- ============== 8 · TOOLS & RESOURCES (guide + calculators + valuation, cards unchanged) ============== -->
     <section id="toolkit" class="bg-surface">
       <div class="max-w-7xl mx-auto px-6 lg:px-10 py-20 lg:py-28">
-        <div class="text-center mb-14 reveal">
-          <p class="label mb-4">Tools &amp; resources</p>
-          <h2 class="font-serif text-4xl sm:text-5xl mb-5">Investor &amp; Buyer Toolkit</h2>
-          <p class="text-muted leading-relaxed max-w-2xl mx-auto">
-            Real-time calculations, regulatory clarity, and market valuations, updated for 2026
-            Portuguese property laws.
-          </p>
+        <div class="max-w-2xl mx-auto text-center mb-14 reveal">
+          <h2 class="text-balance font-serif text-4xl sm:text-5xl leading-tight mb-7">Practical tools. Clearer decisions.</h2>
+          <div class="text-muted leading-relaxed space-y-5">
+            <p>Buying or selling property in Portugal comes with questions about costs, financing, taxes and returns.</p>
+            <p>I’ve brought together practical tools and guides to help you understand the numbers before making a decision.</p>
+          </div>
         </div>
 
         <div class="grid md:grid-cols-3 gap-8">
@@ -329,56 +474,35 @@
             </a>
           </div>
         </div>
-      </div>
-    </section>
 
-    <!-- ============== 6 · CLIENT STORIES & TRACK RECORD ============== -->
-    <section class="bg-white">
-      <div class="max-w-7xl mx-auto px-6 lg:px-10 py-20 lg:py-24">
-        <h2 class="font-serif text-4xl sm:text-5xl text-center mb-14 reveal">Client Stories &amp; Track Record</h2>
-        <div class="grid md:grid-cols-3 gap-10 lg:gap-16">
-          <figure class="reveal">
-            <p class="font-serif text-xl text-accent mb-4">"Saved us from a bad deal."</p>
-            <blockquote class="text-base sm:text-lg leading-relaxed text-ink">
-              "Natalie made buying our home in Cascais feel effortless. She caught structural and
-              legal issues our lawyer missed and was always two steps ahead."
-            </blockquote>
-            <figcaption class="mt-5 label text-faint">Sarah C. · London (Acquisition in Cascais)</figcaption>
-          </figure>
-          <figure class="reveal" style="--reveal-delay:90ms">
-            <p class="font-serif text-xl text-accent mb-4">"Closed the right property in 2 months."</p>
-            <blockquote class="text-base sm:text-lg leading-relaxed text-ink">
-              "I had been searching on my own for over a year with no results. Two months with
-              Natalie and we closed on the right property at a truly fair price."
-            </blockquote>
-            <figcaption class="mt-5 label text-faint">David R. · Tel Aviv (Investment Property)</figcaption>
-          </figure>
-          <figure class="reveal" style="--reveal-delay:180ms">
-            <p class="font-serif text-xl text-accent mb-4">"Unmatched market knowledge and patience."</p>
-            <blockquote class="text-base sm:text-lg leading-relaxed text-ink">
-              "Honest, deeply patient, and incredibly knowledgeable. She guided us away from
-              overpriced options until we found our dream family home."
-            </blockquote>
-            <figcaption class="mt-5 label text-faint">Anna &amp; Marc · Berlin (Home Relocation)</figcaption>
-          </figure>
+        <!-- /hub is gated behind the guide email, so "Explore" opens the open calculators page (Fable 2026-09-30). -->
+        <div class="text-center mt-12">
+          <a href="/calculators" class="more-link hover:text-accent transition-colors">
+            Explore Tools &amp; Guides
+            <svg viewBox="0 0 24 24" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </a>
         </div>
       </div>
     </section>
 
-    <!-- ============== 7 · CONTACT & PRIVATE CONSULTATION (pre-footer CTA) ============== -->
+    <!-- ============== 9 · FINAL CTA ============== -->
     <section class="bg-ink text-white">
       <div class="max-w-3xl mx-auto px-6 py-24 lg:py-32 text-center reveal">
-        <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl leading-snug mb-8">
-          Ready to Discuss Your Next Step?
+        <h2 class="text-balance font-serif text-3xl sm:text-4xl lg:text-5xl leading-snug mb-8">
+          Let’s talk about your next move.
         </h2>
-        <p class="text-white/70 leading-relaxed max-w-xl mx-auto mb-9">
-          Whether you are seeking a premier primary home, an investment asset, or positioning your
-          property for sale, let's start with a discreet, data-backed consultation.
-        </p>
+        <div class="text-white/70 leading-relaxed max-w-xl mx-auto mb-10 space-y-5">
+          <p>
+            Whether you’re looking for the right home, considering selling a property or simply trying to
+            understand your options in Portugal, it starts with a conversation.
+          </p>
+          <p>Tell me what you’re thinking. I’ll help you understand what comes next.</p>
+        </div>
         <a href="/contact" class="more-link text-white border border-white/40 px-7 py-4 hover:bg-white hover:text-ink transition-colors duration-300">
-          Schedule a Private Consultation
+          Talk to Natalie
           <svg viewBox="0 0 24 24" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 5l7 7-7 7"/></svg>
         </a>
+        <p class="label !text-white/60 mt-12">Cascais &middot; Lisbon &middot; Sintra</p>
       </div>
     </section>
 
