@@ -400,7 +400,11 @@
         document.body.style.left = '';
         document.body.style.right = '';
         document.body.style.width = '';
+        // The site scrolls smoothly (input.css html rule): restore instantly, or the
+        // page flashes to the top and glides back (found 2026-10-08).
+        document.documentElement.style.scrollBehavior = 'auto';
         window.scrollTo(0, lockedY);
+        document.documentElement.style.scrollBehavior = '';
         setTimeout(function () { gate.hidden = true; }, 650);
       }
       function arm() { if (timer || shown) return; timer = setTimeout(open, DELAY_MS); }
