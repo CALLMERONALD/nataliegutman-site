@@ -488,6 +488,10 @@
       // lost and the visitor never asked again (QA 2026-10-09). Now: fetch the script
       // once more on submit; if it still is not there, say so and keep the gate open.
       // SHEETS_URL === '' is the deliberate park switch and still closes as before.
+      // One send per gate (review 2026-10-09): busy holds from a valid submit until the
+      // gate is gone, so a second tap or Enter during the retry or the 650 ms fade sends
+      // nothing more; the button is disabled and the field read-only meanwhile (same look,
+      // no grey-out), so the address sent is the one on screen. Released only on failure.
       var busy = false;
       function loadEndpoint(done) {
         var s = document.createElement('script'), t, fired = false;
@@ -497,19 +501,23 @@
         s.src = 'assets/form-endpoint.js';
         document.head.appendChild(s);
       }
-      function finish(email, sendErr) {
+      function failed(input, sendErr) {
+        busy = false; input.readOnly = false; btnEl.disabled = false;
+        sendErr.hidden = false; revealForm(); // the message pushes the button down a line
+      }
+      function finish(email, input, sendErr) {
         if (window.SHEETS_URL) {
           var body = 'type=gate&property=' + encodeURIComponent('The Gandarinha Estate') + '&email=' + encodeURIComponent(email);
           try {
             fetch(window.SHEETS_URL, { method: 'POST', keepalive: true, mode: 'no-cors', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body }).catch(function () {});
-          } catch (e) { sendErr.hidden = false; revealForm(); return; } // no request left: never pretend
+          } catch (e) { return failed(input, sendErr); } // no request left: never pretend
           try { window.siteTrack && window.siteTrack('gate_submitted'); } catch (e) {} // count only, no field values (Michael 2026-09-16)
         }
         // Counsel 2026-08-13: store a flag, not the email: keeps the
         // "strictly-necessary, no-personal-data storage" Lei 41/2004 position.
         // Set only once the request is out (or the forms are parked).
         try { localStorage.setItem(KEY, '2'); } catch (e) {}
-        close();
+        close(); // busy stays true: this gate is done
       }
       document.getElementById('gate-form').addEventListener('submit', function (ev) {
         ev.preventDefault();
@@ -522,12 +530,12 @@
         if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { err.hidden = false; input.setAttribute('aria-invalid', 'true'); input.focus(); return; }
         err.hidden = true;
         input.removeAttribute('aria-invalid');
-        if (typeof window.SHEETS_URL !== 'undefined') return finish(email, sendErr);
-        busy = true;
+        busy = true; btnEl.disabled = true;
+        if (typeof window.SHEETS_URL !== 'undefined') return finish(email, input, sendErr);
+        input.readOnly = true;
         loadEndpoint(function () {
-          busy = false;
-          if (typeof window.SHEETS_URL === 'undefined') { sendErr.hidden = false; revealForm(); return; } // the message pushes the button down a line
-          finish(email, sendErr);
+          if (typeof window.SHEETS_URL === 'undefined') return failed(input, sendErr);
+          finish(email, input, sendErr);
         });
       });
     })();
