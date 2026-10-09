@@ -263,7 +263,7 @@
     .gx-pill .dot { width: .45rem; height: .45rem; border-radius: 9999px; background: #D3A55B; }
     .gx-pill.is-on { opacity: 1; pointer-events: auto; transform: none; }
     .gx-pill:hover { background: #B8893C; color: #2C2C2C; }
-    .gx-field { width: 100%; border: 1px solid #E6E3DD; background: #FDFBF7; color: #2C2C2C; padding: .85rem 1rem; font-size: .9375rem; font-family: inherit; }
+    .gx-field { width: 100%; border: 1px solid #E6E3DD; background: #FDFBF7; color: #2C2C2C; padding: .85rem 1rem; font-size: 1rem; font-family: inherit; }
     .gx-field:focus-visible { outline: 2px solid #B8893C; outline-offset: 1px; }
     select.gx-field { appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236E6A63' stroke-width='1.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 1rem center; padding-right: 2.5rem; }
 
@@ -311,7 +311,11 @@
                  transition: transform .8s cubic-bezier(0.16, 1, 0.3, 1) .12s, opacity .7s ease .12s; }
     @media (min-width: 640px) { .gate-card { padding: 3rem 2.75rem 2.25rem; } }
     #gate.is-open .gate-card { transform: none; opacity: 1; }
-    .gate-input { width: 100%; background: #FAF9F6; border: 1px solid #D9D5CD; color: #2C2C2C; padding: .95rem 1rem; font-size: .9375rem; text-align: center; }
+    .gate-input { width: 100%; background: #FAF9F6; border: 1px solid #D9D5CD; color: #2C2C2C; padding: .95rem 1rem; font-size: 1rem; text-align: center; }
+    /* iOS Safari zooms on focus under 16px; the sitewide 16px rule (input.css) stops at 639px, so the
+       iPad and landscape phones zoomed (QA 2026-10-09). 16px everywhere now; from 640px the old 15px
+       line box (15 x 1.5 = 22.5px) is kept so the fields and the card stay exactly the same height. */
+    @media (min-width: 640px) { .gate-input, .gx-field { line-height: 22.5px; } }
     .gate-input::placeholder { color: #9A968F; }
     .gate-input:focus-visible { outline: 2px solid #2C2C2C; outline-offset: 1px; }
     .gate-btn { width: 100%; background: #2C2C2C; color: #FDFBF7; padding: .95rem 1.5rem; margin-top: .75rem; font-size: .875rem; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; transition: background .2s; }
@@ -335,6 +339,7 @@
         <label for="gate-email" class="sr-only">Email</label>
         <input id="gate-email" class="gate-input" type="email" required autocomplete="email" placeholder="Your email" />
         <p id="gate-error" class="gate-error text-xs mt-2" role="alert" hidden>Please enter a valid email address.</p>
+        <p id="gate-send-error" class="gate-error text-xs mt-2" role="alert" hidden>Your email could not be sent just now. Please try again in a moment.</p>
         <button type="submit" class="gate-btn">Continue the private tour</button>
       </form>
       <p class="text-xs text-faint mt-6 leading-relaxed">Used only to manage access to this private listing, nothing else.
@@ -372,6 +377,9 @@
         document.documentElement.classList.add('gate-open');
         requestAnimationFrame(function () { requestAnimationFrame(function () { gate.classList.add('is-open'); }); });
         fitViewport();
+        vpW = vvTarget.width || vvTarget.innerWidth; vpH = vvTarget.height || vvTarget.innerHeight;
+        vvTarget.addEventListener('resize', onViewport);
+        if (vv) vv.addEventListener('scroll', onViewport);
         setTimeout(function () { try { document.getElementById('gate-email').focus({ preventScroll: true }); } catch (e) {} }, 900);
       }
       // On-screen keyboard: the fixed overlay keeps the layout viewport's height, so
@@ -383,14 +391,40 @@
         gate.style.height = vv.height + 'px';
         gate.style.top = vv.offsetTop + 'px';
       }
-      if (vv) { vv.addEventListener('resize', fitViewport); vv.addEventListener('scroll', fitViewport); }
       var emailEl = document.getElementById('gate-email'), btnEl = gate.querySelector('.gate-btn');
+      // The focus handler below misses the common case: the field is already focused
+      // (900 ms auto-focus) when the keyboard opens, so no new focus event fires and
+      // the button sat 12 to 60 px under the keyboard (QA 2026-10-09). Now every
+      // viewport SIZE change while the gate is open (keyboard, rotation) scrolls the
+      // overlay just enough to show the field and the button. Listeners live only
+      // while the gate is open; without visualViewport the window resize stands in.
+      var vvTarget = vv || window, vpW = 0, vpH = 0;
+      function revealForm() {
+        if (!shown || gate.hidden || !emailEl || !btnEl) return;
+        var g = gate.getBoundingClientRect(), i = emailEl.getBoundingClientRect(), b = btnEl.getBoundingClientRect(), pad = 12;
+        var top = g.top + pad, bottom = g.bottom - pad;
+        if (b.bottom - i.top > bottom - top || b.bottom > bottom) gate.scrollTop += b.bottom - bottom; // too tall for both: the button wins
+        else if (i.top < top) gate.scrollTop -= top - i.top;
+      }
+      function onViewport() {
+        fitViewport();
+        var w = vvTarget.width || vvTarget.innerWidth, h = vvTarget.height || vvTarget.innerHeight;
+        if (w === vpW && h === vpH) return; // a pan/pinch scroll, not a resize: leave the visitor's scroll alone
+        vpW = w; vpH = h;
+        revealForm();
+        setTimeout(revealForm, 350); // keyboards animate in; settle once more
+      }
+      function unwatchViewport() {
+        vvTarget.removeEventListener('resize', onViewport);
+        if (vv) vv.removeEventListener('scroll', onViewport);
+      }
       if (emailEl && btnEl) emailEl.addEventListener('focus', function () {
         setTimeout(function () { fitViewport(); try { btnEl.scrollIntoView({ block: 'nearest' }); } catch (e) {} }, 350);
       });
       // bfcache: never come back with the body still pinned
-      window.addEventListener('pageshow', function (ev) { if (ev.persisted && shown && !gate.hidden) { gate.hidden = true; document.body.style.position = ''; document.body.style.top = ''; document.documentElement.style.overflow = ''; document.documentElement.classList.remove('gate-open'); } });
+      window.addEventListener('pageshow', function (ev) { if (ev.persisted && shown && !gate.hidden) { unwatchViewport(); gate.hidden = true; document.body.style.position = ''; document.body.style.top = ''; document.documentElement.style.overflow = ''; document.documentElement.classList.remove('gate-open'); } });
       function close() {
+        unwatchViewport();
         gate.classList.remove('is-open');
         gate.style.height = ''; gate.style.top = '';
         document.documentElement.style.overflow = '';
@@ -449,25 +483,52 @@
         else if (!ev.shiftKey && document.activeElement === last) { ev.preventDefault(); first.focus(); }
       });
 
-      document.getElementById('gate-form').addEventListener('submit', function (ev) {
-        ev.preventDefault();
-        var input = document.getElementById('gate-email');
-        var err = document.getElementById('gate-error');
-        var email = (input.value || '').trim();
-        if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { err.hidden = false; input.setAttribute('aria-invalid', 'true'); input.focus(); return; }
-        err.hidden = true;
-        input.removeAttribute('aria-invalid');
-        // Counsel 2026-08-13: store a flag, not the email: keeps the
-        // "strictly-necessary, no-personal-data storage" Lei 41/2004 position.
-        try { localStorage.setItem(KEY, '2'); } catch (e) {}
+      // form-endpoint.js missing (network error, blocker) left SHEETS_URL undefined:
+      // the gate used to set the flag and close with nothing sent, so the email was
+      // lost and the visitor never asked again (QA 2026-10-09). Now: fetch the script
+      // once more on submit; if it still is not there, say so and keep the gate open.
+      // SHEETS_URL === '' is the deliberate park switch and still closes as before.
+      var busy = false;
+      function loadEndpoint(done) {
+        var s = document.createElement('script'), t, fired = false;
+        function fin() { if (fired) return; fired = true; clearTimeout(t); done(); }
+        t = setTimeout(fin, 4000);
+        s.onload = s.onerror = fin;
+        s.src = 'assets/form-endpoint.js';
+        document.head.appendChild(s);
+      }
+      function finish(email, sendErr) {
         if (window.SHEETS_URL) {
           var body = 'type=gate&property=' + encodeURIComponent('The Gandarinha Estate') + '&email=' + encodeURIComponent(email);
           try {
-            window.siteTrack && window.siteTrack('gate_submitted'); // count only, no field values (Michael 2026-09-16)
             fetch(window.SHEETS_URL, { method: 'POST', keepalive: true, mode: 'no-cors', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body }).catch(function () {});
-          } catch (e) {}
+          } catch (e) { sendErr.hidden = false; revealForm(); return; } // no request left: never pretend
+          try { window.siteTrack && window.siteTrack('gate_submitted'); } catch (e) {} // count only, no field values (Michael 2026-09-16)
         }
+        // Counsel 2026-08-13: store a flag, not the email: keeps the
+        // "strictly-necessary, no-personal-data storage" Lei 41/2004 position.
+        // Set only once the request is out (or the forms are parked).
+        try { localStorage.setItem(KEY, '2'); } catch (e) {}
         close();
+      }
+      document.getElementById('gate-form').addEventListener('submit', function (ev) {
+        ev.preventDefault();
+        if (busy) return;
+        var input = document.getElementById('gate-email');
+        var err = document.getElementById('gate-error');
+        var sendErr = document.getElementById('gate-send-error');
+        var email = (input.value || '').trim();
+        sendErr.hidden = true;
+        if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { err.hidden = false; input.setAttribute('aria-invalid', 'true'); input.focus(); return; }
+        err.hidden = true;
+        input.removeAttribute('aria-invalid');
+        if (typeof window.SHEETS_URL !== 'undefined') return finish(email, sendErr);
+        busy = true;
+        loadEndpoint(function () {
+          busy = false;
+          if (typeof window.SHEETS_URL === 'undefined') { sendErr.hidden = false; revealForm(); return; } // the message pushes the button down a line
+          finish(email, sendErr);
+        });
       });
     })();
   </script>
@@ -1013,11 +1074,12 @@
     // request is made until SHEETS_URL is set. The property name travels inside
     // the `property` field so the Apps Script needs no changes.
     (function () {
-      var SHEETS_URL = window.SHEETS_URL || '';
       var form = document.getElementById('viewing-form');
       if (!form) return;
       form.addEventListener('submit', function (e) {
         e.preventDefault();
+        // Read at submit time, so a form-endpoint.js the gate fetched again still counts (2026-10-09).
+        var SHEETS_URL = window.SHEETS_URL || '';
         var nameEl  = form.querySelector('#v-name');
         var emailEl = form.querySelector('#v-email');
         var phoneEl = form.querySelector('#v-phone');
@@ -1028,7 +1090,18 @@
         var property = 'The Gandarinha Estate, private viewing';
 
         if (!SHEETS_URL) {
-          window.showFormUnavailable(form, 'sm:col-span-2 py-10 text-center');
+          if (typeof window.showFormUnavailable === 'function') { window.showFormUnavailable(form, 'sm:col-span-2 py-10 text-center'); return; }
+          // form-endpoint.js never arrived (it defines the fallback above): this used to
+          // throw and the button did nothing (QA 2026-10-09). Say so, keep what they typed.
+          var note = document.getElementById('v-unsent');
+          if (!note) {
+            note = document.createElement('p');
+            note.id = 'v-unsent';
+            note.className = 'text-sm text-ink text-center mt-4';
+            note.setAttribute('role', 'alert');
+            note.textContent = 'Your request has not been sent. Please reload the page and try again.';
+            form.querySelector('button[type=submit]').insertAdjacentElement('afterend', note);
+          }
           return;
         }
 
