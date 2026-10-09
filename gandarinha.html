@@ -507,8 +507,10 @@
       }
       function finish(email, input, sendErr) {
         if (window.SHEETS_URL) {
-          var body = 'type=gate&property=' + encodeURIComponent('The Gandarinha Estate') + '&email=' + encodeURIComponent(email);
           try {
+            // built inside the try: encodeURIComponent throws on a lone surrogate (\uD800),
+            // which the regex lets through; that used to leave the gate locked (review 2026-10-09)
+            var body = 'type=gate&property=' + encodeURIComponent('The Gandarinha Estate') + '&email=' + encodeURIComponent(email);
             fetch(window.SHEETS_URL, { method: 'POST', keepalive: true, mode: 'no-cors', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body }).catch(function () {});
           } catch (e) { return failed(input, sendErr); } // no request left: never pretend
           try { window.siteTrack && window.siteTrack('gate_submitted'); } catch (e) {} // count only, no field values (Michael 2026-09-16)
@@ -1097,34 +1099,45 @@
         var name = nameEl.value;
         var property = 'The Gandarinha Estate, private viewing';
 
-        if (!SHEETS_URL) {
-          if (typeof window.showFormUnavailable === 'function') { window.showFormUnavailable(form, 'sm:col-span-2 py-10 text-center'); return; }
-          // form-endpoint.js never arrived (it defines the fallback above): this used to
-          // throw and the button did nothing (QA 2026-10-09). Say so, keep what they typed.
+        // Nothing sent: say so under the button and keep what they typed (QA 2026-10-09).
+        function unsent(text) {
           var note = document.getElementById('v-unsent');
           if (!note) {
             note = document.createElement('p');
             note.id = 'v-unsent';
             note.className = 'text-sm text-ink text-center mt-4';
             note.setAttribute('role', 'alert');
-            note.textContent = 'Your request has not been sent. Please reload the page and try again.';
             form.querySelector('button[type=submit]').insertAdjacentElement('afterend', note);
           }
-          return;
+          note.textContent = text;
         }
 
-        window.siteTrack && window.siteTrack('form_submitted', { form: 'viewing' }); // count only, no field values (Michael 2026-09-16)
-        fetch(SHEETS_URL, {
-          method: 'POST', keepalive: true,
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: 'type=viewing'
+        if (!SHEETS_URL) {
+          if (typeof window.showFormUnavailable === 'function') { window.showFormUnavailable(form, 'sm:col-span-2 py-10 text-center'); return; }
+          // form-endpoint.js never arrived (it defines the fallback above): this used to
+          // throw and the button did nothing.
+          return unsent('Your request has not been sent. Please reload the page and try again.');
+        }
+
+        // Body built before anything is counted or sent: encodeURIComponent throws on a lone
+        // surrogate in the name or phone (no format check there), which used to count a
+        // form_submitted, send nothing and show nothing (review 2026-10-09).
+        var body;
+        try {
+          body = 'type=viewing'
             + '&property='  + encodeURIComponent(property)
             + '&name='      + encodeURIComponent(name)
             + '&email='     + encodeURIComponent(emailEl.value)
             + '&phone='     + encodeURIComponent(phoneEl.value)
-            + '&preferred=' + encodeURIComponent((form.querySelector('#v-pref') || {}).value || '')
-        }).catch(function () {});
+            + '&preferred=' + encodeURIComponent((form.querySelector('#v-pref') || {}).value || '');
+          fetch(SHEETS_URL, {
+            method: 'POST', keepalive: true,
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: body
+          }).catch(function () {});
+        } catch (err) { return unsent('Your request has not been sent. Please check the details and try again.'); }
+        window.siteTrack && window.siteTrack('form_submitted', { form: 'viewing' }); // count only, no field values (Michael 2026-09-16)
 
         var result = document.createElement('div');
         result.className = 'sm:col-span-2 py-10 text-center';
