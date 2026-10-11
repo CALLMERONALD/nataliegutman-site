@@ -7,13 +7,13 @@
  *  - No banner, no session replay, no cookies, nothing written to the device.
  *    PostHog runs in cookieless mode: its server turns IP + browser + date into a
  *    code that rotates daily and cannot be reversed (project 269748: cookieless
- *    server hash mode ON, IP discarded, replay / heatmaps / autocapture /
- *    web vitals OFF at project level since 2026-09-15).
+ *    server hash mode ON, IP discarded, replay / heatmaps / autocapture
+ *    OFF at project level since 2026-09-15; web vitals back on per counsel 2026-09-24).
  *  - What leaves the browser, and nothing else (ALLOWED below, counsel's gate
  *    2026-09-24): page views and leaves (scroll depth), JS errors, page-speed
  *    numbers, dead and rage taps (element type only), and fixed-label action
  *    counts: listings opened/shared/enquired, contact taps, forms started and
- *    sent, calculators used, pop-up shown/sent, film played/finished, floor
+ *    sent, calculators used, floor
  *    plan and gallery used, outbound clicks (domain only). Never typed text.
  *    Query strings, fragments, email-shaped strings, search words, ad-click ids
  *    and UTM labels are stripped; referrers cut to the website address.
@@ -22,7 +22,7 @@
  *    visits" button (localStorage natalie_no_count) = nothing loads. localhost and LAN
  *    previews = nothing loads. Empty POSTHOG_KEY = nothing loads.
  *  - Legal basis: legitimate interest, art. 6(1)(f) (counsel 2026-09-08 and
- *    2026-09-10: the counting bucket without web vitals). privacy.html s.2, 3, 5.
+ *    2026-09-10; web vitals added 2026-09-24). privacy.html s.2, 3, 5.
  * ──────────────────────────────────────────────────────────────────────────── */
 (function () {
   // Pages call this at the moment a form is actually sent (after their own validation).
@@ -37,6 +37,8 @@
   // consent items; forget them so the device carries nothing for analytics.
   try {
     localStorage.removeItem('natalie_analytics_consent');
+    // The Gandarinha email pop-up was deleted 2026-10-11; drop its old "already answered" flag too.
+    localStorage.removeItem('gandarinha-gate-email');
     Object.keys(localStorage).forEach(function (k) { if (/^(__ph_opt_in_out_|ph_.*_posthog$)/.test(k)) localStorage.removeItem(k); });
     document.cookie.split(';').forEach(function (c) {
       var name = c.split('=')[0].trim();
@@ -68,7 +70,7 @@
   }
 
   // The only events that may leave the browser (counsel's list; anything else the SDK adds is dropped).
-  var ALLOWED = /^(\$pageview|\$pageleave|\$exception|walkthrough_play|walkthrough_completed|\$dead_click|\$web_vitals|rage_click|gate_shown|gate_submitted|form_started|form_submitted|contact_click|outbound_click|property_viewed|property_link_copied|property_enquiry_click|calculator_used|floorplan_used|gallery_opened)$/;
+  var ALLOWED = /^(\$pageview|\$pageleave|\$exception|\$dead_click|\$web_vitals|rage_click|form_started|form_submitted|contact_click|outbound_click|property_viewed|property_link_copied|property_enquiry_click|calculator_used|floorplan_used|gallery_opened)$/;
 
   // Interaction counts (Michael 2026-09-24): fixed labels only, never what anyone typed,
   // never an identifier. Pages call window.siteTrack for their own moments; the three
@@ -77,7 +79,7 @@
     return el.closest('#property-modal') ? 'listing' : el.closest('header, nav') ? 'header' : el.closest('footer') ? 'footer' : 'page';
   }
   function formName(f) {
-    var byId = { 'gate-form': 'gate', 'viewing-form': 'viewing', 'guide-form': 'guide', 'valuation-form': 'valuation' };
+    var byId = { 'viewing-form': 'viewing', 'guide-form': 'guide', 'valuation-form': 'valuation' };
     if (byId[f.id]) return byId[f.id];
     if (f.hasAttribute('data-guide-form')) return 'guide';
     return f.querySelector('textarea') ? 'contact' : '';
