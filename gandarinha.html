@@ -259,6 +259,34 @@
       document.documentElement.classList.add('reveal-on');
     }
   </script>
+  <script>
+    // No lonely last lines (Michael 2026-10-11): the last three words of every text
+    // block are kept together, so a paragraph, heading or label never
+    // ends on a line of one or two words at any screen width. Text set later by the
+    // floor-plan viewer calls gxGlue again.
+    window.gxGlue = function (el) {
+      var w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT), n, last = null;
+      while ((n = w.nextNode())) if (/\S/.test(n.data)) last = n;
+      if (!last) return;
+      // Wrap the last three words in a no-wrap span (also stops breaks at hyphens,
+      // as in "en-suite" or "Decreto-Lei").
+      var t = last.data.replace(/\s+$/, '');
+      var cut = t.length;
+      for (var i = 0; i < 3 && cut > 0; i++) cut = t.lastIndexOf(' ', cut - 2) + 1; // start of the third-last word
+      if (cut <= 0) return; // the text node is three words or fewer: nothing to keep together
+      var span = document.createElement('span');
+      span.style.whiteSpace = 'nowrap';
+      span.textContent = t.slice(cut);
+      var rest = last.splitText(cut);
+      rest.data = rest.data.slice(t.length - cut);
+      last.parentNode.insertBefore(span, rest);
+    };
+    document.addEventListener('DOMContentLoaded', function () {
+      document.querySelectorAll('section p, section h2, section h3, section li, section dd, section blockquote span, .gx-room .r-name, footer p').forEach(function (el) {
+        if (el.textContent.trim().split(/\s+/).length >= 4) window.gxGlue(el);
+      });
+    });
+  </script>
 </head>
 
 <body class="text-muted">
@@ -316,8 +344,8 @@
     <div class="max-w-4xl mx-auto px-6 lg:px-10 pt-20 lg:pt-28 pb-20 lg:pb-28 text-center">
       <h2 class="gx-h text-[1.375rem] sm:text-3xl md:text-4xl lg:text-5xl reveal">A rare residence in one of<br class="hidden sm:block" /> Cascais’ finest locations</h2>
       <div id="landing-copy" class="max-w-[58ch] mx-auto mt-8 lg:mt-10 text-base sm:text-lg leading-[1.85] space-y-5 reveal" style="--reveal-delay: 120ms; text-wrap: pretty;">
-        <p>Set in Gandarinha, in the heart of the Portuguese Riviera, this exceptional estate brings together three things that are increasingly difficult to find: a privileged location, remarkable privacy and a residence of outstanding quality.</p>
-        <p>Just moments from the Atlantic and Cascais Marina, it offers the rare balance of seclusion, elegance and proximity to everything that defines life in Cascais.</p>
+        <p>Set in Gandarinha, at the heart of the Portuguese Riviera, this exceptional estate combines a privileged location, remarkable privacy and a residence of outstanding quality.</p>
+        <p>Just moments from the Atlantic and Cascais Marina, it offers a rare balance of seclusion, elegance and proximity to everything that defines life in Cascais.</p>
         <p>A property of this calibre, in this location, is rarely available.</p>
       </div>
     </div>
@@ -335,10 +363,10 @@
         <div class="gx-fact"><dt class="label text-faint">Location</dt><dd>Gandarinha · Cascais</dd></div>
         <div class="gx-fact"><dt class="label text-faint">Private land</dt><dd>2,438 m²</dd></div>
         <div class="gx-fact"><dt class="label text-faint">Construction</dt><dd>1,020 m²</dd></div>
-        <div class="gx-fact"><dt class="label text-faint">Levels</dt><dd>3 floors · private lift</dd></div>
-        <div class="gx-fact"><dt class="label text-faint">Bedrooms</dt><dd>6 en-suite + staff</dd></div>
+        <div class="gx-fact"><dt class="label text-faint">Levels</dt><dd><span class="whitespace-nowrap">3 floors ·</span> <span class="whitespace-nowrap">private lift</span></dd></div>
+        <div class="gx-fact"><dt class="label text-faint">Bedrooms</dt><dd><span class="whitespace-nowrap">6 en-suite</span> <span class="whitespace-nowrap">+ staff</span></dd></div>
         <div class="gx-fact"><dt class="label text-faint">Pool</dt><dd>15.5 × 5 m</dd></div>
-        <div class="gx-fact"><dt class="label text-faint">Smart home</dt><dd>Climate, security &amp; lift</dd></div>
+        <div class="gx-fact"><dt class="label text-faint">Smart home</dt><dd><span class="whitespace-nowrap">Climate,</span> <span class="whitespace-nowrap">security &amp; lift</span></dd></div>
         <!-- Energy class is MANDATORY in every PT property ad (DL 101-D/2020). -->
         <div class="gx-fact"><dt class="label text-faint">Energy class</dt><dd>A</dd></div>
       </dl>
@@ -351,11 +379,10 @@
       <div class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-stretch">
         <div class="lg:col-span-6 reveal">
           <h2 class="gx-h text-2xl sm:text-3xl mb-8">A rare address in Cascais</h2>
-          <p class="leading-relaxed mb-4">Set within Gandarinha, one of the most prestigious enclaves along the Portuguese Riviera, this exceptional villa offers a rare sense of space, privacy, and effortless comfort.</p>
-          <p class="leading-relaxed mb-4">Properties of this calibre are seldom offered for sale in Gandarinha, making the location itself part of the home's appeal. Quiet and discreet, yet ideally positioned close to the centre of Cascais, the coastline, beaches, restaurants, and all essential amenities, it is a setting that offers both seclusion and convenience.</p>
-          <p class="leading-relaxed mb-4">The residence is defined by generous proportions and a refined sense of comfort. Expansive living spaces, carefully selected materials, elegant finishes, and a seamless relationship with the private gardens and impressive swimming pool create an atmosphere that feels both sophisticated and deeply inviting.</p>
-          <p class="leading-relaxed mb-4">Thoughtful features such as a private lift and underfloor heating add to the everyday experience, while the scale and quality of the property allow it to be enjoyed equally as a peaceful private home or as a place to gather and entertain.</p>
-          <p class="leading-relaxed">A truly uncommon opportunity to acquire a substantial private residence in one of Cascais' most tightly held addresses, where exceptional homes rarely come to market.</p>
+          <p class="leading-relaxed mb-4">Beyond its location, the residence is defined by exceptional scale and a refined sense of comfort.</p>
+          <p class="leading-relaxed mb-4">Expansive living spaces, carefully selected materials and elegant finishes flow naturally towards the private gardens, terraces and swimming pool, creating a home that feels sophisticated without being formal.</p>
+          <p class="leading-relaxed mb-4">A private lift, underfloor heating and thoughtfully planned service areas add discreet functionality to the architecture, while the generous proportions allow the house to work equally well as a private family residence or a place to entertain.</p>
+          <p class="leading-relaxed">Opportunities to acquire a residence of this scale and quality in Gandarinha are exceptionally limited.</p>
         </div>
         <!-- lg: image is absolutely positioned so the column tracks the TEXT height —
              the portrait aerial crops to exactly the text block, no vertical spillage -->
@@ -370,7 +397,7 @@
        pass 6: two set lines, no rules, keeps its own italic) ============== -->
   <section>
     <div class="max-w-5xl mx-auto px-6 lg:px-10 pt-6 pb-20 lg:pb-28 text-center reveal">
-      <blockquote class="gx-quote"><span class="block">The address is not simply part of the residence.</span><span class="block mt-2">It is part of the opportunity.</span></blockquote>
+      <blockquote class="gx-quote"><span class="block">The address is not simply part of the residence.</span> <span class="block mt-2">It is part of the opportunity.</span></blockquote>
     </div>
   </section>
 
@@ -438,7 +465,7 @@
           </div>
           <div class="gx-fp-desc" aria-live="polite">
             <span class="d-room" id="fp-desc-room">Level 0 · The social &amp; entertaining core</span>
-            <p class="text-sm leading-relaxed" id="fp-desc-text">High glass doors open the living spaces directly to the garden, the limestone terraces and the pool.</p>
+            <p class="text-sm leading-relaxed" id="fp-desc-text">Full-height glass doors open the living spaces directly onto the garden, limestone terraces and pool.</p>
           </div>
           <p class="text-xs text-faint mt-4">Architectural plans are indicative and for reference only; the finished property may differ.</p>
         </div>
@@ -472,7 +499,7 @@
 
           <!-- Level 1 rooms -->
           <div id="fp-rooms-f" role="tabpanel" aria-labelledby="fp-tab-f" hidden>
-            <p class="label text-ink gx-fp-kicker">Level 1 — The executive living quarters</p>
+            <p class="label text-ink gx-fp-kicker">Level 1 — The private quarters</p>
             <!-- RESOLVED by Michael 2026-08-13: primary suite = the zones 02-05 wing
                  INCLUDING the central office (rows merged, 47 m² as instructed =
                  the displayed 32 + 15; brochure sum for that wing is 29.87 + 15.33
@@ -480,7 +507,7 @@
                  suites = plan zones 06-15 (Rooms 08/13/15 = 30.04 / 25.62 /
                  31.94 m² → range 26-32). -->
             <button class="gx-room" data-pins="51.8,21.7;42.0,24.2;44.1,19.8;46.5,19.2" data-desc="An expansive private wing: the primary bedroom with walk-in dressing room and spa-inspired marble bathroom, together with the central private office.">
-              <span class="r-name">Primary executive suite</span><span class="r-area">47 m²</span>
+              <span class="r-name">Primary suite</span><span class="r-area">47 m²</span>
             </button>
             <button class="gx-room" data-pins="51.6,27.9;38.0,36.1;51.9,34.4" data-desc="Each bedroom features its own en-suite bathroom, walk-in closet, and private terrace access.">
               <span class="r-name">Three further bedroom suites</span><span class="r-area">26–32 m²</span>
@@ -522,7 +549,7 @@
     <div class="max-w-7xl mx-auto px-6 lg:px-10 pt-14 lg:pt-20 pb-24 lg:pb-36">
       <div class="max-w-3xl mx-auto text-center mb-14 lg:mb-20">
         <h2 class="gx-h text-2xl sm:text-3xl lg:text-4xl mb-6 reveal">Uncompromised craftsmanship</h2>
-        <p class="leading-relaxed reveal">Built with uncompromised quality, featuring leading international luxury brands.</p>
+        <p class="leading-relaxed reveal">Built to an exceptional standard, with carefully selected materials and leading international brands.</p>
       </div>
       <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-14 reveal">
         <div class="gx-spec border-t border-accent pt-6">
@@ -882,8 +909,8 @@
 
       var LEVEL_DESCS = {
         b: ['Level −1 · Service & technical discretion', 'The back of house: garage, staff suite, flexible multi-purpose rooms and technical space, kept out of sight.'],
-        g: ['Level 0 · The social & entertaining core', 'High glass doors open the living spaces directly to the garden, the limestone terraces and the pool.'],
-        f: ['Level 1 · The executive living quarters', 'The executive master wing and three further private suites, each with terrace access and coastal light.']
+        g: ['Level 0 · The social & entertaining core', 'Full-height glass doors open the living spaces directly onto the garden, limestone terraces and pool.'],
+        f: ['Level 1 · The private quarters', 'The executive master wing and three further private suites, each with terrace access and coastal light.']
       };
       var current = 'g', activeRoom = null, pinned = false;
 
@@ -904,7 +931,7 @@
         if (activeRoom) activeRoom.classList.remove('is-active');
         activeRoom = null; pinned = false;
         descRoom.innerHTML = LEVEL_DESCS[current][0];
-        descText.textContent = LEVEL_DESCS[current][1];
+        descText.textContent = LEVEL_DESCS[current][1]; window.gxGlue && window.gxGlue(descText);
       }
 
       function highlight(room, pin) {
@@ -923,7 +950,7 @@
           if (!first) first = parseFloat(xy[0]);
         });
         descRoom.textContent = room.querySelector('.r-name').textContent;
-        descText.textContent = room.getAttribute('data-desc') || '';
+        descText.textContent = room.getAttribute('data-desc') || ''; window.gxGlue && window.gxGlue(descText);
         // Phones: the plan pans sideways — bring the first halo into view.
         if (scroller && first !== null && scroller.scrollWidth > scroller.clientWidth + 8) {
           scroller.scrollTo({ left: (first / 100) * scroller.scrollWidth - scroller.clientWidth / 2, behavior: 'smooth' });

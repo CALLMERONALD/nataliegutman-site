@@ -152,6 +152,16 @@
     align-items: center;
     gap: 0.6rem;
   }
+
+  /* Touch screens (site audit 2026-10-11): the small-caps links and the footer
+     contact links are 17 to 20 px tall. An invisible pseudo-element widens the
+     tap area to about 37 px (more-link) and 28 px (footer lists, matching the
+     8 px list gap so neighbours never overlap) without moving anything. */
+  @media (pointer: coarse) {
+    .more-link { position: relative; }
+    .more-link::before { content: ''; position: absolute; inset: -10px -6px; }
+    li > a.link-underline::before { content: ''; position: absolute; inset: -4px 0; }
+  }
 }
 
 /* ── Scroll-reveal (calm; collapses under reduced motion / no-JS) ─────── */
