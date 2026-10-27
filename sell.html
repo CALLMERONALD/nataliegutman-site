@@ -54,42 +54,42 @@
         "mainEntity": [
           {
             "@type": "Question",
-            "name": "How much is my home in Portugal worth?",
+            "name": "How do you determine the value of my property?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "It depends on location, condition, and what comparable homes are actually closing for, not the asking prices you see online. I prepare a free, data-backed valuation using recent local sales and current demand, so you start from a realistic, defensible number."
+              "text": "I look beyond the asking prices of similar properties. Location, condition, layout, views, outdoor space, recent comparable transactions, current competition and buyer demand all influence how a property should be positioned. The objective is not to give you the highest number. It is to give you an informed and realistic view of where your property sits in the current market."
             }
           },
           {
             "@type": "Question",
-            "name": "What does it cost to sell a property in Portugal?",
+            "name": "What costs should I expect when selling a property in Portugal?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "The main costs are the agency commission (typically a percentage of the sale price, plus VAT), a valid energy certificate, and, depending on your situation, capital gains tax on any profit. I give you a clear net-proceeds estimate up front so you know what you'll actually walk away with."
+              "text": "The costs depend on the property and your individual circumstances, but may include agency fees, required documentation or certification, legal costs and potential tax obligations. Before proceeding, I can help you understand which professionals you should speak with so that you have a clear picture of the transaction."
             }
           },
           {
             "@type": "Question",
-            "name": "Do I need an energy certificate to sell?",
+            "name": "Do I need an Energy Certificate to sell?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Yes. A valid energy certificate (Certificado Energético) is legally required before you can advertise or complete the sale of a property in Portugal. I arrange a certified assessor so this is ready, not a last-minute scramble."
+              "text": "An Energy Performance Certificate is generally required when marketing and selling property in Portugal, subject to the applicable rules and any exemptions. If you do not already have one, I can help coordinate the process with the appropriate professional."
             }
           },
           {
             "@type": "Question",
-            "name": "Will I pay capital gains tax when I sell?",
+            "name": "Will I have to pay capital gains tax?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Possibly, it depends on whether you're a Portuguese tax resident, whether it was your main home, and when you bought. Relief can apply when reinvesting the proceeds from a main residence. The rules are specific, so I work alongside a tax adviser and give you an estimate before you list."
+              "text": "Capital gains treatment depends on factors including your tax residency, how the property has been used and your individual circumstances. Because tax treatment is specific to each seller, I recommend confirming your position with a qualified tax adviser or accountant. I can connect you with the appropriate professional if needed."
             }
           },
           {
             "@type": "Question",
-            "name": "Can I sell my Portuguese property from abroad?",
+            "name": "Can you manage the sale if I am not in Portugal?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Yes. With a power of attorney I can manage viewings, paperwork and even the notary signing on your behalf, and keep you updated by video and email throughout, you don't need to fly in for every step."
+              "text": "Yes. Many owners are not permanently based in Portugal. I can manage the property marketing, enquiries, viewings and communication locally while coordinating with you and the professionals involved in the transaction. The objective is to make the process clear and manageable wherever you are based."
             }
           }
         ]
@@ -146,43 +146,151 @@
 
   <main id="top">
 
-    <!-- ============== HERO + VALUATION ============== -->
-    <section id="valuation" class="border-b border-hairline scroll-mt-20">
-      <div class="max-w-6xl mx-auto px-6 lg:px-8 py-16 lg:py-24 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-        <div>
-          <p class="label mb-6">For sellers · Portugal</p>
-          <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl leading-[1.05] mb-6">
-            What's your Portugal home
-            <span class="text-accent">really worth?</span>
-          </h1>
-          <p class="text-lg text-muted max-w-xl mb-10">
-            Get a free, data-backed valuation based on what comparable homes are actually closing
-            for, not online asking prices. Then, if you choose to sell, I handle the rest:
-            marketing, negotiation, <span class="text-ink">documentation, financing questions and legal</span>,
-            all the way to the notary.
-          </p>
+    <!-- Sell page copy + order = Natalie's "SELL Page Implementation Instructions" (October 2026).
+         Her em dashes became commas (no-dash rule); restore list in the Brain page. -->
 
-          <ul class="space-y-3 text-sm text-muted">
-            <li class="flex gap-3">
-              <svg viewBox="0 0 24 24" class="w-5 h-5 mt-0.5 text-accent flex-none" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12.5l4.5 4.5L19 7.5"/></svg>
-              <span>Realistic pricing from recent local sales, no inflated promises.</span>
-            </li>
-            <li class="flex gap-3">
-              <svg viewBox="0 0 24 24" class="w-5 h-5 mt-0.5 text-accent flex-none" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12.5l4.5 4.5L19 7.5"/></svg>
-              <span>A clear net-proceeds estimate, after commission and taxes.</span>
-            </li>
-            <li class="flex gap-3">
-              <svg viewBox="0 0 24 24" class="w-5 h-5 mt-0.5 text-accent flex-none" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12.5l4.5 4.5L19 7.5"/></svg>
-              <span>No obligation, the valuation is yours to keep either way.</span>
-            </li>
-          </ul>
+    <!-- ============== 1 · HERO ============== -->
+    <section class="border-b border-hairline">
+      <div class="max-w-6xl mx-auto px-6 lg:px-8 py-16 lg:py-24">
+        <div class="max-w-3xl">
+          <p class="label mb-6">Sell</p>
+          <h1 class="text-balance font-serif text-4xl sm:text-5xl lg:text-6xl leading-[1.05] mb-7">Selling your property starts with positioning it properly.</h1>
+          <div class="text-lg text-muted leading-relaxed space-y-5 max-w-2xl mb-10">
+            <p>A successful sale is not simply about putting a property on the market.</p>
+            <p>It starts with understanding its value, positioning it correctly and presenting it to the right buyers.</p>
+            <p>From pricing and preparation to marketing, viewings and negotiation, I personally manage the process and represent your interests from our first conversation through to completion.</p>
+          </div>
+          <div class="flex flex-col sm:flex-row items-start sm:items-center gap-5 sm:gap-8">
+            <a href="/contact" class="more-link bg-ink text-white px-7 py-4 hover:bg-accent transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2">
+              Talk to Natalie
+            </a>
+            <a href="#valuation" class="more-link link-underline py-2 hover:text-accent transition-colors duration-300">
+              Request a Property Valuation
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== 2 · PERSONAL REPRESENTATION ============== -->
+    <section class="border-b border-hairline">
+      <div class="max-w-6xl mx-auto px-6 lg:px-8 py-20 lg:py-28">
+        <div class="max-w-3xl">
+          <h2 class="font-serif text-3xl sm:text-4xl leading-tight mb-6">Your property. Personally represented.</h2>
+          <div class="text-muted text-lg leading-relaxed space-y-5">
+            <p>Selling a property involves many moving parts, but you should never feel removed from the process.</p>
+            <p>I stay personally involved throughout the sale, from preparing the property and managing enquiries to viewings, feedback, negotiations and the final steps of the transaction.</p>
+            <p>You work directly with me, you know what is happening, and you always know what comes next.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== 3 · SELLING PROCESS ============== -->
+    <section id="process" class="border-b border-hairline bg-surface scroll-mt-20">
+      <div class="max-w-6xl mx-auto px-6 lg:px-8 py-20 lg:py-28">
+        <div class="max-w-2xl mb-14">
+          <h2 class="font-serif text-3xl sm:text-4xl leading-tight">Selling your property, end to end.</h2>
+        </div>
+
+        <ol class="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-12">
+          <li>
+            <p class="font-serif text-accent text-2xl mb-3">01</p>
+            <h3 class="font-serif text-xl mb-2">Understand &amp; value</h3>
+            <div class="text-sm text-muted leading-relaxed space-y-3">
+              <p>Every sale starts with understanding the property, the market around it and your objectives.</p>
+              <p>I assess comparable properties, current competition, location, condition and the characteristics that can influence how buyers perceive value.</p>
+              <p>The result is a realistic starting point and a clear strategy for bringing the property to market.</p>
+            </div>
+          </li>
+          <li>
+            <p class="font-serif text-accent text-2xl mb-3">02</p>
+            <h3 class="font-serif text-xl mb-2">Prepare</h3>
+            <div class="text-sm text-muted leading-relaxed space-y-3">
+              <p>Before going to market, we make sure the property is ready to be presented properly.</p>
+              <p>I coordinate the necessary preparation and help identify anything that should be addressed before launch, from documentation and certification to presentation and professional materials.</p>
+              <p>Where additional expertise is required, I connect you with the right professionals.</p>
+            </div>
+          </li>
+          <li>
+            <p class="font-serif text-accent text-2xl mb-3">03</p>
+            <h3 class="font-serif text-xl mb-2">Position &amp; present</h3>
+            <div class="text-sm text-muted leading-relaxed space-y-3">
+              <p>A property should not simply be listed. It should be positioned.</p>
+              <p>We define how the property should sit within the market, who the likely buyer is and how it should be presented to them.</p>
+              <p>Professional photography, property materials and the way the home is communicated are all considered as part of the strategy.</p>
+            </div>
+          </li>
+          <li>
+            <p class="font-serif text-accent text-2xl mb-3">04</p>
+            <h3 class="font-serif text-xl mb-2">Market &amp; reach</h3>
+            <div class="text-sm text-muted leading-relaxed space-y-3">
+              <p>The property is introduced through the channels that make sense for the property and the intended buyer.</p>
+              <p>This may include the major property platforms, digital marketing, international exposure and direct introductions through my network of agents, buyers and professional contacts.</p>
+              <p>The objective is not simply more visibility. It is the right visibility.</p>
+            </div>
+          </li>
+          <li>
+            <p class="font-serif text-accent text-2xl mb-3">05</p>
+            <h3 class="font-serif text-xl mb-2">Viewings &amp; feedback</h3>
+            <div class="text-sm text-muted leading-relaxed space-y-3">
+              <p>I manage enquiries and viewings personally and keep you informed throughout the process.</p>
+              <p>Buyer feedback matters. It helps us understand how the market is responding and, when necessary, make informed decisions rather than reacting blindly.</p>
+              <p>You know what is happening, what buyers are saying and what I recommend we do next.</p>
+            </div>
+          </li>
+          <li>
+            <p class="font-serif text-accent text-2xl mb-3">06</p>
+            <h3 class="font-serif text-xl mb-2">Offers &amp; negotiation</h3>
+            <div class="text-sm text-muted leading-relaxed space-y-3">
+              <p>Negotiation with perspective.</p>
+              <p>My background as a professional commercial buyer gives me an understanding of how the other side of a negotiation thinks.</p>
+              <p>I assess offers beyond the headline number, looking at the buyer, their position, conditions, timing and likelihood of completion.</p>
+              <p>I use that perspective to protect your position and negotiate the strongest possible terms.</p>
+            </div>
+          </li>
+          <li>
+            <p class="font-serif text-accent text-2xl mb-3">07</p>
+            <h3 class="font-serif text-xl mb-2">From agreement to completion</h3>
+            <div class="text-sm text-muted leading-relaxed space-y-3">
+              <p>Once an offer is accepted, I remain involved.</p>
+              <p>I coordinate with the lawyers and other professionals involved, follow the transaction through its different stages and help keep the process moving toward completion.</p>
+              <p>My role does not end when a buyer says yes. I stay with you until the transaction is complete.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============== 4 · DISCRETION ============== -->
+    <section class="border-b border-hairline">
+      <div class="max-w-6xl mx-auto px-6 lg:px-8 py-20 lg:py-28">
+        <div class="max-w-3xl">
+          <h2 class="font-serif text-3xl sm:text-4xl leading-tight mb-4">Discretion when it matters.</h2>
+          <p class="font-serif text-2xl leading-snug text-ink mb-6">Not every property needs the same exposure.</p>
+          <div class="text-muted text-lg leading-relaxed space-y-5">
+            <p>Some properties benefit from broad market visibility. Others require a more discreet approach.</p>
+            <p>Depending on the property and your objectives, we can define the appropriate strategy, from full-market exposure to a more targeted introduction through selected buyers and professional networks.</p>
+            <p>The approach should fit the property, not the other way around.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== 5 · PROPERTY VALUATION (existing form, fields and submission unchanged) ============== -->
+    <section id="valuation" class="border-b border-hairline scroll-mt-20">
+      <div class="max-w-6xl mx-auto px-6 lg:px-8 py-20 lg:py-28 grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+        <div>
+          <p class="label mb-4">Considering selling?</p>
+          <h2 class="font-serif text-3xl sm:text-4xl leading-tight mb-6">Understand your property's position in today's market.</h2>
+          <div class="text-muted text-lg leading-relaxed space-y-5">
+            <p>If you're considering selling, we can start with a realistic assessment of your property's value, current competition and likely buyer profile.</p>
+            <p>There is no need to decide anything before we speak.</p>
+          </div>
         </div>
 
         <div class="lg:pl-4">
           <div class="bg-surface border border-hairline rounded-lg p-7 sm:p-9">
-            <h2 class="font-serif text-2xl mb-2">Request your free valuation</h2>
-            <p class="text-sm text-muted mb-7">Tell me about your property and I'll come back to you within one business day.</p>
-
             <form id="valuation-form" action="#" method="post" class="space-y-4 ph-no-capture" novalidate>
               <div>
                 <label for="v-address" class="block text-xs uppercase tracking-wider text-muted mb-1.5">Property address or area</label>
@@ -231,113 +339,17 @@
 
               <button type="submit"
                       class="cursor-pointer w-full bg-ink text-white text-sm px-7 py-3.5 hover:bg-accent transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2">
-                Get my free valuation
+                Request a Property Valuation
               </button>
-              <p class="text-xs text-muted">No obligation · no spam. By submitting, you agree to our <a href="/privacy" class="link-underline text-ink">Privacy Policy</a>.</p>
+              <p class="text-xs text-muted">By submitting, you agree to our <a href="/privacy" class="link-underline text-ink">Privacy Policy</a>.</p>
             </form>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ============== SELLING PROCESS (A-Z) ============== -->
-    <section id="process" class="border-b border-hairline bg-surface scroll-mt-20">
-      <div class="max-w-6xl mx-auto px-6 lg:px-8 py-20 lg:py-28">
-        <div class="max-w-2xl mb-14">
-          <p class="label mb-4">The process, A-Z</p>
-          <h2 class="font-serif text-3xl sm:text-4xl leading-tight">Selling your home, end to end.</h2>
-          <p class="text-muted text-lg leading-relaxed mt-5">
-            From the first valuation to the signed deed, including the
-            <span class="text-ink">documentation</span>, <span class="text-ink">financing</span>
-            questions from buyers, and <span class="text-ink">legal</span> work. You stay informed;
-            I carry the load.
-          </p>
-        </div>
-
-        <ol class="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-12">
-          <li>
-            <p class="font-serif text-accent text-2xl mb-3">01</p>
-            <h3 class="font-serif text-xl mb-2">Valuation</h3>
-            <p class="text-sm text-muted leading-relaxed">A free, data-backed estimate from real comparable sales, plus a net-proceeds figure so you know what you'll actually keep.</p>
-          </li>
-          <li>
-            <p class="font-serif text-accent text-2xl mb-3">02</p>
-            <h3 class="font-serif text-xl mb-2">Prepare &amp; certify</h3>
-            <p class="text-sm text-muted leading-relaxed">Energy certificate (Certificado Energético), small fixes, staging and professional photography, so your home shows at its best.</p>
-          </li>
-          <li>
-            <p class="font-serif text-accent text-2xl mb-3">03</p>
-            <h3 class="font-serif text-xl mb-2">List &amp; market</h3>
-            <p class="text-sm text-muted leading-relaxed">Pricing strategy, the major portals, and my international network, putting your property in front of genuine, qualified buyers.</p>
-          </li>
-          <li>
-            <p class="font-serif text-accent text-2xl mb-3">04</p>
-            <h3 class="font-serif text-xl mb-2">Offers &amp; negotiation</h3>
-            <p class="text-sm text-muted leading-relaxed">I qualify every buyer, manage viewings, and negotiate hard on price and terms, the same edge that protects my buyers, now working for you.</p>
-          </li>
-          <li>
-            <p class="font-serif text-accent text-2xl mb-3">05</p>
-            <h3 class="font-serif text-xl mb-2">Legal &amp; documentation</h3>
-            <p class="text-sm text-muted leading-relaxed">CPCV, Caderneta Predial, licences and capital-gains paperwork, coordinated with your lawyer and, where needed, a tax adviser.</p>
-          </li>
-          <li>
-            <p class="font-serif text-accent text-2xl mb-3">06</p>
-            <h3 class="font-serif text-xl mb-2">Deed &amp; close (Escritura)</h3>
-            <p class="text-sm text-muted leading-relaxed">We sign at the notary, hand over the keys and settle the proceeds, with me beside you, or signing by power of attorney if you're abroad.</p>
-          </li>
-        </ol>
-
-        <p class="text-sm text-muted mt-12">
-          Curious about the costs? Estimate your net proceeds in the
-          <a href="/calculators#net-proceeds" class="link-underline text-ink font-medium">seller's calculator</a>.
-        </p>
-      </div>
-    </section>
-
-    <!-- ============== WHY SELL WITH ME ============== -->
-    <section class="border-b border-hairline">
-      <div class="max-w-6xl mx-auto px-6 lg:px-8 py-20 lg:py-28">
-        <div class="max-w-2xl mb-14">
-          <p class="label mb-4">Why sell with me</p>
-          <h2 class="font-serif text-3xl sm:text-4xl leading-tight">A sharper sale, fewer surprises.</h2>
-        </div>
-
-        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-10">
-          <div>
-            <svg viewBox="0 0 24 24" class="w-7 h-7 text-accent mb-5" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M4 19l4-4 4 4 8-8M14 7h6v6"/>
-            </svg>
-            <h3 class="font-serif text-xl mb-2">Priced to sell well</h3>
-            <p class="text-sm text-muted leading-relaxed">Real comparables, not wishful thinking, priced to attract offers and hold value through negotiation.</p>
-          </div>
-          <div>
-            <svg viewBox="0 0 24 24" class="w-7 h-7 text-accent mb-5" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
-              <circle cx="12" cy="12" r="9"/>
-              <path stroke-linecap="round" stroke-linejoin="round" d="M3 12h18M12 3a15 15 0 010 18M12 3a15 15 0 000 18"/>
-            </svg>
-            <h3 class="font-serif text-xl mb-2">International reach</h3>
-            <p class="text-sm text-muted leading-relaxed">English-, Hebrew- and Portuguese-speaking, with a network of relocating buyers actively looking in the Golden Triangle.</p>
-          </div>
-          <div>
-            <svg viewBox="0 0 24 24" class="w-7 h-7 text-accent mb-5" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M4 19l4-4 4 4 8-8M14 7h6v6"/>
-            </svg>
-            <h3 class="font-serif text-xl mb-2">The negotiator's edge</h3>
-            <p class="text-sm text-muted leading-relaxed">Two decades reading the other side of a deal. I hold your price and close buyers who are serious.</p>
-          </div>
-          <div>
-            <svg viewBox="0 0 24 24" class="w-7 h-7 text-accent mb-5" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M7 3h7l5 5v13H7zM14 3v5h5M9.5 13.5l1.8 1.8 3.2-3.6"/>
-            </svg>
-            <h3 class="font-serif text-xl mb-2">Paperwork handled</h3>
-            <p class="text-sm text-muted leading-relaxed">Energy certificate, contracts, taxes and the notary, coordinated so closing day is calm, not chaotic.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============== FAQ ============== -->
-    <section id="faq" class="border-b border-hairline bg-surface">
+    <!-- ============== 6 · FAQ ============== -->
+    <section id="faq" class="border-b border-hairline bg-surface scroll-mt-20">
       <div class="max-w-3xl mx-auto px-6 lg:px-8 py-20 lg:py-28">
         <div class="mb-14">
           <p class="label mb-4">Common questions</p>
@@ -346,88 +358,59 @@
 
         <div class="divide-y divide-hairline">
           <div class="py-7 first:pt-0">
-            <h3 class="font-serif text-xl text-ink mb-3">How much is my home in Portugal worth?</h3>
-            <p class="text-muted leading-relaxed">It depends on location, condition, and what comparable homes are actually closing for, not the asking prices you see online. I prepare a free, data-backed valuation using recent local sales and current demand, so you start from a realistic, defensible number.</p>
+            <h3 class="font-serif text-xl text-ink mb-3">How do you determine the value of my property?</h3>
+            <div class="text-muted leading-relaxed space-y-3">
+              <p>I look beyond the asking prices of similar properties.</p>
+              <p>Location, condition, layout, views, outdoor space, recent comparable transactions, current competition and buyer demand all influence how a property should be positioned.</p>
+              <p>The objective is not to give you the highest number. It is to give you an informed and realistic view of where your property sits in the current market.</p>
+            </div>
           </div>
           <div class="py-7">
-            <h3 class="font-serif text-xl text-ink mb-3">What does it cost to sell a property in Portugal?</h3>
-            <p class="text-muted leading-relaxed">The main costs are the agency commission (typically a percentage of the sale price, plus VAT), a valid energy certificate, and, depending on your situation, capital gains tax on any profit. I give you a clear net-proceeds estimate up front so you know what you'll actually walk away with.</p>
+            <h3 class="font-serif text-xl text-ink mb-3">What costs should I expect when selling a property in Portugal?</h3>
+            <div class="text-muted leading-relaxed space-y-3">
+              <p>The costs depend on the property and your individual circumstances, but may include agency fees, required documentation or certification, legal costs and potential tax obligations.</p>
+              <p>Before proceeding, I can help you understand which professionals you should speak with so that you have a clear picture of the transaction.</p>
+            </div>
           </div>
           <div class="py-7">
-            <h3 class="font-serif text-xl text-ink mb-3">Do I need an energy certificate to sell?</h3>
-            <p class="text-muted leading-relaxed">Yes. A valid energy certificate (Certificado Energético) is legally required before you can advertise or complete the sale of a property in Portugal. I arrange a certified assessor so this is ready, not a last-minute scramble.</p>
+            <h3 class="font-serif text-xl text-ink mb-3">Do I need an Energy Certificate to sell?</h3>
+            <div class="text-muted leading-relaxed space-y-3">
+              <p>An Energy Performance Certificate is generally required when marketing and selling property in Portugal, subject to the applicable rules and any exemptions.</p>
+              <p>If you do not already have one, I can help coordinate the process with the appropriate professional.</p>
+            </div>
           </div>
           <div class="py-7">
-            <h3 class="font-serif text-xl text-ink mb-3">Will I pay capital gains tax when I sell?</h3>
-            <p class="text-muted leading-relaxed">Possibly, it depends on whether you're a Portuguese tax resident, whether it was your main home, and when you bought. Relief can apply when reinvesting the proceeds from a main residence. The rules are specific, so I work alongside a tax adviser and give you an estimate before you list.</p>
+            <h3 class="font-serif text-xl text-ink mb-3">Will I have to pay capital gains tax?</h3>
+            <div class="text-muted leading-relaxed space-y-3">
+              <p>Capital gains treatment depends on factors including your tax residency, how the property has been used and your individual circumstances.</p>
+              <p>Because tax treatment is specific to each seller, I recommend confirming your position with a qualified tax adviser or accountant. I can connect you with the appropriate professional if needed.</p>
+            </div>
           </div>
           <div class="py-7">
-            <h3 class="font-serif text-xl text-ink mb-3">Can I sell my Portuguese property from abroad?</h3>
-            <p class="text-muted leading-relaxed">Yes. With a power of attorney I can manage viewings, paperwork and even the notary signing on your behalf, and keep you updated by video and email throughout, you don't need to fly in for every step.</p>
+            <h3 class="font-serif text-xl text-ink mb-3">Can you manage the sale if I am not in Portugal?</h3>
+            <div class="text-muted leading-relaxed space-y-3">
+              <p>Yes.</p>
+              <p>Many owners are not permanently based in Portugal. I can manage the property marketing, enquiries, viewings and communication locally while coordinating with you and the professionals involved in the transaction.</p>
+              <p>The objective is to make the process clear and manageable wherever you are based.</p>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ============== CONTACT ============== -->
-    <section id="contact">
-      <div class="max-w-6xl mx-auto px-6 lg:px-8 py-20 lg:py-28 grid lg:grid-cols-12 gap-12">
-
-        <div class="lg:col-span-5">
-          <p class="label mb-4">Contact</p>
-          <h2 class="font-serif text-3xl sm:text-4xl leading-tight mb-6">Prefer to just talk it through?</h2>
-          <p class="text-muted text-lg leading-relaxed mb-10">
-            Not ready for a formal valuation yet? Send a message and I'll answer your questions about
-            selling in Portugal, no pressure. I read every message myself.
-          </p>
-
-          <ul class="space-y-5 text-sm">
-            <li class="flex items-center gap-4">
-              <svg viewBox="0 0 24 24" class="w-5 h-5 text-accent flex-none" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16v12H4z"/>
-                <path stroke-linecap="round" stroke-linejoin="round" d="M4 7l8 6 8-6"/>
-              </svg>
-              <a href="mailto:natalie.gutman@expportugal.com" class="link-underline text-ink">natalie.gutman@expportugal.com</a>
-            </li>
-            <li class="flex items-center gap-4">
-              <svg viewBox="0 0 24 24" class="w-5 h-5 text-accent flex-none" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M5 4h4l2 5-3 2a12 12 0 005 5l2-3 5 2v4a2 2 0 01-2 2A16 16 0 014 6a2 2 0 011-2z"/>
-              </svg>
-              <a href="tel:+351969227709" class="link-underline text-ink">+351 969 227 709</a>
-            </li>
-            <li class="flex items-center gap-4">
-              <svg viewBox="0 0 24 24" class="w-5 h-5 text-accent flex-none" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M20 12a8 8 0 01-12 6.9L4 20l1.1-4A8 8 0 1120 12z"/>
-              </svg>
-              <a href="https://wa.me/351969227709" class="link-underline text-ink">WhatsApp</a>
-            </li>
-          </ul>
+    <!-- ============== 7 · FINAL CTA ============== -->
+    <section class="bg-ink text-white">
+      <div class="max-w-3xl mx-auto px-6 py-24 lg:py-32 text-center">
+        <h2 class="text-balance font-serif text-3xl sm:text-4xl lg:text-5xl leading-snug mb-8">Ready to talk?</h2>
+        <p class="text-white/70 leading-relaxed max-w-xl mx-auto mb-10">Whether you're preparing to sell now or simply want to understand your options, we can start with a conversation.</p>
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-5 sm:gap-8">
+          <a href="/contact" class="more-link bg-white text-ink px-7 py-4 hover:bg-white/90 transition-colors duration-300">
+            Talk to Natalie
+          </a>
+          <a href="#valuation" class="more-link link-underline text-white/80 py-2 hover:text-white transition-colors duration-300">
+            Request a Property Valuation
+          </a>
         </div>
-
-        <form action="#" method="post" class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-5 ph-no-capture" novalidate>
-          <div class="sm:col-span-1">
-            <label for="c-name" class="block label mb-2">Name</label>
-            <input id="c-name" name="name" type="text" required autocomplete="name"
-                   class="w-full border border-hairline bg-white px-4 py-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent" />
-          </div>
-          <div class="sm:col-span-1">
-            <label for="c-email" class="block label mb-2">Email</label>
-            <input id="c-email" name="email" type="email" required autocomplete="email"
-                   class="w-full border border-hairline bg-white px-4 py-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent" />
-          </div>
-          <div class="sm:col-span-2">
-            <label for="c-msg" class="block label mb-2">Tell me a little about your property and plans</label>
-            <textarea id="c-msg" name="message" rows="5" required
-                      class="w-full border border-hairline bg-white px-4 py-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"></textarea>
-          </div>
-          <div class="sm:col-span-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <p class="text-xs text-muted">I usually reply within one business day. By sending, you agree to our <a href="/privacy" class="link-underline text-ink">Privacy Policy</a>.</p>
-            <button type="submit"
-                    class="cursor-pointer bg-ink text-white text-sm px-7 py-3.5 hover:bg-accent transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2">
-              Send message
-            </button>
-          </div>
-        </form>
       </div>
     </section>
 
@@ -547,49 +530,6 @@
         result.appendChild(detail);
         while (valForm.firstChild) valForm.removeChild(valForm.firstChild);
         valForm.appendChild(result);
-      });
-    }
-
-    // ── Contact form submission ──────────────────────────────────────────────
-    var contactForm = document.querySelector('#contact form');
-    if (contactForm) {
-      contactForm.addEventListener('submit', function (e) {
-        e.preventDefault();
-        if (!contactForm.checkValidity()) { contactForm.reportValidity(); return; }
-        var name    = (contactForm.querySelector('#c-name')  || {}).value || '';
-        var email   = (contactForm.querySelector('#c-email') || {}).value || '';
-        var message = (contactForm.querySelector('#c-msg')   || {}).value || '';
-
-        if (!SHEETS_URL) {
-          window.showFormUnavailable(contactForm, 'sm:col-span-2 py-8 text-center');
-          return;
-        }
-
-        if (SHEETS_URL) {
-          window.siteTrack && window.siteTrack('form_submitted', { form: 'contact' }); // count only, no field values (Michael 2026-09-16)
-          fetch(SHEETS_URL, {
-            method: 'POST', keepalive: true,
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: 'type=contact'
-              + '&name='    + encodeURIComponent(name)
-              + '&email='   + encodeURIComponent(email)
-              + '&message=' + encodeURIComponent(message)
-          }).catch(function () {});
-        }
-
-        var result = document.createElement('div');
-        result.className = 'sm:col-span-2 py-8 text-center';
-        var heading = document.createElement('p');
-        heading.className = 'font-serif text-2xl text-ink mb-3';
-        heading.textContent = 'Message sent.';
-        var detail = document.createElement('p');
-        detail.className = 'text-muted';
-        detail.textContent = 'Thanks ' + (name.split(' ')[0] || 'for reaching out') + '. I\'ll be in touch within one business day.';
-        result.appendChild(heading);
-        result.appendChild(detail);
-        while (contactForm.firstChild) contactForm.removeChild(contactForm.firstChild);
-        contactForm.appendChild(result);
       });
     }
   </script>

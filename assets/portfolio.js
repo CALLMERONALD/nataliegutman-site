@@ -508,6 +508,72 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
     attempt(1);
   }
 
+  // Buy page "A selection of homes to consider" (Natalie's Buy spec 2026-10-25): the
+  // homepage card and listing order, first three residential homes for sale in Cascais,
+  // Lisbon or Sintra. No rental field exists; 'available' is the only for-sale status
+  // (under_offer = reserved, sold drop out). Area is matched on the location text only,
+  // so a row like "Quinta da Marinha" does not qualify until its location names the town.
+  var BUYER_TYPES = ['apartment', 'house', 'villa', 'townhouse', 'penthouse'];
+  var BUYER_AREAS = /cascais|lisbon|lisboa|sintra/i;
+
+  function isBuyerProperty(property) {
+    return property.status === 'available' && BUYER_TYPES.indexOf(property.type) !== -1 &&
+      BUYER_AREAS.test(String(property.location_area || ''));
+  }
+
+  function pickBuyerProperties(properties) {
+    var seen = {};
+    return properties.filter(function (property) {
+      if (!isBuyerProperty(property) || seen[property.id]) return false;
+      seen[property.id] = true;
+      return true;
+    }).slice(0, 3);
+  }
+
+  function loadBuyerProperties() {
+    var grid = document.getElementById('buyer-property-grid');
+    if (!grid) return;
+    grid.hidden = true; // none qualify or the read fails: heading, copy and portfolio link stay
+    var visitorMoved = false;
+    ['wheel', 'touchstart', 'keydown', 'mousedown'].forEach(function (type) {
+      window.addEventListener(type, function () { visitorMoved = true; }, { once: true, passive: true });
+    });
+
+    function attempt(retriesLeft) {
+      fetchProperties().then(function (properties) {
+        var picks = pickBuyerProperties(properties);
+        if (!picks.length) return;
+        // The cards land after the browser's jump to /buy#guide or #buyer-contact and
+        // push that target ~1500 px down (measured 2026-10-27: Chrome's smooth glide to
+        // the hash keeps its pre-card destination, WebKit jumps then gets shifted).
+        // Landing on a hash below the grid, untouched: re-aim at the hash. Otherwise,
+        // already past the grid: hold the view (a native anchor gives a zero shift).
+        var ref = grid.nextElementSibling;
+        var refTop = ref ? ref.getBoundingClientRect().top : 0;
+        clearElement(grid);
+        picks.forEach(function (property) {
+          grid.appendChild(createPropertyCard(property, function () {
+            window.location.href = propertyUrl(property, '/properties');
+          }));
+        });
+        grid.hidden = false;
+        var shift = ref ? ref.getBoundingClientRect().top - refTop : 0;
+        var target = window.location.hash.length > 1 ? document.getElementById(window.location.hash.slice(1)) : null;
+        var reaim = target && !visitorMoved && (grid.compareDocumentPosition(target) & Node.DOCUMENT_POSITION_FOLLOWING);
+        if (reaim || (refTop < 0 && shift > 0)) {
+          var root = document.documentElement;
+          var behavior = root.style.scrollBehavior;
+          root.style.scrollBehavior = 'auto'; // site-wide smooth scrolling would glide instead of hold
+          if (reaim) target.scrollIntoView(); else window.scrollBy(0, shift);
+          root.style.scrollBehavior = behavior;
+        }
+      }).catch(function () {
+        if (retriesLeft > 0) setTimeout(function () { attempt(retriesLeft - 1); }, 4000);
+      });
+    }
+    attempt(1);
+  }
+
   function prefillContactEnquiry() {
     var message = document.getElementById('c-msg');
     if (!message || message.value) return;
@@ -524,6 +590,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
     var openModal = setupModal();
     loadPropertiesPage(openModal);
     loadFeaturedProperties();
+    loadBuyerProperties();
     prefillContactEnquiry();
   }
 
@@ -538,7 +605,18 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
         !REF_PATTERN.test('11111111') || REF_PATTERN.test('1111111') || REF_PATTERN.test('11111111-1') ||
         listingsQuery(false).indexOf('off_market=eq.false') === -1 ||
         listingsQuery(true).indexOf('off_market=eq.true') === -1 ||
-        listingsQuery(true).indexOf('published=eq.true') === -1) {
+        listingsQuery(true).indexOf('published=eq.true') === -1 ||
+        pickBuyerProperties([
+          { id: 'a', status: 'available', type: 'apartment', location_area: 'Bairro do Rosario - Cascais' },
+          { id: 'a', status: 'available', type: 'apartment', location_area: 'Bairro do Rosario - Cascais' },
+          { id: 'b', status: 'sold', type: 'house', location_area: 'Cascais' },
+          { id: 'c', status: 'under_offer', type: 'villa', location_area: 'Sintra' },
+          { id: 'd', status: 'available', type: 'plot', location_area: 'Vila Verde - Sintra' },
+          { id: 'e', status: 'available', type: 'house', location_area: 'Quinta da Marinha' },
+          { id: 'f', status: 'available', type: 'villa', location_area: 'Sao Bento - Lisbon' },
+          { id: 'g', status: 'available', type: 'penthouse', location_area: 'Sintra' },
+          { id: 'h', status: 'available', type: 'townhouse', location_area: 'Cascais' }
+        ]).map(function (p) { return p.id; }).join(',') !== 'a,f,g') {
       throw new Error('Portfolio self-check failed');
     }
     console.log('portfolio self-check: ok');

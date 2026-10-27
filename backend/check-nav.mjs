@@ -144,7 +144,7 @@ assert.match(formEndpoint, /tel:\+351969227709/,
   'assets/form-endpoint.js: fallback must link to Natalie by phone');
 for (const [fileName, expectedFallbacks] of [
   ['buy.html', 1],
-  ['sell.html', 2],
+  ['sell.html', 1], // valuation only: Natalie's Sell spec (2026-10) removed the contact section
   ['contact.html', 1],
   ['gandarinha.html', 1]
 ]) {
