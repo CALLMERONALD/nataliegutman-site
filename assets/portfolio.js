@@ -560,12 +560,27 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
         var shift = ref ? ref.getBoundingClientRect().top - refTop : 0;
         var target = window.location.hash.length > 1 ? document.getElementById(window.location.hash.slice(1)) : null;
         var reaim = target && !visitorMoved && (grid.compareDocumentPosition(target) & Node.DOCUMENT_POSITION_FOLLOWING);
-        if (reaim || (refTop < 0 && shift > 0)) {
+        // Instant scroll (cancels Chrome's in-flight glide, which otherwise drags a
+        // plain scrollIntoView up to 220 px off on a live network), repeated after the
+        // next frame and once web fonts settle, unless the visitor took over meanwhile.
+        function jumpTo(y) {
           var root = document.documentElement;
           var behavior = root.style.scrollBehavior;
-          root.style.scrollBehavior = 'auto'; // site-wide smooth scrolling would glide instead of hold
-          if (reaim) target.scrollIntoView(); else window.scrollBy(0, shift);
+          root.style.scrollBehavior = 'auto';
+          try { window.scrollTo({ top: y, left: 0, behavior: 'instant' }); } catch (e) { window.scrollTo(0, y); }
           root.style.scrollBehavior = behavior;
+        }
+        function aimAtTarget() {
+          if (visitorMoved) return;
+          var margin = parseFloat(window.getComputedStyle(target).scrollMarginTop) || 0;
+          jumpTo(target.getBoundingClientRect().top + window.pageYOffset - margin);
+        }
+        if (reaim) {
+          aimAtTarget();
+          requestAnimationFrame(aimAtTarget);
+          if (document.fonts && document.fonts.ready) document.fonts.ready.then(aimAtTarget);
+        } else if (refTop < 0 && shift > 0) {
+          jumpTo(window.pageYOffset + shift);
         }
       }).catch(function () {
         if (retriesLeft > 0) setTimeout(function () { attempt(retriesLeft - 1); }, 4000);
