@@ -471,6 +471,12 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
     });
   }
 
+  var FEATURED_TITLES = {
+    '947430d0-ffb8-4ea5-986e-4a22661ed103': 'Designer 3-bedroom apartment',
+    '87471809-8233-4ea4-ade8-32fc64c7b3eb': 'Fully renovated 2-bedroom apartment',
+    'ea0fb853-d64f-46d6-9ac3-44e7b51f10c5': 'Renovated 3-bedroom apartment with garden views'
+  };
+
   function loadFeaturedProperties() {
     var section = document.getElementById('featured-properties-section');
     var grid = document.getElementById('featured-grid');
@@ -485,6 +491,9 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5v
         if (!featured.length) return; // genuinely nothing featured: section stays hidden by design
         clearElement(grid);
         featured.forEach(function (property) {
+          // Homepage-only card titles (Natalie 2026-11-02); the listing rows keep their own titles.
+          var title = FEATURED_TITLES[property.id];
+          if (title) property = Object.assign({}, property, { title: title });
           grid.appendChild(createPropertyCard(property, function () {
             window.location.href = propertyUrl(property, '/properties');
           }));

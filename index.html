@@ -157,7 +157,8 @@
 
   <main id="main">
 
-    <!-- Homepage copy + order = Natalie's "Homepage – Final Implementation Guide" (2026-09-30).
+    <!-- Homepage copy + order = Natalie's "Homepage – Final Implementation Guide" (2026-09-30),
+         then her "Desktop Homepage Update" (2026-11-02: desktop = lg and up, mobile layout untouched).
          Her em dashes became commas (no-dash rule); imagery unchanged by her instruction. -->
 
     <!-- ============== 1 · HERO (full-bleed) ============== -->
@@ -166,29 +167,28 @@
       <div class="absolute inset-0 bg-gradient-to-b from-ink/45 via-ink/50 to-ink/70"></div>
 
       <div class="relative z-10 flex-1 flex items-center justify-center pt-28 pb-10">
-        <!-- Natalie's hero update (2026-10-29): one-line H1 from lg (needs ~961px at 60px/600), below that two set
-             lines; the second line is a block there, so ::first-letter capitalises "Properly" only when it wraps. -->
+        <!-- Natalie's hero update (2026-11-02): one-line H1 at 52px from xl (1280px), two set lines at 46px for
+             1024 to 1279px, mobile sizes unchanged; the second line is a block when it wraps, so ::first-letter
+             capitalises "Properly" only then. -->
         <div class="text-center text-white px-6 max-w-6xl">
-          <p class="label !text-white/75 mb-7 sm:mb-8">Real Estate Advisory &middot; Portugal</p>
-          <h1 class="font-serif font-semibold text-[clamp(1.75rem,9.5vw,2.5rem)] sm:text-5xl lg:text-6xl leading-[1.1] mb-7 sm:mb-9">
+          <p class="label !text-white/75 mb-7 sm:mb-8 lg:mb-6">Real Estate Advisory &middot; Portugal</p>
+          <h1 class="font-serif font-semibold text-[clamp(1.75rem,9.5vw,2.5rem)] sm:text-5xl lg:text-[46px] xl:text-[52px] leading-[1.1] lg:leading-[1.15] mb-7 sm:mb-9 lg:mb-6">
             <span class="whitespace-nowrap">Property decisions,</span>
-            <span class="block lg:inline whitespace-nowrap first-letter:uppercase">properly advised.</span>
+            <span class="block xl:inline whitespace-nowrap first-letter:uppercase">properly advised.</span>
           </h1>
-          <p class="label !text-white/75 mb-6 sm:mb-8">Cascais &middot; Lisbon &middot; Sintra</p>
-          <p class="hidden sm:block text-balance text-white/90 text-xl max-w-2xl mx-auto mb-5 leading-relaxed">
-            Local knowledge. Commercial judgement. Personal representation.
-          </p>
-          <p class="hidden sm:block text-balance text-white/75 text-base max-w-2xl mx-auto mb-12 leading-relaxed">
-            I advise buyers and sellers through property decisions in Portugal, personally from first conversation to completion.
+          <p class="label !text-white/75 mb-6 sm:mb-8 lg:mb-7">Cascais &middot; Lisbon &middot; Sintra</p>
+          <p class="hidden sm:block text-balance text-white/75 lg:text-white text-base lg:text-[18px] max-w-2xl lg:max-w-[640px] mx-auto mb-12 lg:mb-8 leading-relaxed lg:leading-[1.6]">
+            I help buyers and sellers make informed property decisions in Portugal, with local knowledge, strong negotiation and personal guidance from first conversation to completion.
           </p>
           <p class="sm:hidden text-balance text-white/85 text-base max-w-sm mx-auto mb-10 leading-relaxed">
             Personal real estate advice for buyers and sellers, from first conversation to completion.
           </p>
-          <div class="flex flex-col sm:flex-row items-center justify-center gap-5 sm:gap-8">
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-5 sm:gap-8 lg:gap-4">
             <a href="/properties" class="more-link bg-white text-ink px-7 py-4 hover:bg-white/90 transition-colors duration-300">
               Find Your Place
             </a>
-            <a href="/contact" class="more-link link-underline text-white/80 py-2 hover:text-white transition-colors duration-300">
+            <!-- Desktop: outlined twin of the white button (15/27px padding + 1px border = the same box). -->
+            <a href="/contact" class="more-link link-underline lg:after:hidden text-white/80 lg:text-white py-2 lg:py-[15px] lg:px-[27px] lg:border lg:border-white hover:text-white lg:hover:bg-white lg:hover:text-ink transition-colors duration-300">
               Talk to Natalie
             </a>
           </div>
@@ -202,52 +202,39 @@
 
     <!-- ============== 2 · WHY NATALIE ============== -->
     <section class="bg-white">
-      <div class="max-w-7xl mx-auto px-6 lg:px-10 py-20 lg:py-28">
-        <div class="max-w-3xl mx-auto text-center mb-16 reveal">
-          <h2 class="text-balance font-serif text-4xl sm:text-5xl leading-tight mb-7">More than finding the right property.</h2>
-          <div class="text-muted leading-relaxed space-y-5">
-            <p>
-              Buying or selling property in Portugal requires more than access to listings. It takes local
-              knowledge, sound judgement, strong negotiation and the right people around the transaction.
-            </p>
-            <p>My role is to bring those pieces together while making sure your interests remain at the centre of every decision.</p>
-          </div>
+      <div class="max-w-7xl mx-auto px-6 lg:px-10 py-20">
+        <div class="max-w-3xl lg:max-w-[760px] mx-auto text-center mb-16 lg:mb-12 reveal">
+          <h2 class="text-balance font-serif text-4xl sm:text-5xl leading-tight mb-7 lg:mb-5">More than finding the right property.</h2>
+          <p class="text-balance text-muted leading-relaxed">Local insight, careful negotiation and personal support, brought together around your interests.</p>
         </div>
 
-        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-12">
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-x-10 lg:gap-x-8 gap-y-12 items-start">
           <div class="reveal border-t border-hairline pt-7">
             <p class="label mb-4">Local Knowledge</p>
             <h3 class="font-serif text-2xl leading-snug mb-3">I live where I work.</h3>
-            <p class="text-sm text-muted leading-relaxed">
-              Based in Cascais since 2019, I know the areas I represent beyond what appears on a property
-              portal, from individual neighbourhoods and lifestyle to the details that can make a real
-              difference once you live here.
+            <p class="text-sm lg:text-base text-muted leading-relaxed lg:leading-[1.6]">
+              Based in Cascais since 2019, I know these areas beyond the listings. I help you understand the neighbourhood, the lifestyle and the details that matter day to day.
             </p>
           </div>
           <div class="reveal border-t border-hairline pt-7" style="--reveal-delay:90ms">
             <p class="label mb-4">Negotiation &amp; Representation</p>
             <h3 class="font-serif text-2xl leading-snug mb-3">Your interests come first.</h3>
-            <p class="text-sm text-muted leading-relaxed">
-              My background as a professional commercial buyer taught me to assess value, identify potential
-              issues and negotiate with discipline. I am there to represent you, not simply to move a
-              transaction forward.
+            <p class="text-sm lg:text-base text-muted leading-relaxed lg:leading-[1.6]">
+              My background in commercial buying taught me to assess value and negotiate with discipline. I use that experience to protect your interests at every stage.
             </p>
           </div>
           <div class="reveal border-t border-hairline pt-7" style="--reveal-delay:180ms">
             <p class="label mb-4">Personal Service</p>
-            <h3 class="font-serif text-2xl leading-snug mb-3">One advisor, personally involved.</h3>
-            <p class="text-sm text-muted leading-relaxed">
-              Whether I’m representing you as a buyer or a seller, you work directly with me. I remain close
-              to the process, coordinate the people around the transaction and make sure you always know
-              what comes next.
+            <h3 class="font-serif text-2xl leading-snug mb-3">One advisor, by your side.</h3>
+            <p class="text-sm lg:text-base text-muted leading-relaxed lg:leading-[1.6]">
+              You work directly with me throughout your purchase or sale. I coordinate the next steps, keep you informed and remain available for your questions.
             </p>
           </div>
           <div class="reveal border-t border-hairline pt-7" style="--reveal-delay:270ms">
             <p class="label mb-4">Global Reach</p>
-            <h3 class="font-serif text-2xl leading-snug mb-3">Personal service, backed by a global network.</h3>
-            <p class="text-sm text-muted leading-relaxed">
-              As part of eXp Realty, I combine the attention and accessibility of a boutique advisor with the
-              reach, resources and connections of an international real estate company.
+            <h3 class="font-serif text-2xl leading-snug mb-3">Local attention. Global reach.</h3>
+            <p class="text-sm lg:text-base text-muted leading-relaxed lg:leading-[1.6]">
+              Through eXp Realty, I connect your property journey with an international network of professionals and opportunities. You retain one personal point of contact throughout.
             </p>
           </div>
         </div>
@@ -280,9 +267,8 @@
             <p class="label mb-4">Buying</p>
             <h3 class="font-serif text-3xl leading-snug mb-4">Find the right home. Buy it well.</h3>
             <p class="text-muted leading-relaxed mb-8 flex-1">
-              Finding a property is only the beginning. I help you understand the market, identify the right
-              opportunities, assess value and negotiate the right terms, while coordinating the people and
-              steps around your purchase.
+              I help you find the right opportunities, assess value and negotiate the terms. From search to
+              completion, I coordinate the steps and professionals around your purchase.
             </p>
             <a href="/buy" class="more-link hover:text-accent transition-colors">
               Explore Buying
@@ -293,9 +279,8 @@
             <p class="label mb-4">Selling</p>
             <h3 class="font-serif text-3xl leading-snug mb-4">Position it well. Represent it properly.</h3>
             <p class="text-muted leading-relaxed mb-8 flex-1">
-              Selling well starts long before the first viewing. I work with you on positioning, pricing and
-              presentation, then personally manage enquiries, viewings and negotiations, with a clear
-              strategy and your interests at the centre of every decision.
+              A clear strategy for pricing, presentation and reaching the right buyers. I personally manage
+              enquiries, viewings and negotiations through to completion.
             </p>
             <a href="/sell" class="more-link hover:text-accent transition-colors">
               Explore Selling
@@ -321,7 +306,7 @@
           </div>
         </div>
 
-        <!-- No area pages exist yet: the three Explore links open the portfolio (Fable 2026-09-30). -->
+        <!-- No area pages exist yet: the three links open the portfolio, labelled "View Properties" to match (Natalie 2026-11-02). -->
         <div class="grid md:grid-cols-3 gap-10 md:gap-8">
           <div class="reveal flex flex-col">
             <div class="aspect-[4/3] bg-surface overflow-hidden mb-6">
@@ -337,7 +322,7 @@
               <p>Cascais is for those who want life to feel a little more spacious, without feeling disconnected.</p>
             </div>
             <a href="/properties" class="more-link hover:text-accent transition-colors">
-              Explore Cascais
+              View Properties
               <svg viewBox="0 0 24 24" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 5l7 7-7 7"/></svg>
             </a>
           </div>
@@ -355,7 +340,7 @@
               </p>
             </div>
             <a href="/properties" class="more-link hover:text-accent transition-colors">
-              Explore Lisbon
+              View Properties
               <svg viewBox="0 0 24 24" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 5l7 7-7 7"/></svg>
             </a>
           </div>
@@ -373,7 +358,7 @@
               </p>
             </div>
             <a href="/properties" class="more-link hover:text-accent transition-colors">
-              Explore Sintra
+              View Properties
               <svg viewBox="0 0 24 24" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 5l7 7-7 7"/></svg>
             </a>
           </div>
@@ -412,19 +397,14 @@
           <div class="text-muted leading-relaxed space-y-5 max-w-md">
             <p>I’m Natalie Gutman, a real estate advisor based in Cascais, where I’ve lived since 2019.</p>
             <p>
-              Before real estate, I worked as a professional commercial buyer, a background that shaped the
-              way I work today: I ask the right questions, pay attention to the details, negotiate carefully
-              and never lose sight of whose interests I represent.
+              Before real estate, I worked as a professional commercial buyer. That experience shaped my
+              approach: ask the right questions, assess value carefully and negotiate with a clear purpose.
             </p>
             <p>
-              I believe good real estate advice should feel personal. My clients work directly with me, and I
-              stay close to the process from our first conversation to the final signature.
+              Today, I help buyers and sellers navigate property decisions across Cascais, Lisbon and Sintra.
+              You work directly with me, with clear communication, attention to detail and the right
+              professionals brought in when needed.
             </p>
-            <p>
-              Sometimes that means finding the right opportunity. Sometimes it means negotiating harder. And
-              sometimes it means saying, “This isn’t the right property for you.”
-            </p>
-            <p>For me, that’s what good representation looks like.</p>
           </div>
           <a href="/about" class="more-link mt-9 hover:text-accent transition-colors">
             More About Natalie
