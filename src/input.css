@@ -83,6 +83,14 @@
   font-weight: 400;
   src: url('fonts/pinyon-script-latin-400-normal.woff2') format('woff2');
 }
+/* Homepage hero H1 only (Michael 2026-11-11). OFL, licence in assets/fonts/OFL-herr-von-muellerhoff.txt */
+@font-face {
+  font-family: 'Herr Von Muellerhoff';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url('fonts/herr-von-muellerhoff-latin-400-normal.woff2') format('woff2');
+}
 
 @tailwind base;
 @tailwind components;

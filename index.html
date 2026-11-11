@@ -100,6 +100,7 @@
   <link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 
+  <link rel="preload" href="assets/fonts/herr-von-muellerhoff-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="assets/tailwind.css">
   <script src="assets/form-endpoint.js"></script>
   <script src="assets/portfolio.js" defer></script>
@@ -163,20 +164,25 @@
 
     <!-- ============== 1 · HERO (full-bleed) ============== -->
     <section class="relative min-h-[100svh] flex flex-col bg-ink overflow-hidden">
-      <img src="assets/photos/featured-villa.jpg" alt="A contemporary luxury villa in Portugal at dusk" class="absolute inset-0 w-full h-full object-cover" loading="eager" fetchpriority="high" />
+      <img src="assets/photos/home-hero-1920.jpg" srcset="assets/photos/home-hero-1200.jpg 1200w, assets/photos/home-hero-1920.jpg 1920w" sizes="100vw" width="1920" height="1280" alt="A contemporary villa with a lawn and pool in Cascais" class="absolute inset-0 w-full h-full object-cover" loading="eager" fetchpriority="high" />
       <div class="absolute inset-0 bg-gradient-to-b from-ink/45 via-ink/50 to-ink/70"></div>
 
-      <div class="relative z-10 flex-1 flex items-center justify-center pt-28 pb-10">
-        <!-- Natalie's hero simplification (2026-11-11): H1, location line, one button. H1 one line from lg,
-             natural wrap below. -->
-        <div class="text-center text-white px-6 max-w-6xl">
-          <h1 class="text-balance font-serif font-semibold text-[clamp(1.75rem,9.5vw,2.5rem)] sm:text-5xl lg:text-[46px] xl:text-[52px] leading-[1.1] lg:leading-[1.15] lg:whitespace-nowrap mb-7 sm:mb-9 lg:mb-6">
+      <!-- Natalie's hero simplification (2026-11-11): H1, location line, one button. H1 one line from lg,
+           natural wrap below. Michael 2026-11-11: the H1 is centred on the line where the balcony glass meets the
+           dark band of the photo (y 508 of 1280 = 39.7%), at every viewport: the image is object-cover in a
+           100svh box, so its rendered height is max(100vw * 2/3, 100svh) and it is centred vertically.
+           Changing the photo means re-measuring 0.397 and the 2/3 aspect. -->
+      <div class="absolute inset-x-0 z-10 h-0 flex items-center justify-center" style="top: calc((100svh - max(66.667vw, 100svh)) / 2 + 0.397 * max(66.667vw, 100svh))">
+        <div class="relative text-center text-white px-6 max-w-6xl">
+          <h1 class="text-balance font-['Herr_Von_Muellerhoff',cursive] font-normal text-[clamp(2.6rem,11.5vw,3.4rem)] lg:text-[4.4rem] leading-[1.15] lg:leading-[1.5] lg:whitespace-nowrap">
             Your real estate partner in Portugal
           </h1>
-          <p class="label !text-[13px] !text-white/75 mb-10 sm:mb-12 lg:mb-10">Cascais &middot; Lisbon &middot; Sintra</p>
-          <a href="/contact" class="more-link bg-white text-ink px-7 py-4 hover:bg-white/90 transition-colors duration-300">
-            Talk to Natalie
-          </a>
+          <div class="absolute inset-x-0 top-full pt-7 sm:pt-9 lg:pt-6">
+            <p class="label !text-[13px] !text-white/75 mb-10 sm:mb-12 lg:mb-10">Cascais &middot; Lisbon &middot; Sintra</p>
+            <a href="/contact" class="more-link bg-white text-ink px-7 py-4 hover:bg-white/90 transition-colors duration-300">
+              Talk to Natalie
+            </a>
+          </div>
         </div>
       </div>
     </section>
@@ -189,33 +195,34 @@
           <h2 class="font-serif text-[clamp(1.5rem,8vw,2.25rem)] sm:text-5xl lg:text-[34px] xl:text-[40px] leading-tight whitespace-nowrap"><span class="block lg:inline">Local knowledge.</span> <span class="block lg:inline">Commercial judgement.</span> <span class="block lg:inline">Personal representation.</span></h2>
         </div>
 
+        <!-- Desktop: the four cards share rows (subgrid), so every paragraph starts level even when one title wraps. -->
         <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-x-10 lg:gap-x-8 gap-y-12 items-start">
-          <div class="reveal border-t border-hairline pt-7">
+          <div class="reveal border-t border-hairline pt-7 lg:grid lg:grid-rows-subgrid lg:row-span-3 lg:gap-y-0">
             <p class="label mb-4">Local Knowledge</p>
-            <h3 class="font-serif text-2xl leading-snug mb-3">I live where I work.</h3>
+            <h3 class="font-serif text-2xl xl:text-[23px] xl:whitespace-nowrap leading-snug mb-3">I live where I work.</h3>
             <p class="text-sm lg:text-base text-muted leading-relaxed lg:leading-[1.6]">
               Based in Cascais since 2019, I know these areas beyond the listings. I help you understand the neighbourhood, the lifestyle and the details that matter day to day.
             </p>
           </div>
-          <div class="reveal border-t border-hairline pt-7" style="--reveal-delay:90ms">
+          <div class="reveal border-t border-hairline pt-7 lg:grid lg:grid-rows-subgrid lg:row-span-3 lg:gap-y-0" style="--reveal-delay:90ms">
             <p class="label mb-4">Negotiation &amp; Representation</p>
-            <h3 class="font-serif text-2xl leading-snug mb-3">Your interests come first.</h3>
+            <h3 class="font-serif text-2xl xl:text-[23px] xl:whitespace-nowrap leading-snug mb-3">Your interests come first.</h3>
             <p class="text-sm lg:text-base text-muted leading-relaxed lg:leading-[1.6]">
               My background in commercial buying taught me to assess value and negotiate with discipline. I use that experience to protect your interests at every stage.
             </p>
           </div>
-          <div class="reveal border-t border-hairline pt-7" style="--reveal-delay:180ms">
+          <div class="reveal border-t border-hairline pt-7 lg:grid lg:grid-rows-subgrid lg:row-span-3 lg:gap-y-0" style="--reveal-delay:180ms">
             <p class="label mb-4">Personal Service</p>
-            <h3 class="font-serif text-2xl leading-snug mb-3">One advisor, by your side.</h3>
+            <h3 class="font-serif text-2xl xl:text-[23px] xl:whitespace-nowrap leading-snug mb-3">One advisor, by your side.</h3>
             <p class="text-sm lg:text-base text-muted leading-relaxed lg:leading-[1.6]">
               You work directly with me throughout your purchase or sale. I coordinate the next steps, keep you informed and remain available for your questions.
             </p>
           </div>
-          <div class="reveal border-t border-hairline pt-7" style="--reveal-delay:270ms">
+          <div class="reveal border-t border-hairline pt-7 lg:grid lg:grid-rows-subgrid lg:row-span-3 lg:gap-y-0" style="--reveal-delay:270ms">
             <p class="label mb-4">Global Reach</p>
-            <h3 class="font-serif text-2xl leading-snug mb-3">Local attention. Global reach.</h3>
+            <h3 class="font-serif text-2xl xl:text-[23px] xl:whitespace-nowrap leading-snug mb-3">Local attention. Global reach.</h3>
             <p class="text-sm lg:text-base text-muted leading-relaxed lg:leading-[1.6]">
-              Through eXp Realty, I connect your property journey with an international network of professionals and opportunities. You retain one personal point of contact throughout.
+              Through eXp Realty, I connect your property journey with an international network of professionals and opportunities. You keep one point of contact.
             </p>
           </div>
         </div>
