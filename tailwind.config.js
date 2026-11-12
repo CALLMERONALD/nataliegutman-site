@@ -1,5 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  // Mobile audit 2026-11-11: hover: utilities compile behind @media (hover: hover), so a tap never leaves a stuck hover state.
+  future: { hoverOnlyWhenSupported: true },
   content: ['./*.html', './assets/*.js'],
   theme: {
     extend: {

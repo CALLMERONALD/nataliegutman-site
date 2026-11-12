@@ -146,8 +146,10 @@
     background: currentColor; transform: scaleX(0); transform-origin: left;
     transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .link-underline:hover::after,
   .link-underline:focus-visible::after { transform: scaleX(1); }
+  @media (hover: hover) and (pointer: fine) {
+    .link-underline:hover::after { transform: scaleX(1); }
+  }
 
   /* Small caps "discover" link with arrow, like the reference's CTAs */
   .more-link {
@@ -219,3 +221,21 @@
 dialog:not([open]) {
   display: none;
 }
+
+/* Mobile audit 2026-11-11 (Emil Kowalski mobile-native checklist).
+   No grey flash on tap, no font inflation in landscape, taps fire without the double-tap wait,
+   long-press on a button does not select its label, buttons answer the instant a finger lands. */
+html {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+a, button, [role='button'], summary, label {
+  touch-action: manipulation;
+}
+button, [role='button'], .more-link {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+.more-link:active, button:active { transform: scale(0.97); }

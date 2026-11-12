@@ -37,6 +37,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#1A1A1A" />
   <title>The Gandarinha Estate · Cascais · Natalie Gutman</title>
   <meta name="description" content="The Gandarinha Estate: an architectural masterpiece on 2,438 m² of private land in the noble quarter of Cascais. Presented by Natalie Gutman." />
   <!-- Unlisted page: shared by private link only. noindex, no canonical, not in
@@ -100,8 +101,8 @@
     .hero-slide.is-on { opacity: 1; }
     .hero-slide img { transform-origin: center; transform: scale(1.06); transition: transform 4s cubic-bezier(0.25, 0.1, 0.25, 1); }
     .hero-slide.is-on img { transform: none; }
-    /* vh first = fallback for Safari <15.4 (no dvh). */
-    .wt-viewport { height: 100vh; height: 100dvh; }
+    /* vh first = fallback for Safari <15.4 (no svh). svh, not dvh: a hero must not resize while the URL bar collapses. */
+    .wt-viewport { height: 100vh; height: 100svh; }
     /* Captions sit over bright frames (sky, pool): a soft shadow keeps them legible. */
     .wt-caption h1, .wt-caption p { text-shadow: 0 1px 10px rgba(0, 0, 0, 0.6); }
     /* Subline under the title (Michael 2026-10-11: more visible): full white, medium weight, a tighter dark halo. */
@@ -129,7 +130,7 @@
     .gx-fp-tab .t-lvl { font-family: 'Montserrat Variable', ui-sans-serif, system-ui, sans-serif; font-size: .6875rem; text-transform: uppercase; letter-spacing: .22em; color: #6E6A63; display: block; margin-bottom: .2rem; }
     .gx-fp-tab .t-name { font-family: 'Montserrat Variable', ui-sans-serif, system-ui, sans-serif; font-size: 1rem; font-weight: 500; line-height: 1.2; color: #2C2C2C; display: block; }
     .gx-fp-tab .t-area { font-family: 'Montserrat Variable', ui-sans-serif, system-ui, sans-serif; font-size: .75rem; color: #5C5C5C; }
-    .gx-fp-tab:hover { border-color: #B8893C; }
+    @media (hover: hover) and (pointer: fine) { .gx-fp-tab:hover { border-color: #B8893C; } }
     .gx-fp-tab.is-active { border-color: #B8893C; background: #F6F4F0; box-shadow: inset 0 3px 0 #B8893C; }
     .gx-fp-tab:focus-visible, .gx-room:focus-visible, .gx-pin:focus-visible, .gx-lm:focus-visible, .gx-pill:focus-visible { outline: 2px solid #B8893C; outline-offset: 2px; }
 
@@ -168,7 +169,7 @@
     .gx-room:first-of-type { border-top: 1px solid #E6E3DD; }
     .gx-room .r-name { color: #2C2C2C; font-size: .9375rem; }
     .gx-room .r-area { font-family: 'Montserrat Variable', ui-sans-serif, system-ui, sans-serif; font-size: .875rem; font-weight: 500; color: #2C2C2C; white-space: nowrap; }
-    .gx-room:hover, .gx-room.is-active { background: #F6F4F0; }
+    .gx-room.is-active { background: #F6F4F0; } @media (hover: hover) and (pointer: fine) { .gx-room:hover { background: #F6F4F0; } }
     .gx-room.is-active .r-name { font-weight: 600; }
 
     /* ── Interactive landmark map (on the ink section) ─────────────────── */
@@ -192,7 +193,7 @@
       transition: transform .18s, background .18s, opacity .18s;
     }
     .gx-pin::before { content: ''; position: absolute; inset: -8px; border-radius: 9999px; } /* touch target */
-    .gx-pin:hover { transform: translate(-50%,-50%) scale(1.18); }
+    @media (hover: hover) and (pointer: fine) { .gx-pin:hover { transform: translate(-50%,-50%) scale(1.18); } }
     .gx-pin.is-active { background: #B8893C; transform: translate(-50%,-50%) scale(1.3); z-index: 2; }
     .gx-pin.is-active::after { content: ''; position: absolute; inset: -7px; border-radius: 9999px; border: 1.5px solid rgba(211,165,91,.85); }
     @media (prefers-reduced-motion: no-preference) {
@@ -212,7 +213,7 @@
     .gx-lm .n { font-family: 'Montserrat Variable', ui-sans-serif, system-ui, sans-serif; font-size: .65rem; letter-spacing: .08em; color: #B8893C; min-width: 1.3rem; }
     .gx-lm .t { flex: 1; }
     .gx-lm .d { font-size: .75rem; color: #6E6A63; white-space: nowrap; }
-    .gx-lm:hover, .gx-lm.is-active { background: #FDFBF7; color: #2C2C2C; }
+    .gx-lm.is-active { background: #FDFBF7; color: #2C2C2C; } @media (hover: hover) and (pointer: fine) { .gx-lm:hover { background: #FDFBF7; color: #2C2C2C; } }
 
     /* ── Key facts (2026-09-01): open grid, top rule per cell, room to breathe ── */
     .gx-fact { border-top: 1px solid #E6E3DD; padding: 1.5rem 0 .5rem; }
@@ -222,7 +223,7 @@
     .gx-quote { font-family: 'Cormorant Garamond', ui-serif, Georgia, serif; font-style: italic; font-weight: 400; color: #2C2C2C; font-size: clamp(1.9rem, 3.6vw, 3rem); line-height: 1.25; text-wrap: balance; }
 
     /* ── Gallery: every photograph fits the screen (no scrolling inside one image) ── */
-    .gx-photo { max-height: 80vh; max-height: 80dvh; object-fit: cover; }
+    .gx-photo { max-height: 80vh; max-height: 80svh; object-fit: cover; }
 
     /* ── Discrete floating trigger (anchor to the viewing form) ────────────── */
     .gx-pill {
@@ -237,7 +238,7 @@
     }
     .gx-pill .dot { width: .45rem; height: .45rem; border-radius: 9999px; background: #D3A55B; }
     .gx-pill.is-on { opacity: 1; pointer-events: auto; transform: none; }
-    .gx-pill:hover { background: #B8893C; color: #2C2C2C; }
+    @media (hover: hover) and (pointer: fine) { .gx-pill:hover { background: #B8893C; color: #2C2C2C; } }
     .gx-field { width: 100%; border: 1px solid #E6E3DD; background: #FDFBF7; color: #2C2C2C; padding: .85rem 1rem; font-size: 1rem; font-family: inherit; }
     .gx-field:focus-visible { outline: 2px solid #B8893C; outline-offset: 1px; }
     select.gx-field { appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236E6A63' stroke-width='1.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 1rem center; padding-right: 2.5rem; }
@@ -247,7 +248,7 @@
     /* Narrow cards: balance the lines so keeping the last three words together never strands one word mid-paragraph (2026-10-11). */
     .gx-spec p, .gx-spec h3 { text-wrap: balance; }
     .gx-spec::before { content: ''; position: absolute; top: -1px; left: 0; height: 1px; width: 2rem; background: #B8893C; transition: width .45s cubic-bezier(.16,1,.3,1); }
-    .gx-spec:hover { transform: translateY(-3px); }
+    @media (hover: hover) and (pointer: fine) { .gx-spec:hover { transform: translateY(-3px); } }
     .gx-spec:hover::before { width: 100%; }
 
     /* prefers-reduced-motion: the sitewide rule in tailwind.css already
@@ -329,7 +330,7 @@
          Pass 6: title + subline only (eyebrow and hairline removed at Natalie's request). -->
     <div class="absolute inset-x-0 bottom-0 z-[5] pointer-events-none">
       <div class="max-w-7xl mx-auto px-6 lg:px-10 pb-14 lg:pb-20 relative">
-        <div class="wt-caption absolute inset-x-0 bottom-[46vh] text-center px-6">
+        <div class="wt-caption absolute inset-x-0 bottom-[46svh] text-center px-6">
           <h1 class="font-garamond font-normal tracking-[0.005em] whitespace-nowrap text-white text-[clamp(1.9rem,9vw,2.25rem)] sm:text-5xl md:text-6xl lg:text-7xl leading-[1.05] rise" style="--rise-delay: 300ms;">Gandarinha Estate</h1>
           <p class="hero-sub font-montserrat font-medium text-white whitespace-nowrap text-[clamp(0.6875rem,3.2vw,0.8125rem)] sm:text-base lg:text-lg tracking-[0.22em] sm:tracking-[0.28em] uppercase mt-7 rise" style="--rise-delay: 440ms;">Gandarinha · Cascais · Portugal</p>
         </div>
