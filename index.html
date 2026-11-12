@@ -164,16 +164,21 @@
          Her em dashes became commas (no-dash rule); imagery unchanged by her instruction. -->
 
     <!-- ============== 1 · HERO (full-bleed) ============== -->
-    <section class="relative min-h-[100svh] flex flex-col bg-ink overflow-hidden">
-      <img src="assets/photos/home-hero-1920.jpg" srcset="assets/photos/home-hero-1200.jpg 1200w, assets/photos/home-hero-1920.jpg 1920w" sizes="100vw" width="1920" height="1280" alt="A contemporary villa with a lawn and pool in Cascais" class="absolute inset-0 w-full h-full object-cover" loading="eager" fetchpriority="high" />
+    <section class="hero-anchor relative min-h-[100svh] flex flex-col bg-ink overflow-hidden">
+      <!-- Portrait screens get a tall version: the real photo with AI-extended sky above and lawn/pool below
+           (Media Studio job 162, the house band is the untouched original), so the whole house fits a phone. -->
+      <picture>
+        <source media="(max-aspect-ratio: 3/4)" srcset="assets/photos/home-hero-phone-780.jpg 780w, assets/photos/home-hero-phone-1170.jpg 1170w" sizes="100vw" width="1170" height="2080" />
+  <img src="assets/photos/home-hero-1920.jpg" srcset="assets/photos/home-hero-1200.jpg 1200w, assets/photos/home-hero-1920.jpg 1920w" sizes="100vw" width="1920" height="1280" alt="A contemporary villa with a lawn and pool in Cascais" class="absolute inset-0 w-full h-full object-cover" loading="eager" fetchpriority="high" />
+      </picture>
       <div class="absolute inset-0 bg-gradient-to-b from-ink/45 via-ink/50 to-ink/70"></div>
 
       <!-- Natalie's hero simplification (2026-11-11): H1, location line, one button. H1 one line from lg,
            natural wrap below. Michael 2026-11-11: the H1 is centred on the line where the balcony glass meets the
            dark band of the photo (y 508 of 1280 = 39.7%), at every viewport: the image is object-cover in a
            100svh box, so its rendered height is max(100vw * 2/3, 100svh) and it is centred vertically.
-           Changing the photo means re-measuring 0.397 and the 2/3 aspect. -->
-      <div class="absolute inset-x-0 z-10 h-0 flex items-center justify-center" style="top: calc((100svh - max(66.667vw, 100svh)) / 2 + 0.397 * max(66.667vw, 100svh))">
+           The ratio and line live in src/input.css (.hero-anchor): landscape photo 2/3 + 0.397, phone photo 16/9 + 0.400. Changing a photo means re-measuring both. -->
+      <div class="absolute inset-x-0 z-10 h-0 flex items-center justify-center" style="top: calc((100svh - max(var(--hero-ar) * 100vw, 100svh)) / 2 + var(--hero-line) * max(var(--hero-ar) * 100vw, 100svh))">
         <div class="relative text-center text-white px-6 max-w-6xl">
           <h1 class="text-balance font-['Herr_Von_Muellerhoff',cursive] font-normal text-[clamp(2.6rem,11.5vw,3.4rem)] lg:text-[4.4rem] leading-[1.15] lg:leading-[1.5] lg:whitespace-nowrap">
             Your real estate partner in Portugal

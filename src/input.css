@@ -239,3 +239,8 @@ button, [role='button'], .more-link {
   -webkit-touch-callout: none;
 }
 .more-link:active, button:active { transform: scale(0.97); }
+
+/* Homepage hero: rendered photo height / width and the glass-line position (fraction of photo height),
+   so the H1 sits on the glass line on every screen. Phone photo = home-hero-phone-*.jpg, 9:16. */
+.hero-anchor { --hero-ar: 0.66667; --hero-line: 0.397; }
+@media (max-aspect-ratio: 3/4) { .hero-anchor { --hero-ar: 1.77778; --hero-line: 0.400; } }
